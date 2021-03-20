@@ -2,6 +2,8 @@
 https://github.com/yuhengfdada/comp3111-T05-Repo
 
 ## 1. Yuheng Shao
+email: yshaoam | github: yuhengfdada | dev branch: test_s
+
 Tasks: 1 & 4
 
 ## 2. HU Benran
