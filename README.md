@@ -8,3 +8,8 @@ Tasks: 1 & 4
 email: bhuai | github: zymk9 | dev branch: mk9_dev
 
 Tasks 3 & 6
+
+## 3.LUO Yuqing
+email: yluobb | github: yluo66 | dev branch: LUO_feature
+
+Tasks 2 & 5
