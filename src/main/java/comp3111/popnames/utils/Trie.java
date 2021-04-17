@@ -1,4 +1,4 @@
-package comp3111.popnames;
+package comp3111.popnames.utils;
 
 import java.util.*;
 

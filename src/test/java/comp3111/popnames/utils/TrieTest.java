@@ -1,5 +1,6 @@
-package comp3111.popnames;
+package comp3111.popnames.utils;
 
+import comp3111.popnames.utils.Trie;
 import org.junit.Test;
 
 import java.util.ArrayList;
