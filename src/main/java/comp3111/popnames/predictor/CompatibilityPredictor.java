@@ -1,5 +1,7 @@
 package comp3111.popnames.predictor;
 
+import comp3111.popnames.metrics.*;
+
 public class CompatibilityPredictor {
     enum AgePreference {
         YOUNGER, OLDER
@@ -10,38 +12,44 @@ public class CompatibilityPredictor {
     }
 
     public static CompatibilityPredictor instance = new CompatibilityPredictor();
+    public final EducationalMetrics eduMetrics;
+    public final IncomeMetrics incomeMetrics;
+    public final MiscMetrics miscMetrics;
 
     private CompatibilityPredictor() {
         algorithm = Algorithm.BASIC;
+        eduMetrics = new EducationalMetrics();
+        incomeMetrics = new IncomeMetrics();
+        miscMetrics = new MiscMetrics();
     }
 
     public static CompatibilityPredictor getInstance() {
         return instance;
     }
 
-    void setSelfInfo(String name, int yearOfBirth, char gender) {
+    public void setSelfInfo(String name, int yearOfBirth, char gender) {
         this.name = name;
         this.yearOfBirth = yearOfBirth;
         this.gender = gender;
     }
 
-    void setMateInfo(String name, char gender) {
+    public void setMateInfo(String name, char gender) {
         nameMate = name;
         genderMate = gender;
     }
 
-    void algorithm(Algorithm algorithm) {
+    public void algorithm(Algorithm algorithm) {
         this.algorithm = algorithm;
     }
 
-    double predict() {
+    public double predict() {
         if (algorithm == Algorithm.BASIC) {
             return basicPredictor();
         }
         return 0.0;
     }
 
-    double basicPredictor() {
+    public double basicPredictor() {
         if (name.length() == nameMate.length()) {
             return 1.0;
         }

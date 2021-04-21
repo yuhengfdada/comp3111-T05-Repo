@@ -54,7 +54,7 @@
             <Font size="15.0" />
           </font>
         </Label>
-            <GridPane layoutX="31.0" layoutY="72.0" prefHeight="354.0" prefWidth="578.0">
+            <GridPane layoutX="31.0" layoutY="79.0" prefHeight="354.0" prefWidth="534.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="231.75628174746186" minWidth="10.0" prefWidth="222.46212386034398" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="252.50421855574456" minWidth="10.0" prefWidth="112.13442128775927" />
@@ -75,22 +75,22 @@
                   <RowConstraints maxHeight="170.80668636473155" minHeight="10.0" prefHeight="44.504169579136885" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Slider fx:id="selfEduSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.rowIndex="3" />
+                  <Slider fx:id="selfEduSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.rowIndex="3" />
                   <ChoiceBox fx:id="selfEduLevel" prefWidth="150.0" GridPane.rowIndex="1" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your educational level:" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mate's educational level:" GridPane.columnIndex="2" />
                   <ChoiceBox fx:id="mateEduLevel" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Significance for you:" GridPane.rowIndex="2" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Significance for your mate:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <Slider fx:id="mateEduSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <Slider fx:id="mateEduSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your family income level:" GridPane.rowIndex="5" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mate's family income level:" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                   <ChoiceBox fx:id="selfIncomeLevel" prefWidth="150.0" GridPane.rowIndex="6" />
                   <ChoiceBox fx:id="mateIncomeLevel" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Significance for you:" GridPane.rowIndex="7" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Significance for your mate:" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-                  <Slider fx:id="selfIncomeSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.rowIndex="8" />
-                  <Slider fx:id="mateIncomeSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                  <Slider fx:id="selfIncomeSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.rowIndex="8" />
+                  <Slider fx:id="mateIncomeSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your preference on kids:" GridPane.rowIndex="10" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mate's preference on kids:" GridPane.columnIndex="2" GridPane.rowIndex="10" />
                   <ChoiceBox fx:id="selfKids" prefWidth="150.0" GridPane.rowIndex="11" />
@@ -100,8 +100,8 @@
             <Button fx:id="nextBtn" layoutX="552.0" layoutY="564.0" mnemonicParsing="false" onAction="#onNextBtnPressed" text="Next" />
             <Button fx:id="backBtn" layoutX="493.0" layoutY="564.0" mnemonicParsing="false" onAction="#onBackBtnPressed" text="Back" />
             <Button fx:id="cancelBtn" layoutX="421.0" layoutY="564.0" mnemonicParsing="false" onAction="#onCancelBtnPressed" text="Cancel" />
-            <Text layoutX="31.0" layoutY="479.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mates' year of birth:" />
-            <TextField fx:id="mateYob" layoutX="31.0" layoutY="483.0" />
+            <Text layoutX="31.0" layoutY="479.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mate's year of birth:" />
+            <TextField fx:id="mateYob" layoutX="31.0" layoutY="483.0" prefHeight="25.0" prefWidth="150.0" />
       </children>
     </AnchorPane>
   </children>

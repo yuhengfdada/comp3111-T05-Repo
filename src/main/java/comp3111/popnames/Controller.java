@@ -170,12 +170,12 @@ public class Controller {
     void onPredStart(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/score_predictor_ui/basic_info_ui.fxml"));
-        Parent root1 = (Parent) loader.load();
+        Parent root = (Parent) loader.load();
         Stage stage = new Stage();
         // basicInfoController controller = (basicInfoController) loader.getController();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Compatibility Score Predictor");
-        stage.setScene(new Scene(root1));
+        stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.show();
     }
