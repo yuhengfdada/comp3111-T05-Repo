@@ -2,8 +2,8 @@ package comp3111.popnames.metrics;
 
 public class IncomeMetrics implements Metrics {
 
-    enum IncomeLevel {
-        LOWEST_25, MIDDLE_50, TOP_25
+    public enum IncomeLevel {
+        LOWEST_25, MIDDLE_50, TOP_25, NA
     }
 
     private IncomeLevel self, mate;
@@ -65,4 +65,21 @@ public class IncomeMetrics implements Metrics {
         selfSig = self;
         mateSig = mate;
     }
+
+    public void setSelf(int index) {
+        if (index < 0 || index >= IncomeLevel.values().length) {
+            self = IncomeLevel.NA;
+        } else {
+            self = IncomeLevel.values()[index];
+        }
+    }
+
+    public void setMate(int index) {
+        if (index < 0 || index >= IncomeLevel.values().length) {
+            mate = IncomeLevel.NA;
+        } else {
+            mate = IncomeLevel.values()[index];
+        }
+    }
+
 }

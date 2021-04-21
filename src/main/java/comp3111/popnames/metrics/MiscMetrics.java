@@ -2,7 +2,11 @@ package comp3111.popnames.metrics;
 
 public class MiscMetrics implements Metrics {
 
-    private boolean selfPreferKids, matePreferKids;
+    public enum kidsPreference {
+        TWO_OR_MORE, ONE, NONE, NA
+    }
+
+    private kidsPreference selfKids, mateKids;
     private boolean selfEmploy, mateEmploy;
 
     /**
@@ -44,5 +48,21 @@ public class MiscMetrics implements Metrics {
     @Override
     public void setSignificance(double self, double mate) {
 
+    }
+
+    public void setSelfKids(int index) {
+        if (index < 0 || index >= kidsPreference.values().length) {
+            selfKids = kidsPreference.NA;
+        } else {
+            selfKids = kidsPreference.values()[index];
+        }
+    }
+
+    public void setMateKids(int index) {
+        if (index < 0 || index >= kidsPreference.values().length) {
+            mateKids = kidsPreference.NA;
+        } else {
+            mateKids = kidsPreference.values()[index];
+        }
     }
 }

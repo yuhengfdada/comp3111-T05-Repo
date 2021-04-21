@@ -28,14 +28,18 @@ public class CompatibilityPredictor {
     }
 
     public void setSelfInfo(String name, int yearOfBirth, char gender) {
-        this.name = name;
-        this.yearOfBirth = yearOfBirth;
-        this.gender = gender;
+        this.selfName = name;
+        this.selfYob = yearOfBirth;
+        this.selfGender = gender;
     }
 
     public void setMateInfo(String name, char gender) {
-        nameMate = name;
-        genderMate = gender;
+        mateName = name;
+        mateGender = gender;
+    }
+
+    public void setMateYob(int yearOfBirth) {
+        mateYob = yearOfBirth;
     }
 
     public void algorithm(Algorithm algorithm) {
@@ -50,17 +54,18 @@ public class CompatibilityPredictor {
     }
 
     public double basicPredictor() {
-        if (name.length() == nameMate.length()) {
+        if (selfName.length() == mateName.length()) {
             return 1.0;
         }
         return 0.0;
     }
 
-    private String name;
-    private int yearOfBirth;
-    private char gender;
-    private String nameMate;
-    private char genderMate;
+    private String selfName;
+    private int selfYob;
+    private char selfGender;
+    private String mateName;
+    private int mateYob;
+    private char mateGender;
     private AgePreference agePreference;
     private Algorithm algorithm;
 }

@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Locale;
 
-public class basicInfoController {
+public class BasicInfoController {
 
     private CompatibilityPredictor predictor;
 
@@ -81,6 +81,16 @@ public class basicInfoController {
         stage.setTitle("Compatibility Score Predictor");
         stage.setScene(new Scene(root));
         stage.setResizable(false);
+
+        Stage curStage = (Stage) nextBtn.getScene().getWindow();
+
+        AdditionalInfoController controller = loader.getController();
+        controller.setParent(stage, this);
+        stage.setOnHiding(windowEvent -> {
+            curStage.close();
+        });
+
+        curStage.hide();
         stage.show();
     }
 

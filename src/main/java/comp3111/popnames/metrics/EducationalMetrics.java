@@ -5,9 +5,9 @@ package comp3111.popnames.metrics;
  */
 public class EducationalMetrics implements Metrics {
 
-    enum EducationalLevel {
+    public enum EducationalLevel {
         ELEMENTARY_SCHOOL, MIDDLE_SCHOOL, HIGH_SCHOOL,
-        BACHELOR, MASTER, PHD
+        BACHELOR, MASTER, PHD, NA
     }
 
     private EducationalLevel self, mate;
@@ -59,6 +59,30 @@ public class EducationalMetrics implements Metrics {
         selfSig = self;
         mateSig = mate;
         weight = (self + mate) * 0.5;
+    }
+
+    public void setSelfEdu(EducationalLevel level) {
+        self = level;
+    }
+
+    public void setSelfEdu(int index) {
+        if (index < 0 || index >= EducationalLevel.values().length) {
+            self = EducationalLevel.NA;
+        } else {
+            self = EducationalLevel.values()[index];
+        }
+    }
+
+    public void setMateEdu(EducationalLevel level) {
+        mate = level;
+    }
+
+    public void setMateEdu(int index) {
+        if (index < 0 || index >= EducationalLevel.values().length) {
+            mate = EducationalLevel.NA;
+        } else {
+            mate = EducationalLevel.values()[index];
+        }
     }
 
 }
