@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 public class PredictorTest {
     @Test
     public void testBasicPredictor() {
-        CompatibilityPredictor predictor = new CompatibilityPredictor();
+        CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();
         predictor.setSelfInfo("Rex", 425, 'M');
         predictor.setMateInfo("Nia", 'F');
         predictor.algorithm(CompatibilityPredictor.Algorithm.BASIC);

@@ -2,15 +2,21 @@ package comp3111.popnames.predictor;
 
 public class CompatibilityPredictor {
     enum AgePreference {
-        YOUNGER, OLDER;
+        YOUNGER, OLDER
     }
 
     enum Algorithm {
-        BASIC, DATA_BASED;
+        BASIC, DATA_BASED
     }
 
-    CompatibilityPredictor() {
+    public static CompatibilityPredictor instance = new CompatibilityPredictor();
+
+    private CompatibilityPredictor() {
         algorithm = Algorithm.BASIC;
+    }
+
+    public static CompatibilityPredictor getInstance() {
+        return instance;
     }
 
     void setSelfInfo(String name, int yearOfBirth, char gender) {
