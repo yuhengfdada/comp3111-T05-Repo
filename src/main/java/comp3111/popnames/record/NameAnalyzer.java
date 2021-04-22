@@ -1,15 +1,12 @@
 package comp3111.popnames.record;
 
-import comp3111.popnames.record.NameRecord;
 import edu.duke.FileResource;
 import edu.duke.ResourceException;
-import javafx.util.Pair;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.PriorityQueue;
 
 public class NameAnalyzer {
     public static class YearRecord {

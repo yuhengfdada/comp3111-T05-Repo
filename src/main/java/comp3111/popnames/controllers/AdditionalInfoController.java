@@ -93,13 +93,14 @@ public class AdditionalInfoController {
 
     @FXML
     void onBackBtnPressed(ActionEvent event) {
-
+        previousStage.show();
+        Stage stage = (Stage) backBtn.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     void onCancelBtnPressed(ActionEvent event) {
-        Stage stage = (Stage) cancelBtn.getScene().getWindow();
-        stage.close();
+        close();
     }
 
     @FXML
@@ -109,13 +110,18 @@ public class AdditionalInfoController {
         }
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/score_predictor_ui/preferences.fxml"));
+        loader.setLocation(getClass().getResource("/score_predictor_ui/preferences_ui.fxml"));
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Compatibility Score Predictor");
         stage.setScene(new Scene(root));
         stage.setResizable(false);
+
+        Stage curStage = (Stage) nextBtn.getScene().getWindow();
+        PreferencesController controller = loader.getController();
+        controller.setParent(curStage, this);
+        curStage.hide();
         stage.show();
     }
 
@@ -160,9 +166,23 @@ public class AdditionalInfoController {
         return true;
     }
 
+    /**
+     * Set the previous stage and controller
+     * @param stage previous stage
+     * @param controller previous controller
+     */
     public void setParent(Stage stage, BasicInfoController controller) {
         previousStage = stage;
         previousController = controller;
+    }
+
+    /**
+     * Close the controller and the previous controller
+     */
+    public void close() {
+        Stage stage = (Stage) nextBtn.getScene().getWindow();
+        stage.close();
+        previousController.close();
     }
 
 }

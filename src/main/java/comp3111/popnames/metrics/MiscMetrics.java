@@ -7,6 +7,7 @@ public class MiscMetrics implements Metrics {
     }
 
     private kidsPreference selfKids, mateKids;
+    private double themeSuitability, meanSuitability;
     private boolean selfEmploy, mateEmploy;
 
     /**
@@ -64,5 +65,13 @@ public class MiscMetrics implements Metrics {
         } else {
             mateKids = kidsPreference.values()[index];
         }
+    }
+
+    public void themeSuitability(double value) {
+        themeSuitability = value;
+    }
+
+    public void meanSuitability(double value) {
+        meanSuitability = value;
     }
 }

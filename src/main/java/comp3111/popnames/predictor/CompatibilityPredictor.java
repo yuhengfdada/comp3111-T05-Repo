@@ -1,13 +1,14 @@
 package comp3111.popnames.predictor;
 
 import comp3111.popnames.metrics.*;
+import comp3111.popnames.record.ThemeAnalyzer;
 
 public class CompatibilityPredictor {
     enum AgePreference {
         YOUNGER, OLDER
     }
 
-    enum Algorithm {
+    public enum Algorithm {
         BASIC, DATA_BASED
     }
 
@@ -15,12 +16,14 @@ public class CompatibilityPredictor {
     public final EducationalMetrics eduMetrics;
     public final IncomeMetrics incomeMetrics;
     public final MiscMetrics miscMetrics;
+    public final ThemeAnalyzer themeAnalyzer;
 
     private CompatibilityPredictor() {
         algorithm = Algorithm.BASIC;
         eduMetrics = new EducationalMetrics();
         incomeMetrics = new IncomeMetrics();
         miscMetrics = new MiscMetrics();
+        themeAnalyzer = new ThemeAnalyzer();
     }
 
     public static CompatibilityPredictor getInstance() {
@@ -46,6 +49,10 @@ public class CompatibilityPredictor {
         this.algorithm = algorithm;
     }
 
+    public Algorithm algorithm() {
+        return algorithm;
+    }
+
     public double predict() {
         if (algorithm == Algorithm.BASIC) {
             return basicPredictor();
@@ -58,6 +65,36 @@ public class CompatibilityPredictor {
             return 1.0;
         }
         return 0.0;
+    }
+
+    public String getBasicReport() {
+        return "Basic algorithm: If the two names have the same length, compatibility score will be 100, otherwise 0.";
+    }
+
+    /**
+     * Get the theme of the name
+     * @param name the name of interest
+     * @return the theme if name exists, null otherwise
+     */
+    public String getTheme(String name) {
+        return themeAnalyzer.getNameTheme(name);
+    }
+
+    /**
+     * Get the meaning of the name
+     * @param name the name of interest
+     * @return the meaning if name exists, null otherwise
+     */
+    public String getMeaning(String name) {
+        return themeAnalyzer.getNameTheme(name);
+    }
+
+    /**
+     * Accessor of mate's name
+     * @return mate's name
+     */
+    public String mateName() {
+        return mateName;
     }
 
     private String selfName;

@@ -74,7 +74,12 @@ public class BasicInfoController {
         }
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/score_predictor_ui/add_info_ui.fxml"));
+        if (algorithm.getSelectionModel().getSelectedIndex() == 0) {
+            loader.setLocation(getClass().getResource("/score_predictor_ui/result_ui.fxml"));
+        } else {
+            loader.setLocation(getClass().getResource("/score_predictor_ui/add_info_ui.fxml"));
+        }
+
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -84,11 +89,13 @@ public class BasicInfoController {
 
         Stage curStage = (Stage) nextBtn.getScene().getWindow();
 
-        AdditionalInfoController controller = loader.getController();
-        controller.setParent(stage, this);
-        stage.setOnHiding(windowEvent -> {
-            curStage.close();
-        });
+        if (algorithm.getSelectionModel().getSelectedIndex() == 0) {
+            ResultController controller = loader.getController();
+            controller.setParent(curStage, this);
+        } else {
+            AdditionalInfoController controller = loader.getController();
+            controller.setParent(curStage, this);
+        }
 
         curStage.hide();
         stage.show();
@@ -163,6 +170,14 @@ public class BasicInfoController {
         }
 
         return true;
+    }
+
+    /**
+     * Close the current stage
+     */
+    public void close() {
+        Stage stage = (Stage) nextBtn.getScene().getWindow();
+        stage.close();
     }
 
 }
