@@ -3,14 +3,25 @@
  */
 package comp3111.popnames;
 
+import javafx.event.ActionEvent;
+import java.io.IOException;
+
+import com.sun.javafx.scene.control.skin.Utils;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.Stage;
+import javafx.scene.Node;
 
-public class Controller {
+
+public class Controller{
 
     @FXML
     private Tab tabTaskZero;
@@ -27,6 +38,12 @@ public class Controller {
     @FXML
     private TextField textfieldNameM;
 
+    @FXML
+    private TextField t1_year;
+
+    @FXML
+    private TextField t1_name;
+    
     @FXML
     private Button buttonRankF;
 
@@ -69,6 +86,8 @@ public class Controller {
     @FXML
     private TextArea textAreaConsole;
     
+    @FXML
+    private Button t1_generate;
 
     /**
      *  Task Zero
@@ -154,6 +173,34 @@ public class Controller {
     	textAreaConsole.setText(oReport);
     }
     
+    @FXML
+    void t1_generate_action(ActionEvent event) throws IOException {
+    	Task1 task1 = new Task1();
+    	if (util.isNumeric(t1_year.getText()) && util.isNumeric(t1_name.getText())) {
+    		int year = Integer.parseInt(t1_year.getText());
+    		int topN = Integer.parseInt(t1_name.getText());
+    		if (util.isValidN(topN) && util.isValidYear(year)) {
+    			task1.setYear(year);
+    			task1.setTopN(topN);
+    		}
+    		else {
+    			textAreaConsole.setText("Input is not in range!");
+    			return;
+			}
+    	}
+    	else {
+    		textAreaConsole.setText("Input is not numeric");
+    		return;
+		}
 
+    	Parent task1Parent = FXMLLoader.load(getClass().getResource("/task1_1.fxml"));
+    	Scene task1Scene = new Scene(task1Parent);
+    	
+    	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    	window.setUserData(task1);
+    	window.setScene(task1Scene);
+    	window.show();
+    }
+    
 }
 

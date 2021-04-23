@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.Task1Controller">
+   <children>
+      <AnchorPane prefHeight="416.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="lb1" layoutX="220.0" layoutY="118.0" prefHeight="15.0" prefWidth="221.0" text="aqa芭蕾 eqe亏内" />
+            <Button fx:id="back" layoutX="252.0" layoutY="281.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
+            <Button fx:id="rwkk" layoutX="246.0" layoutY="200.0" mnemonicParsing="false" onAction="#kanyixia" text="rwkk!" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
