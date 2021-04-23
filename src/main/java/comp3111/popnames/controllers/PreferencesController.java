@@ -1,5 +1,6 @@
 package comp3111.popnames.controllers;
 
+import comp3111.popnames.metrics.AgeMetrics;
 import comp3111.popnames.predictor.CompatibilityPredictor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,7 +19,6 @@ import java.util.Objects;
 public class PreferencesController {
 
     private static final ObservableList<String> agePrefList;
-    private String theme, meaning;
     private Stage previousStage;
     private AdditionalInfoController previousController;
 
@@ -30,7 +30,7 @@ public class PreferencesController {
     private ChoiceBox<String> agePref;
 
     @FXML
-    private TextField nameTheme;
+    private TextArea nameTheme;
 
     @FXML
     private TextArea nameMeaning;
@@ -54,13 +54,34 @@ public class PreferencesController {
     public void initialize() {
         agePref.setItems(agePrefList);
         CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();
-        theme = predictor.themeAnalyzer.getNameTheme(predictor.mateName());
-        nameTheme.setText(Objects.requireNonNullElse(theme,
-                "Sorry, the theme of your mate's name does not exist in our database."));
 
-        meaning = predictor.themeAnalyzer.getNameMeaning(predictor.mateName());
-        nameMeaning.setText(Objects.requireNonNullElse(meaning,
-                "Sorry, the meaning of your mate's name does not exist in our database."));
+        String promptText = " You can base your choice on subjective feelings about the name.";
+
+        StringBuilder theme = new StringBuilder();
+        theme.append("The meanings or associations behind your name: ");
+        String selfTheme = predictor.themeAnalyzer.getNameTheme(predictor.selfName);
+        theme.append(Objects.requireNonNullElse(selfTheme,
+                "\nSorry, the theme of your name does not exist in our database." + promptText));
+
+        theme.append("\n\nThe meanings or associations behind your mate's name: ");
+        String mateTheme = predictor.themeAnalyzer.getNameTheme(predictor.mateName);
+        theme.append(Objects.requireNonNullElse(mateTheme,
+                "\nSorry, the theme of your mate's name does not exist in our database." + promptText));
+
+        nameTheme.setText(theme.toString());
+
+        StringBuilder meaning = new StringBuilder();
+        meaning.append("The detailed meanings behind your name:\n");
+        String selfMeaning = predictor.themeAnalyzer.getNameFullMeaning(predictor.selfName);
+        meaning.append(Objects.requireNonNullElse(selfMeaning,
+                "Sorry, the meaning of your name does not exist in our database." + promptText));
+
+        meaning.append("\n\nThe detailed meanings behind your mate's name:\n");
+        String mateMeaning = predictor.themeAnalyzer.getNameFullMeaning(predictor.mateName);
+        meaning.append(Objects.requireNonNullElse(mateMeaning,
+                "Sorry, the meaning of your mate's name does not exist in our database." + promptText));
+
+        nameMeaning.setText(meaning.toString());
     }
 
     @FXML
@@ -97,8 +118,10 @@ public class PreferencesController {
 
     private void setValues() {
         CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();
-        predictor.miscMetrics.themeSuitability(themeSuitability.getValue());
-        predictor.miscMetrics.meanSuitability(meanSuitability.getValue());
+        predictor.themeMetrics.themeSuitability(themeSuitability.getValue());
+        predictor.meanMetrics.meanSuitability(meanSuitability.getValue());
+        predictor.ageMetrics.agePref =
+                AgeMetrics.AgePreference.values()[agePref.getSelectionModel().getSelectedIndex()];
     }
 
     /**

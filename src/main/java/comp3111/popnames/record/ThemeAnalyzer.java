@@ -2,11 +2,14 @@ package comp3111.popnames.record;
 
 import edu.duke.FileResource;
 import edu.duke.ResourceException;
+import javafx.util.Pair;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ThemeAnalyzer {
 
@@ -17,13 +20,14 @@ public class ThemeAnalyzer {
             this.usage = usage;
             this.gender = gender;
         }
-        public String theme, meaning, usage;
+        public String theme, meaning, usage, rootMeaning;
         public char gender;
     }
 
     private static final String themeDataPath;
     private static final String meaningDataPath;
-    private HashMap<String, NameTheme> themes;
+    private static final int maxDepth = 5;
+    private final HashMap<String, NameTheme> themes;
 
     static {
         themeDataPath = "dataset/themes/name_themes.csv";
@@ -86,6 +90,34 @@ public class ThemeAnalyzer {
                 }
             }
         }
+
+        setRootMeaning();
+    }
+
+    private void setRootMeaning() {
+        for (NameTheme name : themes.values()) {
+            if (name.rootMeaning != null) {
+                continue;
+            }
+            findRoot(name, 0);
+        }
+    }
+
+    private NameTheme findRoot(NameTheme cur, int depth) {
+        Pattern pattern = Pattern.compile("[A-Z]{2,}");
+        Matcher matcher = pattern.matcher(cur.meaning);
+        if (matcher.find() && depth < maxDepth) {
+            String name = matcher.group(0).toLowerCase(Locale.ROOT);
+            if (themes.containsKey(name)) {
+                NameTheme root = findRoot(themes.get(name), depth + 1);
+                if (root == cur) {
+                    return cur;
+                }
+                cur.rootMeaning = root.meaning; // path compression
+                return root;
+            }
+        }
+        return cur;
     }
 
     /**
@@ -112,6 +144,37 @@ public class ThemeAnalyzer {
             return themes.get(name).meaning;
         }
         return null;
+    }
+
+    /**
+     * Get the root meaning of the name
+     * @param name the name of interest
+     * @return the root meaning if name exists in database, null otherwise
+     */
+    public String getNameRootMeaning(String name) {
+        String processed = name.trim().toLowerCase(Locale.ROOT);
+        if (themes.containsKey(name)) {
+            return themes.get(name).rootMeaning;
+        }
+        return null;
+    }
+
+    /**
+     * Get the full meaning of the name, including the direct and root meaning
+     * @param name the name of interest
+     * @return the full meaning if name exists in database, null otherwise
+     */
+    public String getNameFullMeaning(String name) {
+        String meaning = getNameMeaning(name);
+        if (meaning == null) {
+            return null;
+        }
+        String rootMeaning = getNameRootMeaning(name);
+        if (rootMeaning == null) {
+            return meaning;
+        } else {
+            return meaning + "\n" + rootMeaning;
+        }
     }
 
     /**

@@ -42,10 +42,17 @@ public class NameRecord implements Comparable {
         return this.name;
     }
 
-    public static final Comparator<NameRecord> maxComparator = new Comparator<NameRecord>() {
+    public static final Comparator<NameRecord> occurrenceComparator = new Comparator<NameRecord>() {
         @Override
         public int compare(NameRecord o1, NameRecord o2) {
             return o2.occurrence - o1.occurrence;
+        }
+    };
+
+    public static final Comparator<NameRecord> rankComparator = new Comparator<NameRecord>() {
+        @Override
+        public int compare(NameRecord o1, NameRecord o2) {
+            return o2.rank - o1.rank;
         }
     };
 

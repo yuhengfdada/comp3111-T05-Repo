@@ -108,6 +108,8 @@ public class BasicInfoController {
         predictor.setSelfInfo(selfName.getText().trim().toLowerCase(Locale.ROOT),
                 Integer.parseInt(selfYob.getText()), sGender);
         predictor.setMateInfo(mateName.getText().trim().toLowerCase(Locale.ROOT), mGender);
+        predictor.algorithm(
+                CompatibilityPredictor.Algorithm.values()[algorithm.getSelectionModel().getSelectedIndex()]);
     }
 
     private boolean hasDigit(String input) {

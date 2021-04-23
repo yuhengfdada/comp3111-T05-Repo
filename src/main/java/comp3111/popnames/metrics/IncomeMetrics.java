@@ -1,6 +1,6 @@
 package comp3111.popnames.metrics;
 
-public class IncomeMetrics implements Metrics {
+public class IncomeMetrics extends Metrics {
 
     public enum IncomeLevel {
         LOWEST_25, MIDDLE_50, TOP_25, NA
@@ -16,6 +16,10 @@ public class IncomeMetrics implements Metrics {
      */
     @Override
     public double getScore() {
+        if (self == IncomeLevel.NA || mate == IncomeLevel.NA) {
+            return 1.0;
+        }
+
         double score = (IncomeLevel.TOP_25.ordinal() - self.ordinal()) * mateSig
             + (IncomeLevel.TOP_25.ordinal() - mate.ordinal()) * selfSig;
         return 1.0 - score * 0.25;
@@ -28,7 +32,7 @@ public class IncomeMetrics implements Metrics {
      */
     @Override
     public String getMetricName() {
-        return "Income Level";
+        return "Compatibility of income level";
     }
 
     /**
@@ -38,6 +42,10 @@ public class IncomeMetrics implements Metrics {
      */
     @Override
     public String getExplanation() {
+        if (self == IncomeLevel.NA || mate == IncomeLevel.NA) {
+            return "This metric is not available since the information is incomplete.";
+        }
+
         double score = getScore();
         if (score > 0.8) {
             return "Income level has minimal impact on your relationships.";
@@ -56,11 +64,9 @@ public class IncomeMetrics implements Metrics {
 
     /**
      * Set the significance level of the metrics
-     *
      * @param self self's significance level
      * @param mate mate's significance level
      */
-    @Override
     public void setSignificance(double self, double mate) {
         selfSig = self;
         mateSig = mate;

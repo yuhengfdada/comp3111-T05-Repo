@@ -3,7 +3,7 @@ package comp3111.popnames.metrics;
 /**
  * This class compares the educational levels
  */
-public class EducationalMetrics implements Metrics {
+public class EducationalMetrics extends Metrics {
 
     public enum EducationalLevel {
         ELEMENTARY_SCHOOL, MIDDLE_SCHOOL, HIGH_SCHOOL,
@@ -20,6 +20,10 @@ public class EducationalMetrics implements Metrics {
      */
     @Override
     public double getScore() {
+        if (self == EducationalLevel.NA || mate == EducationalLevel.NA) {
+            return 1.0;
+        }
+
         return Math.abs(self.ordinal() - mate.ordinal()) * weight;
     }
 
@@ -29,7 +33,7 @@ public class EducationalMetrics implements Metrics {
      */
     @Override
     public String getMetricName() {
-        return "Educational Level";
+        return "Compatibility of educational level";
     }
 
     /**
@@ -38,6 +42,10 @@ public class EducationalMetrics implements Metrics {
      */
     @Override
     public String getExplanation() {
+        if (self == EducationalLevel.NA || mate == EducationalLevel.NA) {
+            return "This metric is not available since the information is incomplete.";
+        }
+
         if (weight < 0.2) {
             return "The differences in educational level are basically irrelevant for your relationships.";
         }
@@ -50,11 +58,9 @@ public class EducationalMetrics implements Metrics {
 
     /**
      * Set the significance level of the metrics
-     *
      * @param self self's significance level
      * @param mate mate's significance level
      */
-    @Override
     public void setSignificance(double self, double mate) {
         selfSig = self;
         mateSig = mate;

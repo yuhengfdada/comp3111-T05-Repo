@@ -37,13 +37,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="554.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.PreferencesController">
+<VBox prefHeight="651.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.PreferencesController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
@@ -54,19 +53,19 @@
         </Label>
             <Text layoutX="21.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Age preference:" />
             <ChoiceBox fx:id="agePref" layoutX="21.0" layoutY="98.0" prefWidth="150.0" />
-            <Text layoutX="21.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="How much do you find the underlying theme of your mate's name as shown below suits you?" />
-            <TextField fx:id="nameTheme" layoutX="21.0" layoutY="177.0" prefHeight="37.0" prefWidth="601.0" />
-            <Text layoutX="21.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="How much do you find the underlying meaning of your mate's name as shown below suits you?" />
-            <Button fx:id="nextBtn" layoutX="564.0" layoutY="504.0" mnemonicParsing="false" onAction="#onNextBtnPressed" text="Next" />
-            <Button fx:id="backBtn" layoutX="507.0" layoutY="504.0" mnemonicParsing="false" onAction="#onBackBtnPressed" text="Back" />
-            <Button fx:id="cancelBtn" layoutX="440.0" layoutY="504.0" mnemonicParsing="false" onAction="#onCancelBtnPressed" text="Cancel" />
-            <Slider fx:id="themeSuitability" blockIncrement="1.0" layoutX="89.0" layoutY="222.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="223.0" showTickLabels="true" showTickMarks="true" value="1.0" />
-            <Text layoutX="21.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unsuitable" />
-            <Text layoutX="312.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Suitable" />
-            <Slider fx:id="meanSuitability" blockIncrement="1.0" layoutX="89.0" layoutY="433.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="223.0" showTickLabels="true" showTickMarks="true" value="1.0" />
-            <Text layoutX="21.0" layoutY="448.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unsuitable" />
-            <Text layoutX="312.0" layoutY="448.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Suitable" />
-            <TextArea fx:id="nameMeaning" layoutX="19.0" layoutY="304.0" prefHeight="120.0" prefWidth="601.0" />
+            <Text layoutX="21.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="How much do you find the underlying themes of you and your mate's name compatible?" />
+            <Text layoutX="21.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0" text="How much do you find the underlying meanings of you and your mate's name compatible?" />
+            <Button fx:id="nextBtn" layoutX="564.0" layoutY="591.0" mnemonicParsing="false" onAction="#onNextBtnPressed" text="Next" />
+            <Button fx:id="backBtn" layoutX="507.0" layoutY="591.0" mnemonicParsing="false" onAction="#onBackBtnPressed" text="Back" />
+            <Button fx:id="cancelBtn" layoutX="440.0" layoutY="591.0" mnemonicParsing="false" onAction="#onCancelBtnPressed" text="Cancel" />
+            <Slider fx:id="themeSuitability" blockIncrement="1.0" layoutX="101.0" layoutY="307.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="223.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+            <Text layoutX="19.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incompatible" />
+            <Text layoutX="324.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Compatible" wrappingWidth="73.54019927978516" />
+            <Slider fx:id="meanSuitability" blockIncrement="1.0" layoutX="103.0" layoutY="520.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="223.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+            <Text layoutX="21.0" layoutY="535.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incompatible" />
+            <Text layoutX="326.0" layoutY="535.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Compatible" />
+            <TextArea fx:id="nameMeaning" layoutX="19.0" layoutY="391.0" prefHeight="120.0" prefWidth="601.0" wrapText="true" />
+            <TextArea fx:id="nameTheme" layoutX="19.0" layoutY="180.0" prefHeight="120.0" prefWidth="601.0" wrapText="true" />
       </children>
     </AnchorPane>
   </children>

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class NameAnalyzer {
+
     public static class YearRecord {
         public YearRecord() {
             maleTotalOccur = 0;
@@ -30,9 +31,16 @@ public class NameAnalyzer {
         double percentage;
     }
 
-    public NameAnalyzer(int start, int end) {
+    private static final NameAnalyzer instance = new NameAnalyzer(1880, 2019);
+
+    public static NameAnalyzer getInstance() {
+        return instance;
+    }
+
+    private NameAnalyzer(int start, int end) {
         startYear = start;
         endYear = end;
+        analyzeData();
     }
 
     private final HashMap<Integer, YearRecord> yearRecords = new HashMap<>();
@@ -52,7 +60,7 @@ public class NameAnalyzer {
         }
     }
 
-    public void analyzeYear(int year) {
+    private void analyzeYear(int year) {
         CSVParser parser = getFileParser(year);
         if (parser == null) {
             return;
@@ -77,8 +85,8 @@ public class NameAnalyzer {
             }
         }
 
-        yearRecord.maleNames.sort(NameRecord.maxComparator);
-        yearRecord.femaleNames.sort(NameRecord.maxComparator);
+        yearRecord.maleNames.sort(NameRecord.occurrenceComparator);
+        yearRecord.femaleNames.sort(NameRecord.occurrenceComparator);
         for (int i = 0; i < yearRecord.maleNames.size(); i += 1) {
             yearRecord.maleNames.get(i).rank(i + 1);
         }
@@ -96,7 +104,7 @@ public class NameAnalyzer {
         yearRecords.put(year, yearRecord);
     }
 
-    public void analyzeData() {
+    private void analyzeData() {
         for (int i = startYear; i <= endYear; i += 1) {
             analyzeYear(i);
         }
@@ -132,6 +140,24 @@ public class NameAnalyzer {
             }
         }
         return list;
+    }
+
+    /**
+     * Get the sorted NameRecord ArrayList with respect to occurrence
+     * @param name the name of interest
+     * @return the sorted ArrayList
+     */
+    public ArrayList<NameRecord> getSortedRecords(String name) {
+        ArrayList<NameRecord> records = new ArrayList<>();
+        for (YearRecord year : yearRecords.values()) {
+            if (year.femaleNameMap.containsKey(name)) {
+                records.add(year.femaleNameMap.get(name));
+            } else if (year.maleNameMap.containsKey(name)) {
+                records.add(year.maleNameMap.get(name));
+            }
+        }
+        records.sort(NameRecord.occurrenceComparator);
+        return records;
     }
 
 }

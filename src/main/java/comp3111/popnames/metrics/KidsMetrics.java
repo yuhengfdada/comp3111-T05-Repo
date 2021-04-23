@@ -1,14 +1,12 @@
 package comp3111.popnames.metrics;
 
-public class MiscMetrics implements Metrics {
+public class KidsMetrics extends Metrics {
 
     public enum kidsPreference {
         TWO_OR_MORE, ONE, NONE, NA
     }
 
     private kidsPreference selfKids, mateKids;
-    private double themeSuitability, meanSuitability;
-    private boolean selfEmploy, mateEmploy;
 
     /**
      * Get the detailed score
@@ -17,7 +15,10 @@ public class MiscMetrics implements Metrics {
      */
     @Override
     public double getScore() {
-        return 0;
+        if (selfKids == kidsPreference.NA || mateKids == kidsPreference.NA) {
+            return 1.0;
+        }
+        return 1 - getDiff(selfKids, mateKids) * 0.5;
     }
 
     /**
@@ -27,7 +28,7 @@ public class MiscMetrics implements Metrics {
      */
     @Override
     public String getMetricName() {
-        return null;
+        return "Compatibility of the attitudes towards kid raising";
     }
 
     /**
@@ -37,18 +38,20 @@ public class MiscMetrics implements Metrics {
      */
     @Override
     public String getExplanation() {
-        return null;
-    }
-
-    /**
-     * Set the significance level of the metrics
-     *
-     * @param self self's significance level
-     * @param mate mate's significance level
-     */
-    @Override
-    public void setSignificance(double self, double mate) {
-
+        if (mateKids == kidsPreference.NA || selfKids == kidsPreference.NA) {
+            return "This metric is not available since the info is incomplete.";
+        }
+        int diff = getDiff(mateKids, selfKids);
+        switch (diff) {
+            case 0:
+                return "Your attitudes towards raising kids coincide.";
+            case 1:
+                return "Your attitudes towards raising kids are different";
+            case 2:
+                return "You and your mate have great controversy in the choice of raising kids.";
+            default:
+                return "";
+        }
     }
 
     public void setSelfKids(int index) {
@@ -67,11 +70,4 @@ public class MiscMetrics implements Metrics {
         }
     }
 
-    public void themeSuitability(double value) {
-        themeSuitability = value;
-    }
-
-    public void meanSuitability(double value) {
-        meanSuitability = value;
-    }
 }

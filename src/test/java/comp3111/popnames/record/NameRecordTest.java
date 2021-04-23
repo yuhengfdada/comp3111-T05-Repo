@@ -12,7 +12,7 @@ public class NameRecordTest {
         NameRecord name1 = new NameRecord("name1", 'M', 2021, 3);
         NameRecord name2 = new NameRecord("name2", 'F', 2021, 0);
         NameRecord name3 = new NameRecord("name3", 'F', 2021, 239);
-        Comparator<NameRecord> comparator = NameRecord.maxComparator;
+        Comparator<NameRecord> comparator = NameRecord.occurrenceComparator;
         assertTrue(comparator.compare(name1, name2) < 0);
         assertTrue(comparator.compare(name1, name3) > 0);
         assertEquals(0, comparator.compare(name2, name2));

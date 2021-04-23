@@ -3,10 +3,10 @@ package comp3111.popnames.predictor;
 import comp3111.popnames.metrics.*;
 import comp3111.popnames.record.ThemeAnalyzer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class CompatibilityPredictor {
-    enum AgePreference {
-        YOUNGER, OLDER
-    }
 
     public enum Algorithm {
         BASIC, DATA_BASED
@@ -15,34 +15,65 @@ public class CompatibilityPredictor {
     public static CompatibilityPredictor instance = new CompatibilityPredictor();
     public final EducationalMetrics eduMetrics;
     public final IncomeMetrics incomeMetrics;
-    public final MiscMetrics miscMetrics;
     public final ThemeAnalyzer themeAnalyzer;
+    public final AgeMetrics ageMetrics;
+    public final KidsMetrics kidsMetrics;
+    public final ThemeMetrics themeMetrics;
+    public final MeaningMetrics meanMetrics;
+    public final ArrayList<Metrics> metrics;
+    public final ArrayList<Double> weights;
 
     private CompatibilityPredictor() {
         algorithm = Algorithm.BASIC;
         eduMetrics = new EducationalMetrics();
         incomeMetrics = new IncomeMetrics();
-        miscMetrics = new MiscMetrics();
+        ageMetrics = new AgeMetrics();
+        kidsMetrics = new KidsMetrics();
+        themeMetrics = new ThemeMetrics();
+        meanMetrics = new MeaningMetrics();
         themeAnalyzer = new ThemeAnalyzer();
+
+        metrics = new ArrayList<Metrics>(
+                Arrays.asList(eduMetrics, incomeMetrics, ageMetrics, kidsMetrics, themeMetrics, meanMetrics)
+        );
+
+        weights = new ArrayList<Double>(
+                Arrays.asList(0.15, 0.15, 0.15, 0.15, 0.2, 0.2)
+        );
+
+        for (int i = 0; i < metrics.size(); ++i) {
+            metrics.get(i).setWeight(weights.get(i));
+        }
     }
 
+    /**
+     * Get the unique instance of the class
+     * @return the instance of the class
+     */
     public static CompatibilityPredictor getInstance() {
         return instance;
     }
 
+    /**
+     * Input personal info
+     * @param name the name
+     * @param yearOfBirth year of birth
+     * @param gender gender
+     */
     public void setSelfInfo(String name, int yearOfBirth, char gender) {
         this.selfName = name;
         this.selfYob = yearOfBirth;
         this.selfGender = gender;
     }
 
+    /**
+     * Input mate's info
+     * @param name mate's name
+     * @param gender mate's gender
+     */
     public void setMateInfo(String name, char gender) {
         mateName = name;
         mateGender = gender;
-    }
-
-    public void setMateYob(int yearOfBirth) {
-        mateYob = yearOfBirth;
     }
 
     public void algorithm(Algorithm algorithm) {
@@ -57,7 +88,12 @@ public class CompatibilityPredictor {
         if (algorithm == Algorithm.BASIC) {
             return basicPredictor();
         }
-        return 0.0;
+
+        double sum = 0.0;
+        for (Metrics metric : metrics) {
+            sum += metric.getScore() * metric.weight();
+        }
+        return sum;
     }
 
     public double basicPredictor() {
@@ -89,20 +125,11 @@ public class CompatibilityPredictor {
         return themeAnalyzer.getNameTheme(name);
     }
 
-    /**
-     * Accessor of mate's name
-     * @return mate's name
-     */
-    public String mateName() {
-        return mateName;
-    }
-
-    private String selfName;
-    private int selfYob;
-    private char selfGender;
-    private String mateName;
-    private int mateYob;
-    private char mateGender;
-    private AgePreference agePreference;
-    private Algorithm algorithm;
+    public String selfName;
+    public int selfYob;
+    public char selfGender;
+    public String mateName;
+    public int mateYob;
+    public char mateGender;
+    public Algorithm algorithm;
 }

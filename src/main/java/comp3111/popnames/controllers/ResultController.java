@@ -1,5 +1,6 @@
 package comp3111.popnames.controllers;
 
+import comp3111.popnames.metrics.Metrics;
 import comp3111.popnames.predictor.CompatibilityPredictor;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.scene.paint.Color;
 
 public class ResultController {
 
@@ -43,7 +45,17 @@ public class ResultController {
     @FXML
     public void initialize() {
         CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();
-        score.setText(Integer.toString((int) (predictor.predict() * 100)));
+        double rawScore = predictor.predict();
+        score.setText(Integer.toString((int) (rawScore * 100)));
+
+        if (rawScore < 0.33) {
+            score.setFill(Color.RED);
+        } else if (rawScore < 0.67) {
+            score.setFill(Color.ORANGE);
+        } else {
+            score.setFill(Color.GREEN);
+        }
+
         setReport();
     }
 
@@ -62,7 +74,19 @@ public class ResultController {
         ObservableList<Node> list = report.getChildren();
         if (predictor.algorithm() == CompatibilityPredictor.Algorithm.BASIC) {
             list.add(new Text(predictor.getBasicReport()));
-            return;
+        } else {
+            assembleReport();
+        }
+    }
+
+    private void assembleReport() {
+        CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();
+        ObservableList<Node> list = report.getChildren();
+
+        for (Metrics metric : predictor.metrics) {
+            list.add(new Text(metric.getMetricName() + ": "));
+            list.add(metric.getFormattedScore());
+            list.add(new Text("\n" + metric.getExplanation() + "\n\n"));
         }
     }
 

@@ -131,11 +131,13 @@ public class AdditionalInfoController {
         predictor.eduMetrics.setMateEdu(mateEduLevel.getSelectionModel().getSelectedIndex());
         predictor.incomeMetrics.setSelf(selfIncomeLevel.getSelectionModel().getSelectedIndex());
         predictor.incomeMetrics.setMate(mateIncomeLevel.getSelectionModel().getSelectedIndex());
-        predictor.miscMetrics.setSelfKids(selfKids.getSelectionModel().getSelectedIndex());
-        predictor.miscMetrics.setMateKids(mateKids.getSelectionModel().getSelectedIndex());
+        predictor.kidsMetrics.setSelfKids(selfKids.getSelectionModel().getSelectedIndex());
+        predictor.kidsMetrics.setMateKids(mateKids.getSelectionModel().getSelectedIndex());
 
         if (!mateYob.getText().trim().isEmpty()) {
-            predictor.setMateYob(Integer.parseInt(mateYob.getText()));
+            predictor.mateYob = Integer.parseInt(mateYob.getText());
+        } else {
+            predictor.mateYob = -1;
         }
     }
 

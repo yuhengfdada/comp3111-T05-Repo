@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class NameAnalyerTest {
     @Test
     public void testGetFileParser() throws IOException {
-        NameAnalyzer analyzer = new NameAnalyzer(1880, 2019);
+        NameAnalyzer analyzer = NameAnalyzer.getInstance();
         CSVParser parser1 = analyzer.getFileParser(0);
         CSVParser parser2 = analyzer.getFileParser(1890);
         List<CSVRecord> records = parser2.getRecords();
@@ -25,31 +25,20 @@ public class NameAnalyerTest {
     }
 
     @Test
-    public void testAnalyzeYear() {
-        NameAnalyzer analyzer = new NameAnalyzer(0, 2025);
-        analyzer.analyzeYear(0);
-        analyzer.analyzeYear(2077);
-        analyzer.analyzeYear(1928);
-    }
-
-    @Test
     public void testGetNameReport() {
-        NameAnalyzer analyzer = new NameAnalyzer(1880, 2019);
-        analyzer.analyzeYear(2017);
-        analyzer.analyzeYear(2019);
-        analyzer.analyzeYear(2018);
+        NameAnalyzer analyzer = NameAnalyzer.getInstance();
         ArrayList<NameAnalyzer.NameQuery> query1 = analyzer.getNameReport("Emma", 'F');
         ArrayList<NameAnalyzer.NameQuery> query2 = analyzer.getNameReport("emma", 'F');
         ArrayList<NameAnalyzer.NameQuery> query3 = analyzer.getNameReport("Zyran", 'M');
         ArrayList<NameAnalyzer.NameQuery> query4 = analyzer.getNameReport("Zyran", 'U');
 
-        assertEquals(3, query1.size());
+        assertEquals(140, query1.size());
         assertEquals(0, query2.size());
-        assertEquals(2, query3.size());
+        assertEquals(7, query3.size());
         assertEquals(0, query4.size());
 
-        assertEquals(2017, query1.get(0).year);
-        assertEquals(17102, query1.get(2).occurrence);
-        assertEquals(1, query1.get(1).rank);
+        assertEquals(1880, query1.get(0).year);
+        assertEquals(2303, query1.get(2).occurrence);
+        assertEquals(3, query1.get(1).rank);
     }
 }
