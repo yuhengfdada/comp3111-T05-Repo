@@ -1,4 +1,4 @@
-package comp3111.popnames;
+package comp3111.popnames.util;
 
 public class util {
 	public static boolean isNumeric(String strNum) {

@@ -3,6 +3,7 @@
  */
 package comp3111.popnames;
 
+
 import javafx.event.ActionEvent;
 import java.io.IOException;
 
@@ -19,7 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import javafx.scene.Node;
-
+import comp3111.popnames.Task1.*;
+import comp3111.popnames.util.*;
 
 public class Controller{
 
@@ -193,11 +195,14 @@ public class Controller{
     		return;
 		}
 
-    	Parent task1Parent = FXMLLoader.load(getClass().getResource("/task1_1.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/task1_1.fxml"));
+    	Parent task1Parent = (Parent)loader.load();
     	Scene task1Scene = new Scene(task1Parent);
+    	Task1Controller controller = (Task1Controller)loader.getController();
     	
     	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
     	window.setUserData(task1);
+    	controller.appearSummary(window);
     	window.setScene(task1Scene);
     	window.show();
     }

@@ -5,14 +5,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.Task1Controller">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.Task1.Task1Controller">
    <children>
       <AnchorPane prefHeight="416.0" prefWidth="600.0">
          <children>
-            <Label fx:id="lb1" layoutX="220.0" layoutY="118.0" prefHeight="15.0" prefWidth="221.0" text="aqa芭蕾 eqe亏内" />
-            <Button fx:id="back" layoutX="252.0" layoutY="281.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
-            <Button fx:id="rwkk" layoutX="246.0" layoutY="200.0" mnemonicParsing="false" onAction="#kanyixia" text="rwkk!" />
+            <Label fx:id="lb1" alignment="TOP_LEFT" layoutX="59.0" layoutY="74.0" prefHeight="153.0" prefWidth="482.0" wrapText="true" />
+            <Button fx:id="back" layoutX="518.0" layoutY="347.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
+            <Button fx:id="viewTableBut" layoutX="91.0" layoutY="251.0" mnemonicParsing="false" onAction="#viewTable" prefHeight="34.0" prefWidth="89.0" text="View Table" />
+            <Button fx:id="viewBCBut" layoutX="236.0" layoutY="251.0" mnemonicParsing="false" onAction="#viewBC" prefHeight="34.0" prefWidth="109.0" text="View Bar Chart" />
+            <Button fx:id="viewPCBut" layoutX="408.0" layoutY="251.0" mnemonicParsing="false" onAction="#viewPC" prefHeight="34.0" prefWidth="109.0" text="View Pie Chart" />
          </children>
       </AnchorPane>
    </children>
