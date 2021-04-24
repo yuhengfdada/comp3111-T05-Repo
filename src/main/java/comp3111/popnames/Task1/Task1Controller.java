@@ -73,6 +73,7 @@ public class Task1Controller{
     }
     
     public void appearSummary(Stage stage) {
+    	stage.setTitle("Most Popular Names");
     	task1 = (Task1)stage.getUserData();
     	lb1.setText(task1.getSummaryAndStore(task1.getYear()));
     }
