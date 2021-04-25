@@ -66,7 +66,7 @@ public class TableController {
     }
     
     public void appearTable(Stage stage) {
-    	stage.setTitle("Table summary");
+    	stage.setTitle("Table Summary");
     	task1 = (Task1)stage.getUserData();
     	// set titles
     	titleM.setText(String.format("Top %d Names (male) in %d", task1.topN, task1.year));

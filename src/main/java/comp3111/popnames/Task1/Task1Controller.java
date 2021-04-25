@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 public class Task1Controller{
     @FXML
@@ -49,8 +50,17 @@ public class Task1Controller{
     }
     
     @FXML
-    void viewBC(ActionEvent event) {
-
+    void viewBC(ActionEvent event) throws IOException {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/task1_BC.fxml"));
+    	Parent task1Parent = (Parent)loader.load();
+    	Scene task1Scene = new Scene(task1Parent);
+    	BCController controller = (BCController)loader.getController();
+    	
+    	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    	window.setUserData(task1);
+    	window.setScene(task1Scene);
+    	window.show();
+    	controller.appearBC(window);
     }
 
     @FXML
