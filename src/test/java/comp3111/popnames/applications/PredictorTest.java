@@ -1,4 +1,4 @@
-package comp3111.popnames.predictor;
+package comp3111.popnames.applications;
 
 import org.junit.Test;
 

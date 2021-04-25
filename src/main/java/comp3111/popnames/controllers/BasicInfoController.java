@@ -11,7 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import comp3111.popnames.predictor.CompatibilityPredictor;
+import comp3111.popnames.applications.CompatibilityPredictor;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -71,6 +71,8 @@ public class BasicInfoController {
     void onNextBtnPressed(ActionEvent event) throws IOException {
         if (validateInput()) {
             setValues();
+        } else {
+            return;
         }
 
         FXMLLoader loader = new FXMLLoader();
@@ -150,10 +152,10 @@ public class BasicInfoController {
         try {
             int sYob = Integer.parseInt(selfYob.getText());
             if (sYob < 1880 || sYob > 2021) {
-                errorMsg.append("- Please enter a valid year of birth.\n");
+                errorMsg.append("- Please enter a valid year of birth (1880-2021).\n");
             }
         } catch (NumberFormatException e) {
-            errorMsg.append("- Please enter a valid year of birth");
+            errorMsg.append("- Please enter a valid year of birth (1880-2021).\n");
         }
 
         String algo = algorithm.getSelectionModel().getSelectedItem();

@@ -8,8 +8,14 @@ import org.apache.commons.csv.CSVRecord;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The analyzer for the name database
+ */
 public class NameAnalyzer {
 
+    /**
+     * This contains the name records within each year
+     */
     public static class YearRecord {
         public YearRecord() {
             maleTotalOccur = 0;
@@ -24,15 +30,22 @@ public class NameAnalyzer {
         private int femaleTotalOccur;
     }
 
+    /**
+     * This is used to convey queried information
+     */
     public static class NameQuery {
-        int occurrence;
-        int rank;
-        int year;
-        double percentage;
+        public int occurrence;
+        public int rank;
+        public int year;
+        public double percentage;
     }
 
     private static final NameAnalyzer instance = new NameAnalyzer(1880, 2019);
 
+    /**
+     * Get the unique instance of the class
+     * @return the instance
+     */
     public static NameAnalyzer getInstance() {
         return instance;
     }
@@ -47,6 +60,11 @@ public class NameAnalyzer {
     private final int startYear;
     private final int endYear;
 
+    /**
+     * Get the csv file parser for a specific year
+     * @param year year of interest
+     * @return the parser if file exists, null otherwise
+     */
     public CSVParser getFileParser(int year) {
         if (year < startYear || year > endYear) {
             return null;
@@ -110,6 +128,12 @@ public class NameAnalyzer {
         }
     }
 
+    /**
+     * Retrieve a name report about occurrence, rank and percentage
+     * @param name the name of interest
+     * @param gender the gender preferred
+     * @return an ArrayList of NameQuery, empty if name is not found
+     */
     public ArrayList<NameQuery> getNameReport(String name, char gender) {
         ArrayList<NameQuery> list = new ArrayList<>();
         for (int i = startYear; i <= endYear; i += 1) {

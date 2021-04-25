@@ -1,7 +1,7 @@
 package comp3111.popnames.controllers;
 
 import comp3111.popnames.metrics.Metrics;
-import comp3111.popnames.predictor.CompatibilityPredictor;
+import comp3111.popnames.applications.CompatibilityPredictor;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,11 +59,21 @@ public class ResultController {
         setReport();
     }
 
+    /**
+     * Set the previous stage and controller
+     * @param stage previous stage
+     * @param controller previous controller
+     */
     public void setParent(Stage stage, PreferencesController controller) {
         previousController = controller;
         previousStage = stage;
     }
 
+    /**
+     * Set the previous stage and controller
+     * @param stage previous stage
+     * @param controller previous controller
+     */
     public void setParent(Stage stage, BasicInfoController controller) {
         basicInfoController = controller;
         previousStage = stage;

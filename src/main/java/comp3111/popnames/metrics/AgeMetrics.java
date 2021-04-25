@@ -1,6 +1,6 @@
 package comp3111.popnames.metrics;
 
-import comp3111.popnames.predictor.CompatibilityPredictor;
+import comp3111.popnames.applications.CompatibilityPredictor;
 import comp3111.popnames.record.NameAnalyzer;
 import comp3111.popnames.record.NameRecord;
 
@@ -25,9 +25,9 @@ public class AgeMetrics extends Metrics {
         CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();
 
         if (predictor.mateYob != -1) {
-            if (predictor.mateYob < predictor.selfYob && agePref == AgePreference.OLDER) {
+            if (predictor.mateYob <= predictor.selfYob && agePref == AgePreference.OLDER) {
                 return 1.0;
-            } else if (predictor.mateYob > predictor.selfYob && agePref == AgePreference.YOUNGER) {
+            } else if (predictor.mateYob >= predictor.selfYob && agePref == AgePreference.YOUNGER) {
                 return 1.0;
             }
             return 0.0;
@@ -38,9 +38,9 @@ public class AgeMetrics extends Metrics {
             return 1.0;
         }
         int year = mateRecords.get(0).year();
-        if (year < predictor.selfYob && agePref == AgePreference.OLDER) {
+        if (year <= predictor.selfYob && agePref == AgePreference.OLDER) {
             return 1.0;
-        } else if (year > predictor.selfYob && agePref == AgePreference.YOUNGER) {
+        } else if (year >= predictor.selfYob && agePref == AgePreference.YOUNGER) {
             return 1.0;
         }
         return 0.0;

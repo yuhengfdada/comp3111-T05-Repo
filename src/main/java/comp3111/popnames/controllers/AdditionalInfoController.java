@@ -1,7 +1,6 @@
 package comp3111.popnames.controllers;
 
-import comp3111.popnames.metrics.EducationalMetrics.EducationalLevel;
-import comp3111.popnames.predictor.CompatibilityPredictor;
+import comp3111.popnames.applications.CompatibilityPredictor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -107,6 +106,8 @@ public class AdditionalInfoController {
     void onNextBtnPressed(ActionEvent event) throws IOException {
         if (validateInput()) {
             setValues();
+        } else {
+            return;
         }
 
         FXMLLoader loader = new FXMLLoader();
