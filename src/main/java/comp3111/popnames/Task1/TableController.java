@@ -51,6 +51,7 @@ public class TableController {
 
     private Task1 task1;
     
+    
     @FXML
     void goBack(ActionEvent event) throws IOException {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/task1_1.fxml"));
@@ -60,7 +61,7 @@ public class TableController {
     	
     	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
     	window.setUserData(task1);
-    	controller.appearSummary(window);
+    	controller.showStoredSummary(window);
     	window.setScene(task1Scene);
     	window.show();
     }

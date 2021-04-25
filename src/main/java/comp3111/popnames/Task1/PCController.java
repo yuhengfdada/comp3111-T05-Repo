@@ -2,7 +2,8 @@ package comp3111.popnames.Task1;
 
 import java.io.IOException;
 
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,39 +16,39 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import javafx.scene.chart.PieChart;
 
-public class BCController {
-    @FXML
-    private AnchorPane aPane;
+public class PCController {
     @FXML
     private Button back;
     @FXML
-    private BarChart<String, Number> barChart;
+    private PieChart pieChart;
     @FXML
-    private BarChart<String, Number> barChart1;
+    private PieChart pieChart1;
     
 	private Task1 task1;
 	
-	public void appearBC(Stage stage) {
-    	stage.setTitle("Bar Chart Summary");
+	public void appearPC(Stage stage) {
+    	stage.setTitle("Pie Chart Summary");
     	task1 = (Task1)stage.getUserData();
- 
-        XYChart.Series<String, Number> series1 = new XYChart.Series<>();
-        series1.setName(String.valueOf(task1.year));
-        for (Pair<String, Integer> pair : task1.popNamesListM) {
-        	series1.getData().add(new XYChart.Data<>(pair.getKey(), pair.getValue()));
-        }
-        barChart.getData().add(series1);
-        
-        XYChart.Series<String, Number> series2 = new XYChart.Series<>();
-        series2.setName(String.valueOf(task1.year));
-        for (Pair<String, Integer> pair : task1.popNamesListF) {
-        	series2.getData().add(new XYChart.Data<>(pair.getKey(), pair.getValue()));
-        }
-        barChart1.getData().add(series2);
+    	
+    	pieChart.setTitle(String.format("Top %d Names in %d (Male)", task1.topN, task1.year));
+    	pieChart1.setTitle(String.format("Top %d Names in %d (Female)", task1.topN, task1.year));
+    	
+    	ObservableList<PieChart.Data> pieChartDataM = FXCollections.observableArrayList();
+    	ObservableList<PieChart.Data> pieChartDataF = FXCollections.observableArrayList();
+    	
+    	for (Pair<String, Integer> pair : task1.popNamesListM) {
+    		pieChartDataM.add(new PieChart.Data(pair.getKey(), pair.getValue()));
+    	}
+    	for (Pair<String, Integer> pair : task1.popNamesListF) {
+    		pieChartDataF.add(new PieChart.Data(pair.getKey(), pair.getValue()));
+    	}
+    	
+    	pieChart.setData(pieChartDataM);
+    	pieChart1.setData(pieChartDataF);
+    	
 	}
-	
-	
 	
 	
     @FXML

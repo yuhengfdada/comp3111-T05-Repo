@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
@@ -64,8 +65,17 @@ public class Task1Controller{
     }
 
     @FXML
-    void viewPC(ActionEvent event) {
-
+    void viewPC(ActionEvent event) throws IOException {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/task1_PC.fxml"));
+    	Parent task1Parent = (Parent)loader.load();
+    	Scene task1Scene = new Scene(task1Parent);
+    	PCController controller = (PCController)loader.getController();
+    	
+    	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    	window.setUserData(task1);
+    	window.setScene(task1Scene);
+    	window.show();
+    	controller.appearPC(window);
     }
 
     @FXML
@@ -85,9 +95,15 @@ public class Task1Controller{
     public void appearSummary(Stage stage) {
     	stage.setTitle("Most Popular Names");
     	task1 = (Task1)stage.getUserData();
-    	lb1.setText(task1.getSummaryAndStore(task1.getYear()));
+    	task1.getSummaryAndStore(task1.getYear());
+    	lb1.setText(task1.summary);
     }
     
+    public void showStoredSummary(Stage stage) {
+    	stage.setTitle("Most Popular Names");
+    	task1 = (Task1)stage.getUserData();
+    	lb1.setText(task1.summary);
+    }
     
 
 }

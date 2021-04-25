@@ -34,8 +34,8 @@ public class Task1 {
 	     return fr.getCSVParser(false);
 	}
 	 
-		
-	public String getSummaryAndStore(int year) {
+	String summary;
+	public void getSummaryAndStore(int year) {
 		String oReport = "";	
 		int topNCounterM = topN;
 		int topNCounterF = topN;
@@ -63,6 +63,6 @@ public class Task1 {
 		}
 		oReport += String.format("%s is the most popular name with the number of occurrences of %d, which represents %.3f%% of total male births in %d.", popNamesListM.get(0).getKey(),  popNamesListM.get(0).getValue(), popNamesListM.get(0).getValue() / (double)totalBoys, year);
 		oReport += String.format("\n%s is the most popular name with the number of occurrences of %d, which represents %.3f%% of total female births in %d.", popNamesListF.get(0).getKey(),  popNamesListF.get(0).getValue(), popNamesListF.get(0).getValue() / (double)totalGirls, year);
-		return oReport;
+		summary = oReport;
 	}
 }
