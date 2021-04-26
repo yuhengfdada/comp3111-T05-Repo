@@ -33,7 +33,7 @@ public class NameAnalyerTest {
         ArrayList<NameAnalyzer.NameQuery> query4 = analyzer.getNameReport("Zyran", 'U');
 
         assertEquals(140, query1.size());
-        assertEquals(0, query2.size());
+        assertEquals(140, query2.size());
         assertEquals(7, query3.size());
         assertEquals(0, query4.size());
 

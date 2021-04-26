@@ -2,11 +2,13 @@ package comp3111.popnames.record;
 
 import edu.duke.FileResource;
 import edu.duke.ResourceException;
+import javafx.beans.property.SimpleStringProperty;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * The analyzer for the name database
@@ -38,6 +40,24 @@ public class NameAnalyzer {
         public int rank;
         public int year;
         public double percentage;
+        private final SimpleStringProperty percentageProperty = new SimpleStringProperty();
+
+        public int getOccurrence() {
+            return occurrence;
+        }
+
+        public int getRank() {
+            return rank;
+        }
+
+        public int getYear() {
+            return year;
+        }
+
+        public SimpleStringProperty percentageProperty() {
+            percentageProperty.set(String.format("%.2f%%", percentage * 100.0));
+            return percentageProperty;
+        }
     }
 
     private static final NameAnalyzer instance = new NameAnalyzer(1880, 2019);
@@ -86,7 +106,7 @@ public class NameAnalyzer {
         YearRecord yearRecord = new YearRecord();
 
         for (CSVRecord record : parser) {
-            String name = record.get(0);
+            String name = record.get(0).toLowerCase(Locale.ROOT);
             char gender = 'M';
             if (record.get(1).equals("F")) {
                 gender = 'F';
@@ -135,6 +155,7 @@ public class NameAnalyzer {
      * @return an ArrayList of NameQuery, empty if name is not found
      */
     public ArrayList<NameQuery> getNameReport(String name, char gender) {
+        String processedName = name.toLowerCase(Locale.ROOT);
         ArrayList<NameQuery> list = new ArrayList<>();
         for (int i = startYear; i <= endYear; i += 1) {
             if (!yearRecords.containsKey(i)) {
@@ -143,9 +164,9 @@ public class NameAnalyzer {
 
             YearRecord yearRecord = yearRecords.get(i);
 
-            if (gender == 'M' && yearRecord.maleNameMap.containsKey(name)) {
+            if (gender == 'M' && yearRecord.maleNameMap.containsKey(processedName)) {
                 NameQuery query = new NameQuery();
-                NameRecord record = yearRecord.maleNameMap.get(name);
+                NameRecord record = yearRecord.maleNameMap.get(processedName);
                 query.occurrence = record.occurrence();
                 query.rank = record.rank();
                 query.year = i;
@@ -153,9 +174,9 @@ public class NameAnalyzer {
                 list.add(query);
             }
 
-            if (gender == 'F' && yearRecord.femaleNameMap.containsKey(name)) {
+            if (gender == 'F' && yearRecord.femaleNameMap.containsKey(processedName)) {
                 NameQuery query = new NameQuery();
-                NameRecord record = yearRecord.femaleNameMap.get(name);
+                NameRecord record = yearRecord.femaleNameMap.get(processedName);
                 query.occurrence = record.occurrence();
                 query.rank = record.rank();
                 query.year = i;
@@ -172,12 +193,13 @@ public class NameAnalyzer {
      * @return the sorted ArrayList
      */
     public ArrayList<NameRecord> getSortedRecords(String name) {
+        String processedName = name.toLowerCase(Locale.ROOT);
         ArrayList<NameRecord> records = new ArrayList<>();
         for (YearRecord year : yearRecords.values()) {
-            if (year.femaleNameMap.containsKey(name)) {
-                records.add(year.femaleNameMap.get(name));
-            } else if (year.maleNameMap.containsKey(name)) {
-                records.add(year.maleNameMap.get(name));
+            if (year.femaleNameMap.containsKey(processedName)) {
+                records.add(year.femaleNameMap.get(processedName));
+            } else if (year.maleNameMap.containsKey(processedName)) {
+                records.add(year.maleNameMap.get(processedName));
             }
         }
         records.sort(NameRecord.occurrenceComparator);

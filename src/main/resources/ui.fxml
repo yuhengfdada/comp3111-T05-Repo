@@ -67,6 +67,7 @@
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="318.0" prefWidth="719.0">
                                  <children>
                                     <TextArea layoutX="112.0" layoutY="26.0" prefHeight="111.0" prefWidth="362.0" text="Task #3: Popularity of Names (data reporting)&#10;&#10;Generate a report in response to the queries on the popularity of a name over a given period.&#10;&#10;" wrapText="true" />
+                                    <Button fx:id="popReportStartBtn" layoutX="559.0" layoutY="69.0" mnemonicParsing="false" onAction="#onPopReportStart" prefHeight="25.0" prefWidth="65.0" text="Start" />
                                  </children>
                               </AnchorPane>
                            </children>

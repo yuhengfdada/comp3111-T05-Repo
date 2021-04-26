@@ -98,6 +98,9 @@ public class PreferencesController {
 
     @FXML
     void onNextBtnPressed(ActionEvent event) throws IOException {
+        if (!validateInput()) {
+            return;
+        }
         setValues();
 
         FXMLLoader loader = new FXMLLoader();
@@ -114,6 +117,25 @@ public class PreferencesController {
         controller.setParent(curStage, this);
         curStage.hide();
         stage.show();
+    }
+
+    private boolean validateInput() {
+        StringBuilder errorMsg = new StringBuilder();
+        String agePreference = agePref.getSelectionModel().getSelectedItem();
+        if (agePreference == null) {
+            errorMsg.append("- Please specify your age preference.\n");
+        }
+
+        if (errorMsg.length() > 0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("Required Fields Empty/Invalid");
+            alert.setContentText(errorMsg.toString());
+
+            alert.showAndWait();
+            return false;
+        }
+        return true;
     }
 
     private void setValues() {

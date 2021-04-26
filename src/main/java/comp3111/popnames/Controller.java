@@ -79,6 +79,9 @@ public class Controller {
 
     @FXML
     private Button scorePredStartBtn;
+
+    @FXML
+    private Button popReportStartBtn;
     
 
     /**
@@ -174,6 +177,19 @@ public class Controller {
         // basicInfoController controller = (basicInfoController) loader.getController();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Compatibility Score Predictor");
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    @FXML
+    void onPopReportStart(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/popularity_report_ui/input_ui.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Name Popularity Report");
         stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.show();

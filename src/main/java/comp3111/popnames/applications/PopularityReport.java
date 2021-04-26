@@ -5,6 +5,7 @@ import comp3111.popnames.record.NameAnalyzer.NameQuery;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Locale;
 
 public class PopularityReport {
 
@@ -14,6 +15,16 @@ public class PopularityReport {
     private String name;
     private ArrayList<NameQuery> query;
     private ArrayList<NameQuery> sortedQuery;
+
+    private static final PopularityReport instance = new PopularityReport();
+
+    private PopularityReport() {
+
+    }
+
+    public static PopularityReport getInstance() {
+        return instance;
+    }
 
     private static final Comparator<NameQuery> queryComparator = new Comparator<NameQuery>() {
         @Override
@@ -53,7 +64,7 @@ public class PopularityReport {
      */
     public String getSummary() {
         StringBuilder text = new StringBuilder();
-        text.append(String.format("The year when the name %s was most popular is %d at rank %d.",
+        text.append(String.format("The year when the name %s was most popular is %d at rank %d. ",
                 name, sortedQuery.get(0).year, sortedQuery.get(0).rank));
         text.append(String.format("In that year, the number of occurrence is %d, ", sortedQuery.get(0).occurrence));
         text.append(String.format("which represents %.2f%% of total %s births in %d.", sortedQuery.get(0).percentage,
@@ -67,6 +78,14 @@ public class PopularityReport {
      */
     public ArrayList<NameQuery> query() {
         return query;
+    }
+
+    /**
+     * Get the queried name
+     * @return the name input
+     */
+    public String name() {
+        return name;
     }
 
     private String genderToStr() {
