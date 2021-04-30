@@ -3,12 +3,20 @@
  */
 package comp3111.popnames;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Controller {
 
@@ -68,6 +76,12 @@ public class Controller {
 
     @FXML
     private TextArea textAreaConsole;
+
+    @FXML
+    private Button scorePredStartBtn;
+
+    @FXML
+    private Button popReportStartBtn;
     
 
     /**
@@ -153,7 +167,32 @@ public class Controller {
     		oReport += String.format("#%d: %s\n", i, AnalyzeNames.getName(iYear, i, "M"));
     	textAreaConsole.setText(oReport);
     }
-    
 
+    @FXML
+    void onPredStart(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/score_predictor_ui/basic_info_ui.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        // basicInfoController controller = (basicInfoController) loader.getController();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Compatibility Score Predictor");
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    @FXML
+    void onPopReportStart(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/popularity_report_ui/input_ui.fxml"));
+        Parent root = (Parent) loader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Name Popularity Report");
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.show();
+    }
 }
 

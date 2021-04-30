@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="610.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.AdditionalInfoController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="549.0" prefWidth="641.0" VBox.vgrow="ALWAYS">
+      <children>
+        <Label alignment="CENTER" layoutX="14.0" layoutY="27.0" prefHeight="20.0" prefWidth="307.0" style="&#10;" text="Step 2: Additional Information (Optional)" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+          <font>
+            <Font size="15.0" />
+          </font>
+        </Label>
+            <GridPane layoutX="31.0" layoutY="79.0" prefHeight="354.0" prefWidth="534.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="231.75628174746186" minWidth="10.0" prefWidth="222.46212386034398" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="252.50421855574456" minWidth="10.0" prefWidth="112.13442128775927" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="317.61344422304785" minWidth="10.0" prefWidth="244.43699585331638" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints />
+                <RowConstraints maxHeight="70.62183083108016" minHeight="7.6974762778575005" prefHeight="42.13445326430206" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="70.62183083108016" minHeight="0.0" prefHeight="26.361328125" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="141.61344612649032" minHeight="10.0" prefHeight="56.436966475756236" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="172.47053993752547" minHeight="10.0" prefHeight="30.10924483749733" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="143.17641151955672" minHeight="10.0" prefHeight="33.33613083115256" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="170.80668636473155" minHeight="10.0" prefHeight="43.050462948923325" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="170.80668636473155" minHeight="10.0" prefHeight="33.40336768898743" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="170.80668636473155" minHeight="10.0" prefHeight="47.504192556216026" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="170.80668636473155" minHeight="10.0" prefHeight="47.504192556216026" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="170.80668636473155" minHeight="10.0" prefHeight="32.17647632496244" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="170.80668636473155" minHeight="10.0" prefHeight="44.504169579136885" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Slider fx:id="selfEduSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.rowIndex="3" />
+                  <ChoiceBox fx:id="selfEduLevel" prefWidth="150.0" GridPane.rowIndex="1" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your educational level:" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mate's educational level:" GridPane.columnIndex="2" />
+                  <ChoiceBox fx:id="mateEduLevel" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Significance for you:" GridPane.rowIndex="2" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Significance for your mate:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Slider fx:id="mateEduSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your family income level:" GridPane.rowIndex="5" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mate's family income level:" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <ChoiceBox fx:id="selfIncomeLevel" prefWidth="150.0" GridPane.rowIndex="6" />
+                  <ChoiceBox fx:id="mateIncomeLevel" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Significance for you:" GridPane.rowIndex="7" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Significance for your mate:" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                  <Slider fx:id="selfIncomeSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.rowIndex="8" />
+                  <Slider fx:id="mateIncomeSig" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="37.0" prefWidth="221.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your preference on kids:" GridPane.rowIndex="10" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mate's preference on kids:" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                  <ChoiceBox fx:id="selfKids" prefWidth="150.0" GridPane.rowIndex="11" />
+                  <ChoiceBox fx:id="mateKids" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+               </children>
+            </GridPane>
+            <Button fx:id="nextBtn" layoutX="552.0" layoutY="564.0" mnemonicParsing="false" onAction="#onNextBtnPressed" text="Next" />
+            <Button fx:id="backBtn" layoutX="493.0" layoutY="564.0" mnemonicParsing="false" onAction="#onBackBtnPressed" text="Back" />
+            <Button fx:id="cancelBtn" layoutX="421.0" layoutY="564.0" mnemonicParsing="false" onAction="#onCancelBtnPressed" text="Cancel" />
+            <Text layoutX="31.0" layoutY="479.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mate's year of birth:" />
+            <TextField fx:id="mateYob" layoutX="31.0" layoutY="483.0" prefHeight="25.0" prefWidth="150.0" />
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>
