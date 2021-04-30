@@ -2,6 +2,9 @@ package comp3111.popnames.utils;
 
 import java.util.*;
 
+/**
+ * This implements the trie used for autocompletion
+ */
 public class Trie {
 
     static class TrieNode {
@@ -58,6 +61,10 @@ public class Trie {
         names = new HashSet<>();
     }
 
+    /**
+     * Add a name to the trie
+     * @param name the name to be added
+     */
     public void addName(String name) {
         int depth = 0;
         TrieNode cur = root;
@@ -94,10 +101,20 @@ public class Trie {
         return prefixHelper(prefix, depth + 1, child);
     }
 
+    /**
+     * Given an input, return a list of names with the input as prefix
+     * @param prefix the prefix
+     * @return a List<String> contains the result
+     */
     public List<String> findNamesWithPrefix(String prefix) {
         return prefixHelper(prefix, 0, root);
     }
 
+    /**
+     * Check whether a word exists in the trie
+     * @param str the word of interest
+     * @return whether the input is a word in trie
+     */
     public boolean nameExists(String str) {
         return names.contains(str);
     }

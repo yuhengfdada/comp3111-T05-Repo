@@ -1,5 +1,7 @@
 package comp3111.popnames.controllers;
 
+import comp3111.popnames.record.NameAnalyzer;
+import comp3111.popnames.utils.AutocompletionTextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -44,7 +46,7 @@ public class BasicInfoController {
     private Button cancelBtn;
 
     @FXML
-    private TextField selfName;
+    private AutocompletionTextField selfName;
 
     @FXML
     private ChoiceBox<String> selfGender;
@@ -59,7 +61,7 @@ public class BasicInfoController {
     private TextField selfYob;
 
     @FXML
-    private TextField mateName;
+    private AutocompletionTextField mateName;
 
     @FXML
     void onCancelBtnPressed(ActionEvent event) {

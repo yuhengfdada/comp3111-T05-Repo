@@ -36,11 +36,16 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
 <VBox prefHeight="598.0" prefWidth="822.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.PopReportController">
@@ -53,7 +58,12 @@
                      <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <TextFlow fx:id="summaryTextFlow" layoutX="26.0" layoutY="71.0" prefHeight="372.0" prefWidth="770.0" />
+                              <TextFlow fx:id="summaryTextFlow" layoutX="41.0" layoutY="68.0" prefHeight="370.0" prefWidth="739.0" />
+                              <Text fill="#9f9f9f" layoutX="14.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Report Summary" wrappingWidth="245.48596000671387">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
                            </children>
                         </AnchorPane>
                      </content>
@@ -79,6 +89,12 @@
                                   <NumberAxis side="LEFT" />
                                 </yAxis>
                               </BarChart>
+                              <ChoiceBox fx:id="barChartType" layoutX="113.0" layoutY="501.0" prefWidth="150.0" />
+                              <Text layoutX="37.0" layoutY="518.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Query Type:" />
+                              <TextField fx:id="barChartExtraName" layoutX="523.0" layoutY="501.0" />
+                              <Button fx:id="barChartAddName" layoutX="696.0" layoutY="501.0" mnemonicParsing="false" onAction="#onBarChartAddName" text="Add" />
+                              <Button fx:id="barChartReset" layoutX="747.0" layoutY="501.0" mnemonicParsing="false" onAction="#onBarChartReset" text="Reset" />
+                              <Text layoutX="388.0" layoutY="518.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name for Comparison" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -87,7 +103,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <LineChart fx:id="lineChart" layoutX="12.0" layoutY="14.0" prefHeight="448.0" prefWidth="797.0">
+                              <LineChart fx:id="lineChart" layoutX="13.0" layoutY="14.0" prefHeight="444.0" prefWidth="795.0">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" />
                                 </xAxis>
@@ -95,6 +111,12 @@
                                   <NumberAxis side="LEFT" />
                                 </yAxis>
                               </LineChart>
+                              <Text layoutX="37.0" layoutY="519.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Query Type:" />
+                              <ChoiceBox fx:id="lineChartType" layoutX="114.0" layoutY="501.0" prefWidth="150.0" />
+                              <Text layoutX="386.0" layoutY="518.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name for Comparison" />
+                              <TextField fx:id="lineChartExtraName" layoutX="522.0" layoutY="501.0" />
+                              <Button fx:id="lineChartAddName" layoutX="695.0" layoutY="501.0" mnemonicParsing="false" onAction="#onLineChartAddName" text="Add" />
+                              <Button fx:id="lineChartReset" layoutX="746.0" layoutY="501.0" mnemonicParsing="false" onAction="#onLineChartReset" text="Reset" />
                            </children>
                         </AnchorPane>
                     </content>

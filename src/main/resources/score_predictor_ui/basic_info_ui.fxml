@@ -42,6 +42,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import comp3111.popnames.utils.AutocompletionTextField?>
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.BasicInfoController">
   <children>
@@ -69,13 +70,13 @@
                   <RowConstraints maxHeight="56.75629128029891" minHeight="10.0" prefHeight="39.14285582397025" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="selfName" GridPane.rowIndex="1" />
+                  <AutocompletionTextField fx:id="selfName" GridPane.rowIndex="1" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Name:" />
                   <ChoiceBox fx:id="selfGender" prefHeight="25.0" prefWidth="164.0" GridPane.rowIndex="3" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Gender:" GridPane.rowIndex="2" />
                   <TextField fx:id="selfYob" GridPane.rowIndex="5" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Year of Birth:" GridPane.rowIndex="4" />
-                  <TextField fx:id="mateName" prefHeight="25.0" prefWidth="178.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <AutocompletionTextField fx:id="mateName" prefHeight="25.0" prefWidth="178.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mate's Name:" GridPane.columnIndex="2" />
                   <ChoiceBox fx:id="mateGender" prefHeight="25.0" prefWidth="164.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                   <ChoiceBox fx:id="algorithm" prefHeight="25.0" prefWidth="165.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />

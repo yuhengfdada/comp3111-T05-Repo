@@ -1,5 +1,6 @@
 package comp3111.popnames.record;
 
+import comp3111.popnames.utils.Trie;
 import edu.duke.FileResource;
 import edu.duke.ResourceException;
 import javafx.beans.property.SimpleStringProperty;
@@ -8,6 +9,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 
 /**
@@ -63,6 +65,11 @@ public class NameAnalyzer {
     private static final NameAnalyzer instance = new NameAnalyzer(1880, 2019);
 
     /**
+     * The trie used for autocompletion
+     */
+    public final Trie trie = new Trie();
+
+    /**
      * Get the unique instance of the class
      * @return the instance
      */
@@ -77,6 +84,7 @@ public class NameAnalyzer {
     }
 
     private final HashMap<Integer, YearRecord> yearRecords = new HashMap<>();
+    private final HashSet<String> nameSet = new HashSet<>();
     private final int startYear;
     private final int endYear;
 
@@ -107,6 +115,7 @@ public class NameAnalyzer {
 
         for (CSVRecord record : parser) {
             String name = record.get(0).toLowerCase(Locale.ROOT);
+            nameSet.add(name);
             char gender = 'M';
             if (record.get(1).equals("F")) {
                 gender = 'F';
@@ -146,15 +155,21 @@ public class NameAnalyzer {
         for (int i = startYear; i <= endYear; i += 1) {
             analyzeYear(i);
         }
+
+        for (String name : nameSet) {
+            trie.addName(name);
+        }
     }
 
     /**
      * Retrieve a name report about occurrence, rank and percentage
      * @param name the name of interest
      * @param gender the gender preferred
+     * @param startYear the starting year of query range
+     * @param endYear the ending year of query range
      * @return an ArrayList of NameQuery, empty if name is not found
      */
-    public ArrayList<NameQuery> getNameReport(String name, char gender) {
+    public ArrayList<NameQuery> getNameReport(String name, char gender, int startYear, int endYear) {
         String processedName = name.toLowerCase(Locale.ROOT);
         ArrayList<NameQuery> list = new ArrayList<>();
         for (int i = startYear; i <= endYear; i += 1) {

@@ -28,6 +28,7 @@ public class TrieTest {
         Trie trie = new Trie();
         trie.addName("May");
         trie.addName("Mary");
+        trie.addName("May");
         trie.addName("Margret");
         trie.addName("Michael");
         trie.addName("Mike");

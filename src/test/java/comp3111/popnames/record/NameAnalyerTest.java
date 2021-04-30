@@ -27,10 +27,10 @@ public class NameAnalyerTest {
     @Test
     public void testGetNameReport() {
         NameAnalyzer analyzer = NameAnalyzer.getInstance();
-        ArrayList<NameAnalyzer.NameQuery> query1 = analyzer.getNameReport("Emma", 'F');
-        ArrayList<NameAnalyzer.NameQuery> query2 = analyzer.getNameReport("emma", 'F');
-        ArrayList<NameAnalyzer.NameQuery> query3 = analyzer.getNameReport("Zyran", 'M');
-        ArrayList<NameAnalyzer.NameQuery> query4 = analyzer.getNameReport("Zyran", 'U');
+        ArrayList<NameAnalyzer.NameQuery> query1 = analyzer.getNameReport("Emma", 'F', 1880, 2019);
+        ArrayList<NameAnalyzer.NameQuery> query2 = analyzer.getNameReport("emma", 'F', 1880, 2019);
+        ArrayList<NameAnalyzer.NameQuery> query3 = analyzer.getNameReport("Zyran", 'M', 1880, 2019);
+        ArrayList<NameAnalyzer.NameQuery> query4 = analyzer.getNameReport("Zyran", 'U', 1880, 2019);
 
         assertEquals(140, query1.size());
         assertEquals(140, query2.size());
