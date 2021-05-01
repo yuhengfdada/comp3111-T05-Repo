@@ -44,7 +44,7 @@ public class ScorePredictorControllersTest extends ApplicationTest {
         type(KeyCode.ENTER);
 
         clickOn("#selfYob");
-        write("2021");
+        write("2018");
 
         clickOn("#algorithm");
         type(KeyCode.ENTER);
@@ -74,7 +74,7 @@ public class ScorePredictorControllersTest extends ApplicationTest {
         type(KeyCode.DOWN);
         type(KeyCode.ENTER);
         clickOn("#selfYob");
-        write("2020");
+        write("2018");
         clickOn("#algorithm");
         type(KeyCode.DOWN);
         type(KeyCode.ENTER);
@@ -95,7 +95,7 @@ public class ScorePredictorControllersTest extends ApplicationTest {
         type(KeyCode.ENTER);
 
         clickOn("#mateYob");
-        write("2021");
+        write("2019");
         clickOn("#nextBtn");
 
         clickOn("#agePref");

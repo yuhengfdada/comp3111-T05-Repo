@@ -27,6 +27,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The main controller of the application.
+ */
 public class Controller{
 
     @FXML

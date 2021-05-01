@@ -146,7 +146,7 @@ public class AdditionalInfoController {
         predictor.kidsMetrics.setMateKids(mateKids.getSelectionModel().getSelectedIndex());
 
         if (!mateYob.getText().trim().isEmpty()) {
-            predictor.mateYob = Integer.parseInt(mateYob.getText());
+            predictor.mateYob = Integer.parseInt(mateYob.getText().trim());
         } else {
             predictor.mateYob = -1;
         }
@@ -158,11 +158,11 @@ public class AdditionalInfoController {
         if (!mYob.isEmpty()) {
             try {
                 int year = Integer.parseInt(mYob);
-                if (year < 1880 || year > 2021) {
-                    errorMsg.append("- Please enter a valid year.\n");
+                if (year < 1880 || year > 2019) {
+                    errorMsg.append("- Please enter a valid year between 1880 and 2019.\n");
                 }
             } catch (NumberFormatException e) {
-                errorMsg.append("- Please enter a valid year.\n");
+                errorMsg.append("- Please enter a valid year between 1880 and 2019.\n");
             }
         }
 

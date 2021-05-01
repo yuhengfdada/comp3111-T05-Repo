@@ -164,7 +164,7 @@ public class ResultController {
         for (Metrics metric : predictor.metrics) {
             final XYChart.Series<Number, String> series = new XYChart.Series<>();
             double score = metric.getScore();
-            if (score >= 0.0) {
+            if (score > 0.0) {
                 series.setName(metric.getMetricName());
                 series.getData().add(new XYChart.Data<>(metric.getScore() * metric.weight() * 100, "Scores"));
                 scoresBarChart.getData().add(series);
