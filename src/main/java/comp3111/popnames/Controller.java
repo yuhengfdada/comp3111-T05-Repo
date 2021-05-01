@@ -22,6 +22,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import comp3111.popnames.Task1.*;
+import comp3111.popnames.Task4.*;
 import comp3111.popnames.util.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -101,6 +102,30 @@ public class Controller{
     
     @FXML
     private Button t1_generate;
+    
+    @FXML
+    private TextField t4_momYOB;
+
+    @FXML
+    private TextField t4_dadYOB;
+
+    @FXML
+    private Button t4_generate;
+
+    @FXML
+    private TextField t4_momYOB2;
+
+    @FXML
+    private TextField t4_dadYOB2;
+
+    @FXML
+    private Button t4_generate2;
+
+    @FXML
+    private TextField t4_momName;
+
+    @FXML
+    private TextField t4_dadName;
 
     /**
      *  Task Zero
@@ -217,8 +242,82 @@ public class Controller{
     	window.setScene(task1Scene);
     	window.show();
     }
-    
+   
+    @FXML
+    void t4_generate_action(ActionEvent event) throws IOException {
+    	Task4 task4 = new Task4();
+    	if (util.isNumeric(t4_momYOB.getText()) && util.isNumeric(t4_dadYOB.getText())) {
+    		int momYear = Integer.parseInt(t4_momYOB.getText());
+    		int dadYear = Integer.parseInt(t4_dadYOB.getText());
+    		if (util.isValidYear(momYear) && util.isValidYear(dadYear)) {
+    			task4.setMomYear(momYear);
+    			task4.setDadYear(dadYear);
+    		}
+    		else {
+    			textAreaConsole.setText("Input is not in range!");
+    			return;
+			}
+    	}
+    	else {
+    		textAreaConsole.setText("Input is not numeric");
+    		return;
+		}
 
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/task4_a1.fxml"));
+    	Parent task4Parent = (Parent)loader.load();
+    	Scene task4Scene = new Scene(task4Parent);
+    	Task4A1Controller controller = (Task4A1Controller)loader.getController();
+    	
+    	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    	window.setUserData(task4);
+    	controller.appear(window);
+    	window.setScene(task4Scene);
+    	window.show();
+    }
+    
+    @FXML
+    void t4_generate_action_2(ActionEvent event) throws IOException {
+    	Task4A2 task4A2 = new Task4A2();
+    	if (util.isNumeric(t4_momYOB2.getText()) && util.isNumeric(t4_dadYOB2.getText())) {
+    		int momYear = Integer.parseInt(t4_momYOB2.getText());
+    		int dadYear = Integer.parseInt(t4_dadYOB2.getText());
+    		if (util.isValidYear(momYear) && util.isValidYear(dadYear)) {
+    			task4A2.setMomYear(momYear);
+    			task4A2.setDadYear(dadYear);
+    		}
+    		else {
+    			textAreaConsole.setText("Year input is not in range!");
+    			return;
+			}
+    	}
+    	else {
+    		textAreaConsole.setText("Year input is not numeric");
+    		return;
+		}
+    	
+    	if (util.isAlpha(t4_momName.getText()) && util.isAlpha(t4_dadName.getText())) {
+    		String momNameString = util.cap(t4_momName.getText());
+    		String dadNameString = util.cap(t4_dadName.getText());
+    		task4A2.setMomName(momNameString);
+    		task4A2.setDadName(dadNameString);
+
+    	} else {
+    		textAreaConsole.setText("If you're not Elon Musk, please consider getting a full-alphabet name.");
+			return;
+    	}
+
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/task4_a2.fxml"));
+    	Parent task4Parent = (Parent)loader.load();
+    	Scene task4Scene = new Scene(task4Parent);
+    	Task4A2Controller controller = (Task4A2Controller)loader.getController();
+    	
+    	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    	window.setUserData(task4A2);
+    	controller.appear(window);
+    	window.setScene(task4Scene);
+    	window.show();
+    }
+    
     @FXML
     void onPredStart(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();

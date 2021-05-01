@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="679.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.Controller">
+<VBox prefHeight="679.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.Controller">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="437.0" prefWidth="719.0">
       <children>
@@ -94,6 +94,7 @@
                                                 <TextField fx:id="t4_momYOB" layoutX="386.0" layoutY="72.0" />
                                                 <TextField fx:id="t4_dadYOB" layoutX="386.0" layoutY="115.0" />
                                                 <Button fx:id="t4_generate" layoutX="325.0" layoutY="200.0" mnemonicParsing="false" onAction="#t4_generate_action" text="Generate" />
+                                                <Label layoutX="189.0" layoutY="24.0" prefHeight="34.0" prefWidth="378.0" text="Algorithm 1: Recommend the most popular names" />
                                              </children>
                                           </AnchorPane>
                                     </content>
@@ -111,6 +112,7 @@
                                                 <TextField fx:id="t4_momName" layoutX="386.0" layoutY="157.0" />
                                                 <Label layoutX="249.0" layoutY="202.0" text="Enter Dad's Name:" />
                                                 <TextField fx:id="t4_dadName" layoutX="386.0" layoutY="198.0" />
+                                                <Label layoutX="258.0" layoutY="24.0" prefHeight="30.0" prefWidth="271.0" text="Algorithm 2: Want a special name?" />
                                              </children>
                                           </AnchorPane>
                                     </content>

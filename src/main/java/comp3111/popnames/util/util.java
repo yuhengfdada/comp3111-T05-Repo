@@ -20,4 +20,19 @@ public class util {
 	public static boolean isValidN(int n) {
 		return n >= 1 && n <= 10;
 	}
+	
+	public static boolean isAlpha(String name) {
+	    char[] chars = name.toCharArray();
+
+	    for (char c : chars) {
+	        if(!Character.isLetter(c)) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
+	
+	public static String cap(String str) {
+		return str.substring(0,1).toUpperCase() + str.substring(1);
+	}
 }

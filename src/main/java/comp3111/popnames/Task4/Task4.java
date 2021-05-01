@@ -1,67 +1,72 @@
 package comp3111.popnames.Task4;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import comp3111.popnames.AnalyzeNames;
 import edu.duke.FileResource;
 import javafx.util.Pair;
 
 public class Task4 {
-	int year = 0;
-	int topN = 0;
-	public void setYear(int i) {year = i;}
-	public void setTopN(int i) {topN = i;}
-	public int getYear() {return year;}
-	public int getTopN() {return topN;}
+	private int momYear = 0;
+	private int dadYear = 0;
+
+	String mostPopBoyString;
+	int mostPopBoyOcc;
+	String mostPopGirlString;
+	int mostPopGirlOcc;
 	
-	
-	int totalBirths = 0;
 	int totalBoys = 0;
 	int totalGirls = 0;
-	int totalNames = 0;
 	int uniqueBoys = 0;
 	int uniqueGirls = 0;
 	
-	List<Pair<String, Integer>> popNamesListM = new ArrayList<>();
-	List<Pair<String, Integer>> popNamesListF = new ArrayList<>();
+	String summaryB;
+	String summaryG;
+	
 	public static CSVParser getFileParser(int year) {
 	     FileResource fr = new FileResource(String.format("dataset/yob%s.csv", year));
 	     return fr.getCSVParser(false);
 	}
-	 
-	String summary;
-	public void getSummaryAndStore(int year) {
-		String oReport = "";	
-		int topNCounterM = topN;
-		int topNCounterF = topN;
-		oReport = String.format("Summary (Year of %d):\n", year);
-		for (CSVRecord rec : getFileParser(year)) {
+	
+	public void getMostPopNameAndStore() {	
+		for (CSVRecord rec : getFileParser(dadYear)) {
 			int numBorn = Integer.parseInt(rec.get(2));
-			totalBirths += numBorn;
-			totalNames += 1;
 			if (rec.get(1).equals("M")) {
 				totalBoys += numBorn;
 				uniqueBoys++;
-				if (topNCounterM != 0) {
-					popNamesListM.add(new Pair<String, Integer>(rec.get(0), numBorn));
-					topNCounterM -= 1;
-				}
-			}
-			else {
-				totalGirls += numBorn;
-				uniqueGirls++;
-				if (topNCounterF != 0) {
-					popNamesListF.add(new Pair<String, Integer>(rec.get(0), numBorn));
-					topNCounterF -= 1;
-				}
+				mostPopBoyString = rec.get(0);
+				mostPopBoyOcc = numBorn;
+				break;
 			}
 		}
-		oReport += String.format("%s is the most popular name with the number of occurrences of %d, which represents %.3f%% of total male births in %d.", popNamesListM.get(0).getKey(),  popNamesListM.get(0).getValue(), popNamesListM.get(0).getValue() / (double)totalBoys, year);
-		oReport += String.format("\n%s is the most popular name with the number of occurrences of %d, which represents %.3f%% of total female births in %d.", popNamesListF.get(0).getKey(),  popNamesListF.get(0).getValue(), popNamesListF.get(0).getValue() / (double)totalGirls, year);
-		summary = oReport;
+		for (CSVRecord rec : getFileParser(momYear)) {
+			int numBorn = Integer.parseInt(rec.get(2));
+			if (rec.get(1).equals("F")) {
+				totalGirls += numBorn;
+				uniqueGirls++;
+				mostPopGirlString = rec.get(0);
+				mostPopGirlOcc = numBorn;
+				break;
+			}
+		}
+		summaryB = String.format("%s is the most popular name with the number of occurrences of %d, which represents %.3f%% of total male births in dad's year of birth, %d.", mostPopBoyString,  mostPopBoyOcc, mostPopBoyOcc / (double)totalBoys, dadYear);
+		summaryG = String.format("%s is the most popular name with the number of occurrences of %d, which represents %.3f%% of total female births in mom's year of birth, %d.", mostPopGirlString,  mostPopGirlOcc, mostPopGirlOcc / (double)totalGirls, momYear);
+	}
+
+	public int getMomYear() {
+		return momYear;
+	}
+
+	public void setMomYear(int momYear) {
+		this.momYear = momYear;
+	}
+
+	public int getDadYear() {
+		return dadYear;
+	}
+
+	public void setDadYear(int dadYear) {
+		this.dadYear = dadYear;
 	}
 }
