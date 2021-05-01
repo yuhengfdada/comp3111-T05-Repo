@@ -4,9 +4,6 @@
 package comp3111.popnames;
 
 
-import javafx.event.ActionEvent;
-import java.io.IOException;
-
 import com.sun.javafx.scene.control.skin.Utils;
 
 import javafx.event.ActionEvent;
@@ -19,6 +16,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import comp3111.popnames.Task1.*;
@@ -210,6 +208,7 @@ public class Controller{
     		oReport += String.format("#%d: %s\n", i, AnalyzeNames.getName(iYear, i, "M"));
     	textAreaConsole.setText(oReport);
     }
+
     
     @FXML
     void t1_generate_action(ActionEvent event) throws IOException {
@@ -318,6 +317,7 @@ public class Controller{
     	window.show();
     }
     
+
     @FXML
     void onPredStart(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
