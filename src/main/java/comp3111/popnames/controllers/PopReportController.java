@@ -19,6 +19,9 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * The controller for rendering the popularity report.
+ */
 public class PopReportController {
 
     private enum QueryType {
@@ -139,6 +142,9 @@ public class PopReportController {
         onBarChartReset(event);
     }
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize() {
         PopularityReport report = PopularityReport.getInstance();
@@ -286,8 +292,7 @@ public class PopReportController {
     }
 
     private boolean validateInput(String nameInput) {
-        String processed = nameInput.trim().toLowerCase(Locale.ROOT);
-        if (processed.isEmpty() || hasDigit(processed)) {
+        if (nameInput.isEmpty() || !checkInput(nameInput)) {
             return false;
         }
 
@@ -295,9 +300,9 @@ public class PopReportController {
         return !queryCmp.isEmpty();
     }
 
-    private boolean hasDigit(String input) {
-        String regex = ".*[0-9].*";
-        return input.matches(regex);
+    private boolean checkInput(String input) {
+        String regex = ".*[^a-zA-Z].*";
+        return !input.matches(regex);
     }
 
 }

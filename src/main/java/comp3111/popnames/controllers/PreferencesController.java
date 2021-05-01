@@ -16,18 +16,25 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * The controller for inputting the preferences in task 6.
+ */
 public class PreferencesController {
 
-    private static final ObservableList<String> agePrefList;
+    private static final ObservableList<String> agePrefList, rarityPrefList;
     private Stage previousStage;
     private AdditionalInfoController previousController;
 
     static {
         agePrefList = FXCollections.observableArrayList("Younger", "Older");
+        rarityPrefList = FXCollections.observableArrayList("Popular", "Mediocre", "Rare", "No Preference");
     }
 
     @FXML
     private ChoiceBox<String> agePref;
+
+    @FXML
+    private ChoiceBox<String> rarityPref;
 
     @FXML
     private TextArea nameTheme;
@@ -50,9 +57,14 @@ public class PreferencesController {
     @FXML
     private Slider meanSuitability;
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize() {
         agePref.setItems(agePrefList);
+        rarityPref.setItems(rarityPrefList);
+        rarityPref.getSelectionModel().select(3);
         CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();
 
         String promptText = " You can base your choice on subjective feelings about the name.";
@@ -105,7 +117,7 @@ public class PreferencesController {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/score_predictor_ui/result_ui.fxml"));
-        Parent root = (Parent) loader.load();
+        Parent root = loader.load();
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Compatibility Score Predictor");
@@ -140,10 +152,12 @@ public class PreferencesController {
 
     private void setValues() {
         CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();
-        predictor.themeMetrics.themeSuitability(themeSuitability.getValue());
-        predictor.meanMetrics.meanSuitability(meanSuitability.getValue());
+        predictor.themeMetrics.themeSuitability(themeSuitability.getValue() * 0.2);
+        predictor.meanMetrics.meanSuitability(meanSuitability.getValue() * 0.2);
         predictor.ageMetrics.agePref =
                 AgeMetrics.AgePreference.values()[agePref.getSelectionModel().getSelectedIndex()];
+        predictor.propertyMetrics.setRarityPref(rarityPref.getSelectionModel().getSelectedIndex());
+        predictor.propertyMetrics.setDirty();
     }
 
     /**

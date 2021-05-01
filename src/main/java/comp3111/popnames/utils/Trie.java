@@ -56,6 +56,9 @@ public class Trie {
     private final TrieNode root;
     private final HashSet<String> names;
 
+    /**
+     * Construct an empty trie.
+     */
     public Trie() {
         root = new TrieNode();
         names = new HashSet<>();
@@ -104,7 +107,7 @@ public class Trie {
     /**
      * Given an input, return a list of names with the input as prefix
      * @param prefix the prefix
-     * @return a List of Strings that contains the result
+     * @return a list contains the result
      */
     public List<String> findNamesWithPrefix(String prefix) {
         return prefixHelper(prefix, 0, root);

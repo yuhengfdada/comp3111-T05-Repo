@@ -44,7 +44,7 @@ public class ScorePredictorControllersTest extends ApplicationTest {
         type(KeyCode.ENTER);
 
         clickOn("#selfYob");
-        write("2021");
+        write("2018");
 
         clickOn("#algorithm");
         type(KeyCode.ENTER);
@@ -55,6 +55,7 @@ public class ScorePredictorControllersTest extends ApplicationTest {
 
         FxAssert.verifyThat("#score", TextMatchers.hasText("0"));
 
+        clickOn("#backBtn");
         clickOn("#cancelBtn");
     }
 
@@ -73,7 +74,7 @@ public class ScorePredictorControllersTest extends ApplicationTest {
         type(KeyCode.DOWN);
         type(KeyCode.ENTER);
         clickOn("#selfYob");
-        write("2020");
+        write("2018");
         clickOn("#algorithm");
         type(KeyCode.DOWN);
         type(KeyCode.ENTER);
@@ -94,7 +95,7 @@ public class ScorePredictorControllersTest extends ApplicationTest {
         type(KeyCode.ENTER);
 
         clickOn("#mateYob");
-        write("2021");
+        write("2019");
         clickOn("#nextBtn");
 
         clickOn("#agePref");
@@ -103,7 +104,10 @@ public class ScorePredictorControllersTest extends ApplicationTest {
 
         clickOn("#backBtn");
         clickOn("#nextBtn");
-        FxAssert.verifyThat("#score", TextMatchers.hasText("53"));
+        FxAssert.verifyThat("#score", TextMatchers.hasText("33"));
+        clickOn("#showDetailsBtn");
+        FxAssert.verifyThat("#score", TextMatchers.hasText("33"));
+        clickOn("#backBtn");
         clickOn("#cancelBtn");
     }
 

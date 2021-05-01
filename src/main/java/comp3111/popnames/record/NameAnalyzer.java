@@ -7,10 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * The analyzer for the name database
@@ -21,6 +18,9 @@ public class NameAnalyzer {
      * This contains the name records within each year
      */
     public static class YearRecord {
+        /**
+         * The constructor of the class.
+         */
         public YearRecord() {
             maleTotalOccur = 0;
             femaleTotalOccur = 0;
@@ -38,28 +38,64 @@ public class NameAnalyzer {
      * This is used to convey queried information
      */
     public static class NameQuery {
+        /**
+         * The occurence of the name.
+         */
         public int occurrence;
+
+        /**
+         * The rank of the name.
+         */
         public int rank;
+
+        /**
+         * The year of the name.
+         */
         public int year;
+
+        /**
+         * The percentage of total birth of the given gender in the given year.
+         */
         public double percentage;
         private final SimpleStringProperty percentageProperty = new SimpleStringProperty();
 
+        /**
+         * Get the occurrence of the name in one year
+         * @return the occurrence
+         */
         public int getOccurrence() {
             return occurrence;
         }
 
+        /**
+         * Get the rank of the name in one year
+         * @return the rank
+         */
         public int getRank() {
             return rank;
         }
 
+        /**
+         * Get the year for the query
+         * @return the year
+         */
         public int getYear() {
             return year;
         }
 
+        /**
+         * Get the formatted percentage info of the name
+         * @return the formatted SimpleStringProperty for TableView
+         */
         public SimpleStringProperty percentageProperty() {
             percentageProperty.set(String.format("%.2f%%", percentage * 100.0));
             return percentageProperty;
         }
+
+        /**
+         * Comparator according to the occurrence of the name in descending order
+         */
+        public static final Comparator<NameQuery> occurrenceComparator = (o1, o2) -> o2.occurrence - o1.occurrence;
     }
 
     private static final NameAnalyzer instance = new NameAnalyzer(1880, 2019);

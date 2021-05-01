@@ -1,8 +1,14 @@
 package comp3111.popnames.metrics;
 
+/**
+ * The metrics for income factors.
+ */
 public class IncomeMetrics extends Metrics {
 
-    public enum IncomeLevel {
+    /**
+     * The enum class for income levels.
+     */
+    private enum IncomeLevel {
         LOWEST_25, MIDDLE_50, TOP_25, NA
     }
 
@@ -12,12 +18,12 @@ public class IncomeMetrics extends Metrics {
     /**
      * Get the detailed score
      *
-     * @return double
+     * @return the score between 0 and 1 if info is complete, otherwise -1
      */
     @Override
     public double getScore() {
         if (self == IncomeLevel.NA || mate == IncomeLevel.NA) {
-            return 1.0;
+            return -1.0;
         }
 
         double score = (IncomeLevel.TOP_25.ordinal() - self.ordinal()) * mateSig
@@ -31,8 +37,18 @@ public class IncomeMetrics extends Metrics {
      * @return String
      */
     @Override
-    public String getMetricName() {
+    public String getMetricDescription() {
         return "Compatibility of income level";
+    }
+
+    /**
+     * Get the name of the metric
+     *
+     * @return the name
+     */
+    @Override
+    public String getMetricName() {
+        return "Income";
     }
 
     /**
@@ -72,6 +88,10 @@ public class IncomeMetrics extends Metrics {
         mateSig = mate;
     }
 
+    /**
+     * Set the self income level.
+     * @param index the ordinal of the enum element.
+     */
     public void setSelf(int index) {
         if (index < 0 || index >= IncomeLevel.values().length) {
             self = IncomeLevel.NA;
@@ -80,6 +100,10 @@ public class IncomeMetrics extends Metrics {
         }
     }
 
+    /**
+     * Set the income level of the mate.
+     * @param index The ordinal of the enum variable.
+     */
     public void setMate(int index) {
         if (index < 0 || index >= IncomeLevel.values().length) {
             mate = IncomeLevel.NA;

@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The controller for inputting additional info in task 6.
+ */
 public class AdditionalInfoController {
 
     private static final ObservableList<String> eduLevelList;
@@ -73,6 +76,9 @@ public class AdditionalInfoController {
     @FXML
     private TextField mateYob;
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize() {
         selfEduLevel.setItems(eduLevelList);
@@ -130,13 +136,17 @@ public class AdditionalInfoController {
         CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();
         predictor.eduMetrics.setSelfEdu(selfEduLevel.getSelectionModel().getSelectedIndex());
         predictor.eduMetrics.setMateEdu(mateEduLevel.getSelectionModel().getSelectedIndex());
+        predictor.eduMetrics.setSignificance(selfEduSig.getValue() * 0.2, mateEduSig.getValue() * 0.2);
+
         predictor.incomeMetrics.setSelf(selfIncomeLevel.getSelectionModel().getSelectedIndex());
         predictor.incomeMetrics.setMate(mateIncomeLevel.getSelectionModel().getSelectedIndex());
+        predictor.incomeMetrics.setSignificance(selfIncomeSig.getValue() * 0.2, mateIncomeSig.getValue() * 0.2);
+
         predictor.kidsMetrics.setSelfKids(selfKids.getSelectionModel().getSelectedIndex());
         predictor.kidsMetrics.setMateKids(mateKids.getSelectionModel().getSelectedIndex());
 
         if (!mateYob.getText().trim().isEmpty()) {
-            predictor.mateYob = Integer.parseInt(mateYob.getText());
+            predictor.mateYob = Integer.parseInt(mateYob.getText().trim());
         } else {
             predictor.mateYob = -1;
         }
@@ -148,11 +158,11 @@ public class AdditionalInfoController {
         if (!mYob.isEmpty()) {
             try {
                 int year = Integer.parseInt(mYob);
-                if (year < 1880 || year > 2021) {
-                    errorMsg.append("- Please enter a valid year.\n");
+                if (year < 1880 || year > 2019) {
+                    errorMsg.append("- Please enter a valid year between 1880 and 2019.\n");
                 }
             } catch (NumberFormatException e) {
-                errorMsg.append("- Please enter a valid year.\n");
+                errorMsg.append("- Please enter a valid year between 1880 and 2019.\n");
             }
         }
 

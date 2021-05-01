@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The controller for the input in task 3.
+ */
 public class ReportInputController {
 
     private static final ObservableList<String> genderList;
@@ -40,6 +43,9 @@ public class ReportInputController {
     @FXML
     private Button cancelBtn;
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize() {
         genderChoice.setItems(genderList);
@@ -107,14 +113,18 @@ public class ReportInputController {
             if (endYear < 1880 || endYear > 2019) {
                 errorMsg.append("- Please enter a valid ending year between 1880 and 2019.\n");
             }
+            int startYear = Integer.parseInt(startYearTextField.getText());
+            if (endYear < startYear) {
+                errorMsg.append("- The ending year should be less or equal than the starting year.\n");
+            }
         } catch (NumberFormatException e) {
             errorMsg.append("- Please enter a valid ending year between 1880 and 2019.\n");
         }
 
-        String name = nameTextField.getText().trim();
+        String name = nameTextField.getText();
         if (name.length() < 2 || name.length() > 15) {
             errorMsg.append("- Please enter a valid name within 2-15 characters.\n");
-        } else if (hasDigit(name)) {
+        } else if (!checkNameInput(name)) {
             errorMsg.append("- Please enter a valid name with characters only.\n");
         }
 
@@ -144,15 +154,15 @@ public class ReportInputController {
 
         int startYear = Integer.parseInt(startYearTextField.getText());
         int endYear = Integer.parseInt(endYearTextField.getText());
-        String name = nameTextField.getText().trim();
+        String name = nameTextField.getText();
         char gender = genderChoice.getSelectionModel().getSelectedItem().charAt(0);
 
         return report.generateReport(startYear, endYear, gender, name);
     }
 
-    private boolean hasDigit(String input) {
-        String regex = ".*[0-9].*";
-        return input.matches(regex);
+    private boolean checkNameInput(String input) {
+        String regex = ".*[^a-zA-Z].*";
+        return !input.matches(regex);
     }
 
 }

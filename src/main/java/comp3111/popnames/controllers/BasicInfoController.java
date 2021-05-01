@@ -1,7 +1,6 @@
 package comp3111.popnames.controllers;
 
-import comp3111.popnames.record.NameAnalyzer;
-import comp3111.popnames.utils.AutocompletionTextField;
+import comp3111.popnames.applications.CompatibilityPredictor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,16 +12,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import comp3111.popnames.applications.CompatibilityPredictor;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Locale;
 
+/**
+ * The controller for inputting basic info in task 6.
+ */
 public class BasicInfoController {
-
-    private CompatibilityPredictor predictor;
 
     private static final ObservableList<String> genderList;
     private static final ObservableList<String> algorithmList;
@@ -32,6 +31,9 @@ public class BasicInfoController {
         algorithmList = FXCollections.observableArrayList("Basic", "Data based");
     }
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize() {
         selfGender.setItems(genderList);
@@ -46,7 +48,7 @@ public class BasicInfoController {
     private Button cancelBtn;
 
     @FXML
-    private AutocompletionTextField selfName;
+    private TextField selfName;
 
     @FXML
     private ChoiceBox<String> selfGender;
@@ -61,7 +63,7 @@ public class BasicInfoController {
     private TextField selfYob;
 
     @FXML
-    private AutocompletionTextField mateName;
+    private TextField mateName;
 
     @FXML
     void onCancelBtnPressed(ActionEvent event) {
@@ -79,29 +81,25 @@ public class BasicInfoController {
 
         FXMLLoader loader = new FXMLLoader();
         if (algorithm.getSelectionModel().getSelectedIndex() == 0) {
-            loader.setLocation(getClass().getResource("/score_predictor_ui/result_ui.fxml"));
+            loader.setLocation(getClass().getResource("/score_predictor_ui/result_details_ui.fxml"));
         } else {
             loader.setLocation(getClass().getResource("/score_predictor_ui/add_info_ui.fxml"));
         }
 
-        Parent root = (Parent) loader.load();
+        Parent root = loader.load();
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Compatibility Score Predictor");
         stage.setScene(new Scene(root));
         stage.setResizable(false);
 
-        Stage curStage = (Stage) nextBtn.getScene().getWindow();
-
-        if (algorithm.getSelectionModel().getSelectedIndex() == 0) {
-            ResultController controller = loader.getController();
-            controller.setParent(curStage, this);
-        } else {
+        if (algorithm.getSelectionModel().getSelectedIndex() == 1) {
+            Stage curStage = (Stage) nextBtn.getScene().getWindow();
             AdditionalInfoController controller = loader.getController();
             controller.setParent(curStage, this);
+            curStage.hide();
         }
 
-        curStage.hide();
         stage.show();
     }
 
@@ -109,16 +107,16 @@ public class BasicInfoController {
         CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();
         char sGender = genderToChar(selfGender.getSelectionModel().getSelectedItem());
         char mGender = genderToChar(mateGender.getSelectionModel().getSelectedItem());
-        predictor.setSelfInfo(selfName.getText().trim().toLowerCase(Locale.ROOT),
+        predictor.setSelfInfo(selfName.getText().toLowerCase(Locale.ROOT),
                 Integer.parseInt(selfYob.getText()), sGender);
-        predictor.setMateInfo(mateName.getText().trim().toLowerCase(Locale.ROOT), mGender);
+        predictor.setMateInfo(mateName.getText().toLowerCase(Locale.ROOT), mGender);
         predictor.algorithm(
                 CompatibilityPredictor.Algorithm.values()[algorithm.getSelectionModel().getSelectedIndex()]);
     }
 
-    private boolean hasDigit(String input) {
-        String regex = ".*[0-9].*";
-        return input.matches(regex);
+    private boolean checkInput(String input) {
+        String regex = ".*[^a-zA-Z].*";
+        return !input.matches(regex);
     }
 
     private char genderToChar(String gender) {
@@ -127,18 +125,18 @@ public class BasicInfoController {
 
     private boolean validateInput() {
         StringBuilder errorMsg = new StringBuilder();
-        String sName = selfName.getText().trim();
+        String sName = selfName.getText();
         if (sName.isEmpty()) {
             errorMsg.append("- Please enter your first name.\n");
-        } else if (hasDigit(sName)) {
-            errorMsg.append("- Please enter a valid name.\n");
+        } else if (!checkInput(sName)) {
+            errorMsg.append("- Please enter a valid name with characters only.\n");
         }
 
-        String mName = mateName.getText().trim();
+        String mName = mateName.getText();
         if (mName.isEmpty()) {
             errorMsg.append("- Please enter your mate's name.\n");
-        } else if (hasDigit(mName)) {
-            errorMsg.append("- Please enter a valid name.\n");
+        } else if (!checkInput(mName)) {
+            errorMsg.append("- Please enter a valid name with characters only.\n");
         }
 
         String sGender = selfGender.getSelectionModel().getSelectedItem();
@@ -153,11 +151,11 @@ public class BasicInfoController {
 
         try {
             int sYob = Integer.parseInt(selfYob.getText());
-            if (sYob < 1880 || sYob > 2021) {
-                errorMsg.append("- Please enter a valid year of birth (1880-2021).\n");
+            if (sYob < 1880 || sYob > 2019) {
+                errorMsg.append("- Please enter a valid year of birth (1880-2019).\n");
             }
         } catch (NumberFormatException e) {
-            errorMsg.append("- Please enter a valid year of birth (1880-2021).\n");
+            errorMsg.append("- Please enter a valid year of birth (1880-2019).\n");
         }
 
         String algo = algorithm.getSelectionModel().getSelectedItem();

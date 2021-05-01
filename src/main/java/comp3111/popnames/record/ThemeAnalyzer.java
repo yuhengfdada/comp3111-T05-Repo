@@ -11,6 +11,10 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The class is used to parse the themes and meanings of the names from the external dataset.
+ * It also gathers and generates reports on query.
+ */
 public class ThemeAnalyzer {
 
     private static class NameTheme {
@@ -34,6 +38,9 @@ public class ThemeAnalyzer {
         meaningDataPath = "dataset/themes/name_with_meanings.csv";
     }
 
+    /**
+     * Constructor for the class.
+     */
     public ThemeAnalyzer() {
         themes = new HashMap<>();
         initData();
