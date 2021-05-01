@@ -20,6 +20,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Locale;
 
+/**
+ * The controller for inputting basic info in task 6.
+ */
 public class BasicInfoController {
 
     private CompatibilityPredictor predictor;
@@ -32,6 +35,9 @@ public class BasicInfoController {
         algorithmList = FXCollections.observableArrayList("Basic", "Data based");
     }
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize() {
         selfGender.setItems(genderList);
@@ -46,7 +52,7 @@ public class BasicInfoController {
     private Button cancelBtn;
 
     @FXML
-    private AutocompletionTextField selfName;
+    private TextField selfName;
 
     @FXML
     private ChoiceBox<String> selfGender;
@@ -61,7 +67,7 @@ public class BasicInfoController {
     private TextField selfYob;
 
     @FXML
-    private AutocompletionTextField mateName;
+    private TextField mateName;
 
     @FXML
     void onCancelBtnPressed(ActionEvent event) {
@@ -79,7 +85,7 @@ public class BasicInfoController {
 
         FXMLLoader loader = new FXMLLoader();
         if (algorithm.getSelectionModel().getSelectedIndex() == 0) {
-            loader.setLocation(getClass().getResource("/score_predictor_ui/result_ui.fxml"));
+            loader.setLocation(getClass().getResource("/score_predictor_ui/result_details_ui.fxml"));
         } else {
             loader.setLocation(getClass().getResource("/score_predictor_ui/add_info_ui.fxml"));
         }
@@ -91,17 +97,13 @@ public class BasicInfoController {
         stage.setScene(new Scene(root));
         stage.setResizable(false);
 
-        Stage curStage = (Stage) nextBtn.getScene().getWindow();
-
-        if (algorithm.getSelectionModel().getSelectedIndex() == 0) {
-            ResultController controller = loader.getController();
-            controller.setParent(curStage, this);
-        } else {
+        if (algorithm.getSelectionModel().getSelectedIndex() == 1) {
+            Stage curStage = (Stage) nextBtn.getScene().getWindow();
             AdditionalInfoController controller = loader.getController();
             controller.setParent(curStage, this);
+            curStage.hide();
         }
 
-        curStage.hide();
         stage.show();
     }
 

@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.IntSummaryStatistics;
 
+/**
+ * The class for generating the popularity report for task 3.
+ */
 public class PopularityReport {
 
     private int startYear;

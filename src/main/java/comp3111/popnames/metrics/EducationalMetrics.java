@@ -5,7 +5,10 @@ package comp3111.popnames.metrics;
  */
 public class EducationalMetrics extends Metrics {
 
-    public enum EducationalLevel {
+    /**
+     * Indicators of educational levels
+     */
+    private enum EducationalLevel {
         ELEMENTARY_SCHOOL, MIDDLE_SCHOOL, HIGH_SCHOOL,
         BACHELOR, MASTER, PHD, NA
     }
@@ -16,15 +19,19 @@ public class EducationalMetrics extends Metrics {
 
     /**
      * Get the detailed score
-     * @return double
+     * @return the score between 0 and 1 if info is complete, otherwise -1
      */
     @Override
     public double getScore() {
         if (self == EducationalLevel.NA || mate == EducationalLevel.NA) {
-            return 1.0;
+            return -1.0;
         }
 
-        return Math.abs(self.ordinal() - mate.ordinal()) * weight;
+        int difference = (self.ordinal() - mate.ordinal());
+        double selfScore = -difference * selfSig;
+        double mateScore = difference * mateSig;
+
+        return (Math.min(selfScore, mateScore) + 5.0) * 0.2 * weight;
     }
 
     /**
@@ -32,8 +39,18 @@ public class EducationalMetrics extends Metrics {
      * @return String
      */
     @Override
-    public String getMetricName() {
+    public String getMetricDescription() {
         return "Compatibility of educational level";
+    }
+
+    /**
+     * Get the name of the metric
+     *
+     * @return the name
+     */
+    @Override
+    public String getMetricName() {
+        return "Education";
     }
 
     /**
@@ -46,14 +63,18 @@ public class EducationalMetrics extends Metrics {
             return "This metric is not available since the information is incomplete.";
         }
 
-        if (weight < 0.2) {
-            return "The differences in educational level are basically irrelevant for your relationships.";
+        if (Math.max(selfSig, mateSig) < 2.5) {
+            return "Educational levels are relatively irrelevant for your relationships.";
         }
-        double diff = Math.abs(self.ordinal() - mate.ordinal());
-        if (diff < 0.5) {
-            return "Your educational levels are relatively the same, so the impact on compatibility is minimal.";
+        double score = getScore();
+        if (score <= 0.33) {
+            return "The educational levels of you and your mate do not match the corresponding expectations " +
+                    "of each other";
+        } else if (score <= 0.67) {
+            return "There are discrepancies between your expectations and educational levels";
+        } else {
+            return "Your educational levels have minimal impact on the compatibility";
         }
-        return "There is difference in your educational levels.";
     }
 
     /**
@@ -67,10 +88,18 @@ public class EducationalMetrics extends Metrics {
         weight = (self + mate) * 0.5;
     }
 
+    /**
+     * Set the educational level
+     * @param level the level
+     */
     public void setSelfEdu(EducationalLevel level) {
         self = level;
     }
 
+    /**
+     * Set the educational level
+     * @param index the index of the level in enum
+     */
     public void setSelfEdu(int index) {
         if (index < 0 || index >= EducationalLevel.values().length) {
             self = EducationalLevel.NA;
@@ -79,10 +108,18 @@ public class EducationalMetrics extends Metrics {
         }
     }
 
+    /**
+     * Set the educational level of the mate
+     * @param level the level
+     */
     public void setMateEdu(EducationalLevel level) {
         mate = level;
     }
 
+    /**
+     * Set the educational level of the mate
+     * @param index the level index
+     */
     public void setMateEdu(int index) {
         if (index < 0 || index >= EducationalLevel.values().length) {
             mate = EducationalLevel.NA;

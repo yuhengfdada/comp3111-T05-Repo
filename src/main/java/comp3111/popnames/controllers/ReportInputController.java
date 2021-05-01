@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The controller for the input in task 3.
+ */
 public class ReportInputController {
 
     private static final ObservableList<String> genderList;
@@ -40,6 +43,9 @@ public class ReportInputController {
     @FXML
     private Button cancelBtn;
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize() {
         genderChoice.setItems(genderList);

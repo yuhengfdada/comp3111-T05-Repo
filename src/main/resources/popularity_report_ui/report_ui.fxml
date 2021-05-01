@@ -47,6 +47,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
+<?import comp3111.popnames.utils.AutocompletionTextField?>
 
 <VBox prefHeight="598.0" prefWidth="822.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.controllers.PopReportController">
   <children>
@@ -91,7 +92,7 @@
                               </BarChart>
                               <ChoiceBox fx:id="barChartType" layoutX="113.0" layoutY="501.0" prefWidth="150.0" />
                               <Text layoutX="37.0" layoutY="518.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Query Type:" />
-                              <TextField fx:id="barChartExtraName" layoutX="523.0" layoutY="501.0" />
+                              <AutocompletionTextField fx:id="barChartExtraName" layoutX="523.0" layoutY="501.0" />
                               <Button fx:id="barChartAddName" layoutX="696.0" layoutY="501.0" mnemonicParsing="false" onAction="#onBarChartAddName" text="Add" />
                               <Button fx:id="barChartReset" layoutX="747.0" layoutY="501.0" mnemonicParsing="false" onAction="#onBarChartReset" text="Reset" />
                               <Text layoutX="388.0" layoutY="518.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name for Comparison" />
@@ -114,7 +115,7 @@
                               <Text layoutX="37.0" layoutY="519.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Query Type:" />
                               <ChoiceBox fx:id="lineChartType" layoutX="114.0" layoutY="501.0" prefWidth="150.0" />
                               <Text layoutX="386.0" layoutY="518.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name for Comparison" />
-                              <TextField fx:id="lineChartExtraName" layoutX="522.0" layoutY="501.0" />
+                              <AutocompletionTextField fx:id="lineChartExtraName" layoutX="522.0" layoutY="501.0" />
                               <Button fx:id="lineChartAddName" layoutX="695.0" layoutY="501.0" mnemonicParsing="false" onAction="#onLineChartAddName" text="Add" />
                               <Button fx:id="lineChartReset" layoutX="746.0" layoutY="501.0" mnemonicParsing="false" onAction="#onLineChartReset" text="Reset" />
                            </children>

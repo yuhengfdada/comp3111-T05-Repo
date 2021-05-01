@@ -55,6 +55,7 @@ public class ScorePredictorControllersTest extends ApplicationTest {
 
         FxAssert.verifyThat("#score", TextMatchers.hasText("0"));
 
+        clickOn("#backBtn");
         clickOn("#cancelBtn");
     }
 
@@ -103,7 +104,10 @@ public class ScorePredictorControllersTest extends ApplicationTest {
 
         clickOn("#backBtn");
         clickOn("#nextBtn");
-        FxAssert.verifyThat("#score", TextMatchers.hasText("53"));
+        FxAssert.verifyThat("#score", TextMatchers.hasText("33"));
+        clickOn("#showDetailsBtn");
+        FxAssert.verifyThat("#score", TextMatchers.hasText("33"));
+        clickOn("#backBtn");
         clickOn("#cancelBtn");
     }
 

@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The controller for inputting additional info in task 6.
+ */
 public class AdditionalInfoController {
 
     private static final ObservableList<String> eduLevelList;
@@ -73,6 +76,9 @@ public class AdditionalInfoController {
     @FXML
     private TextField mateYob;
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize() {
         selfEduLevel.setItems(eduLevelList);
@@ -130,8 +136,12 @@ public class AdditionalInfoController {
         CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();
         predictor.eduMetrics.setSelfEdu(selfEduLevel.getSelectionModel().getSelectedIndex());
         predictor.eduMetrics.setMateEdu(mateEduLevel.getSelectionModel().getSelectedIndex());
+        predictor.eduMetrics.setSignificance(selfEduSig.getValue() * 0.2, mateEduSig.getValue() * 0.2);
+
         predictor.incomeMetrics.setSelf(selfIncomeLevel.getSelectionModel().getSelectedIndex());
         predictor.incomeMetrics.setMate(mateIncomeLevel.getSelectionModel().getSelectedIndex());
+        predictor.incomeMetrics.setSignificance(selfIncomeSig.getValue() * 0.2, mateIncomeSig.getValue() * 0.2);
+
         predictor.kidsMetrics.setSelfKids(selfKids.getSelectionModel().getSelectedIndex());
         predictor.kidsMetrics.setMateKids(mateKids.getSelectionModel().getSelectedIndex());
 

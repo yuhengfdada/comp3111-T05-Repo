@@ -6,18 +6,34 @@ import comp3111.popnames.record.NameRecord;
 
 import java.util.ArrayList;
 
+/**
+ * The metrics of compatibility on ages.
+ */
 public class AgeMetrics extends Metrics {
 
+    /**
+     * The enum class for age preferences.
+     */
     public enum AgePreference {
-        YOUNGER, OLDER
+        /**
+         * Younger.
+         */
+        YOUNGER,
+        /**
+         * Older.
+         */
+        OLDER
     }
 
+    /**
+     * The age preference.
+     */
     public AgePreference agePref;
 
     /**
      * Get the detailed score
      *
-     * @return double
+     * @return the score between 0 and 1 if info is complete, otherwise -1
      */
     @Override
     public double getScore() {
@@ -52,8 +68,18 @@ public class AgeMetrics extends Metrics {
      * @return String
      */
     @Override
-    public String getMetricName() {
+    public String getMetricDescription() {
         return "Compatibility of the ages of the pair";
+    }
+
+    /**
+     * Get the name of the metric
+     *
+     * @return the name
+     */
+    @Override
+    public String getMetricName() {
+        return "Age";
     }
 
     /**

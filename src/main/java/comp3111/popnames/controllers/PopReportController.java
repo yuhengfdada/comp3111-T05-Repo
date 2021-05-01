@@ -19,6 +19,9 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * The controller for rendering the popularity report.
+ */
 public class PopReportController {
 
     private enum QueryType {
@@ -139,6 +142,9 @@ public class PopReportController {
         onBarChartReset(event);
     }
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize() {
         PopularityReport report = PopularityReport.getInstance();

@@ -74,7 +74,7 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Name:" />
                   <ChoiceBox fx:id="selfGender" prefHeight="25.0" prefWidth="164.0" GridPane.rowIndex="3" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Gender:" GridPane.rowIndex="2" />
-                  <TextField fx:id="selfYob" GridPane.rowIndex="5" />
+                  <TextField fx:id="selfYob" promptText="between 1880 and 2019" GridPane.rowIndex="5" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your Year of Birth:" GridPane.rowIndex="4" />
                   <AutocompletionTextField fx:id="mateName" prefHeight="25.0" prefWidth="178.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mate's Name:" GridPane.columnIndex="2" />
