@@ -1,5 +1,9 @@
 package comp3111.popnames.Task1;
-
+/**
+ * This class contains the information of a table entry used in task1 table view.
+ * @author syh
+ *
+ */
 public class TableEntry {
 	String name;
 	int occ;

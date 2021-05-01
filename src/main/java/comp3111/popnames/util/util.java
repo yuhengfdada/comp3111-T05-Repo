@@ -1,5 +1,9 @@
 package comp3111.popnames.util;
-
+/**
+ * Util class for task 1 and 4, mostly checking input validity.
+ * @author syh
+ *
+ */
 public class util {
 	public static boolean isNumeric(String strNum) {
 	    if (strNum == null) {

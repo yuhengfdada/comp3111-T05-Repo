@@ -6,7 +6,11 @@ import org.apache.commons.csv.CSVRecord;
 import comp3111.popnames.AnalyzeNames;
 import edu.duke.FileResource;
 import javafx.util.Pair;
-
+/**
+ * This class contains all information needed for task4, algorithm 1.
+ * @author syh
+ *
+ */
 public class Task4 {
 	private int momYear = 0;
 	private int dadYear = 0;

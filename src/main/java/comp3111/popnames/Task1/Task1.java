@@ -10,7 +10,11 @@ import org.apache.commons.csv.CSVRecord;
 
 import edu.duke.FileResource;
 import javafx.util.Pair;
-
+/**
+ * This class contains all information needed for task1.
+ * @author syh
+ *
+ */
 public class Task1 {
 	int year = 0;
 	int topN = 0;
