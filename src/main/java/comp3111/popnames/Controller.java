@@ -125,6 +125,8 @@ public class Controller{
     @FXML
     private TextField t4_dadName;
 
+    @FXML
+    private Tab t4_a2;
     /**
      *  Task Zero
      *  To be triggered by the "Summary" button on the Task Zero Tab 
