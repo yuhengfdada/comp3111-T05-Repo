@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="679.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.Controller">
+<VBox prefHeight="679.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comp3111.popnames.Controller">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="437.0" prefWidth="719.0">
       <children>
@@ -42,7 +42,12 @@
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="384.0" prefWidth="719.0">
                            <children>
                               <Label layoutX="79.0" layoutY="44.0" />
-                              <TextArea layoutX="96.0" layoutY="24.0" prefHeight="99.0" prefWidth="398.0" text="Task #1: Most Popular Names (data reporting)&#10;&#10;Generate a report in response to the queries on the most popular names in a given year.&#10;" wrapText="true" />
+                              <Label layoutX="79.0" layoutY="59.0" prefHeight="26.0" prefWidth="217.0" text="Input a year between 1880 to 2019:" />
+                              <TextField fx:id="t1_year" layoutX="297.0" layoutY="61.0" prefHeight="23.0" prefWidth="68.0" />
+                              <Label layoutX="94.0" layoutY="123.0" prefHeight="15.0" prefWidth="202.0" text="Input X for Top X popular names:" />
+                              <TextField fx:id="t1_name" layoutX="298.0" layoutY="119.0" prefHeight="23.0" prefWidth="46.0" />
+                              <Button fx:id="t1_generate" layoutX="332.0" layoutY="196.0" mnemonicParsing="false" onAction="#t1_generate_action" text="Generate" />
+                              <Label layoutX="367.0" layoutY="123.0" text="(Between 1 and 10)" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -78,7 +83,42 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="412.0" prefWidth="719.0">
                            <children>
-                              <TextArea layoutX="40.0" layoutY="26.0" prefHeight="106.0" prefWidth="538.0" text="Task #4: Recommendation on Names for Newborn Babies (application)&#10;&#10;Develop and implement an online service using empirical data to help make informed decisions on naming their newborn babies.&#10;" wrapText="true" />
+                              <TabPane prefHeight="326.0" prefWidth="719.0" tabClosingPolicy="UNAVAILABLE">
+                                <tabs>
+                                  <Tab text="Algorithm 1">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <Label layoutX="69.0" layoutY="76.0" text="Enter Mom's Year of Birth: (Between 1880 to 2019)" />
+                                                <Label layoutX="76.0" layoutY="119.0" text="Enter Dad's Year of Birth: (Between 1880 to 2019)" />
+                                                <TextField fx:id="t4_momYOB" layoutX="386.0" layoutY="72.0" />
+                                                <TextField fx:id="t4_dadYOB" layoutX="386.0" layoutY="115.0" />
+                                                <Button fx:id="t4_generate" layoutX="325.0" layoutY="200.0" mnemonicParsing="false" onAction="#t4_generate_action" text="Generate" />
+                                                <Label layoutX="189.0" layoutY="24.0" prefHeight="34.0" prefWidth="378.0" text="Algorithm 1: Recommend the most popular names" />
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                  <Tab fx:id="t4_a2" text="Algorithm 2">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <Label layoutX="69.0" layoutY="76.0" text="Enter Mom's Year of Birth: (Between 1880 to 2019)" />
+                                                <Label layoutX="76.0" layoutY="119.0" text="Enter Dad's Year of Birth: (Between 1880 to 2019)" />
+                                                <TextField fx:id="t4_momYOB2" layoutX="386.0" layoutY="72.0" />
+                                                <TextField fx:id="t4_dadYOB2" layoutX="386.0" layoutY="115.0" />
+                                                <Button fx:id="t4_generate2" layoutX="325.0" layoutY="260.0" mnemonicParsing="false" onAction="#t4_generate_action_2" text="Generate" />
+                                                <Label layoutX="246.0" layoutY="161.0" text="Enter Mom's Name:" />
+                                                <TextField fx:id="t4_momName" layoutX="386.0" layoutY="157.0" />
+                                                <Label layoutX="249.0" layoutY="202.0" text="Enter Dad's Name:" />
+                                                <TextField fx:id="t4_dadName" layoutX="386.0" layoutY="198.0" />
+                                                <Label layoutX="258.0" layoutY="24.0" prefHeight="30.0" prefWidth="271.0" text="Algorithm 2: Want a special name?" />
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                </tabs>
+                              </TabPane>
                            </children>
                         </AnchorPane>
                     </content>
