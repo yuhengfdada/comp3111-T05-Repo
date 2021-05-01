@@ -104,7 +104,7 @@ public class Trie {
     /**
      * Given an input, return a list of names with the input as prefix
      * @param prefix the prefix
-     * @return a List<String> contains the result
+     * @return a List of Strings that contains the result
      */
     public List<String> findNamesWithPrefix(String prefix) {
         return prefixHelper(prefix, 0, root);
