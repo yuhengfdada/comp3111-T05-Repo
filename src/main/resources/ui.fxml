@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
@@ -83,7 +82,40 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="412.0" prefWidth="719.0">
                            <children>
-                              <ChoiceBox layoutX="36.0" layoutY="31.0" prefWidth="150.0" />
+                              <TabPane prefHeight="326.0" prefWidth="719.0" tabClosingPolicy="UNAVAILABLE">
+                                <tabs>
+                                  <Tab text="Algorithm 1">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <Label layoutX="69.0" layoutY="76.0" text="Enter Mom's Year of Birth: (Between 1880 to 2019)" />
+                                                <Label layoutX="76.0" layoutY="119.0" text="Enter Dad's Year of Birth: (Between 1880 to 2019)" />
+                                                <TextField fx:id="t4_momYOB" layoutX="386.0" layoutY="72.0" />
+                                                <TextField fx:id="t4_dadYOB" layoutX="386.0" layoutY="115.0" />
+                                                <Button fx:id="t4_generate" layoutX="325.0" layoutY="200.0" mnemonicParsing="false" onAction="#t4_generate_action" text="Generate" />
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                  <Tab text="Algorithm 2">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <Label layoutX="69.0" layoutY="76.0" text="Enter Mom's Year of Birth: (Between 1880 to 2019)" />
+                                                <Label layoutX="76.0" layoutY="119.0" text="Enter Dad's Year of Birth: (Between 1880 to 2019)" />
+                                                <TextField fx:id="t4_momYOB2" layoutX="386.0" layoutY="72.0" />
+                                                <TextField fx:id="t4_dadYOB2" layoutX="386.0" layoutY="115.0" />
+                                                <Button fx:id="t4_generate2" layoutX="325.0" layoutY="260.0" mnemonicParsing="false" onAction="#t4_generate_action_2" text="Generate" />
+                                                <Label layoutX="246.0" layoutY="161.0" text="Enter Mom's Name:" />
+                                                <TextField fx:id="t4_momName" layoutX="386.0" layoutY="157.0" />
+                                                <Label layoutX="249.0" layoutY="202.0" text="Enter Dad's Name:" />
+                                                <TextField fx:id="t4_dadName" layoutX="386.0" layoutY="198.0" />
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                </tabs>
+                              </TabPane>
                            </children>
                         </AnchorPane>
                     </content>
