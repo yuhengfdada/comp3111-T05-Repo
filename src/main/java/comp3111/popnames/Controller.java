@@ -25,8 +25,13 @@ import javafx.scene.Node;
 import comp3111.popnames.Task1.*;
 import comp3111.popnames.Task4.*;
 import comp3111.popnames.util.*;
-import comp3111.popnames.Task2.*;
-import comp3111.popnames.Task5.*;
+import Task2.Task2_BCController;
+import Task2.Task2_DTController;
+import Task2.Task2_NameAnalyzer;
+import Task2.Task2_PCController;
+import Task5.Task5_X1_NameAnalyzer;
+import Task5.Task5_X2Controller;
+import Task5.Task5_X2_NameAnalyzer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
