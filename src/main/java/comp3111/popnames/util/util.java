@@ -6,7 +6,7 @@ package comp3111.popnames.util;
  */
 public class util {
 	public static boolean isNumeric(String strNum) {
-	    if (strNum == null) {
+	    if (strNum.isEmpty()) {
 	        return false;
 	    }
 	    try {
@@ -26,6 +26,9 @@ public class util {
 	}
 	
 	public static boolean isAlpha(String name) {
+	    if (name.isEmpty()) {
+	        return false;
+	    }
 	    char[] chars = name.toCharArray();
 
 	    for (char c : chars) {
