@@ -1,5 +1,6 @@
 package comp3111.popnames;
 
+import comp3111.popnames.record.NameAnalyzer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +43,7 @@ public class MyApplication extends Application {
 	 */
 	@Override
 	public void start(Stage stage) throws Exception {
+		NameAnalyzer.getInstance();	// to initialize the static instance
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource(UI_FILE));
    		VBox root = (VBox) loader.load();

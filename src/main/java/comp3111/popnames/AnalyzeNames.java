@@ -3,14 +3,26 @@ package comp3111.popnames;
 import org.apache.commons.csv.*;
 import edu.duke.*;
 
+/**
+ * This is a sample class.
+ */
 public class AnalyzeNames {
 
+	/**
+	 * Get the file parser of a given year.
+	 * @param year The year of interest.
+	 * @return The parser.
+	 */
 	public static CSVParser getFileParser(int year) {
      FileResource fr = new FileResource(String.format("dataset/yob%s.csv", year));
      return fr.getCSVParser(false);
 	}
- 
-	
+
+	/**
+	 * Get the sample summary.
+	 * @param year The year of interest.
+	 * @return The summary.
+	 */
 	public static String getSummary(int year) {
 		String oReport = "";	
 		int totalBirths = 0;
@@ -45,53 +57,67 @@ public class AnalyzeNames {
 		
 		return oReport;
 	}
-	
-	
-	 public static int getRank(int year, String name, String gender) {
-	     boolean found = false;
-	     int oRank = 0;
-	 	int rank = 1;
-	     for (CSVRecord rec : getFileParser(year)) {
-	         // Increment rank if gender matches param
-	         if (rec.get(1).equals(gender)) {
-	             // Return rank if name matches param
-	             if (rec.get(0).equals(name)) {
-	             	found = true;
-	             	oRank = rank;
-	             	break;
-	             }
-	             rank++;
-	         }
-	     }
-	     if (found)
-	     	return oRank;
-	     else
-	     	return -1;
-	 }
-	 
- 
-	 public static String getName(int year, int rank, String gender) {
-	 	boolean found = false;
-	     String oName = "";
-	     int currentRank = 0;
-	     
-	     // For every name entry in the CSV file
-	     for (CSVRecord rec : getFileParser(year)) {
-	         // Get its rank if gender matches param
-	         if (rec.get(1).equals(gender)) {
-	             // Get the name whose rank matches param
-	         	currentRank++;
-	            if (currentRank == rank) {
-	             	found = true;
-	             	oName = rec.get(0);
-	                break;
-	            }
-	         }
-	     }     
-	     if (found)
-	     	return oName;
-	     else
-	     	return "information on the name at the specified rank is not available";
-	 }
+
+
+	/**
+	 * Get the rank of a name with given year and gender.
+	 * @param year The year.
+	 * @param name The name.
+	 * @param gender The gender.
+	 * @return The rank.
+	 */
+	public static int getRank(int year, String name, String gender) {
+		boolean found = false;
+		int oRank = 0;
+		int rank = 1;
+		for (CSVRecord rec : getFileParser(year)) {
+			// Increment rank if gender matches param
+			if (rec.get(1).equals(gender)) {
+				// Return rank if name matches param
+				if (rec.get(0).equals(name)) {
+					found = true;
+					oRank = rank;
+					break;
+				}
+				rank++;
+			}
+		}
+		if (found)
+			return oRank;
+		else
+			return -1;
+	}
+
+
+	/**
+	 * Get the name with given rank and gender in given year.
+	 * @param year The year.
+	 * @param rank The rank.
+	 * @param gender The gender.
+	 * @return The name if exists, otherwise the error message.
+	 */
+	public static String getName(int year, int rank, String gender) {
+		boolean found = false;
+		String oName = "";
+		int currentRank = 0;
+
+		// For every name entry in the CSV file
+		for (CSVRecord rec : getFileParser(year)) {
+			// Get its rank if gender matches param
+			if (rec.get(1).equals(gender)) {
+				// Get the name whose rank matches param
+				currentRank++;
+				if (currentRank == rank) {
+					found = true;
+					oName = rec.get(0);
+					break;
+				}
+			}
+		}
+		if (found)
+			return oName;
+		else
+			return "information on the name at the specified rank is not available";
+	}
  
 }
