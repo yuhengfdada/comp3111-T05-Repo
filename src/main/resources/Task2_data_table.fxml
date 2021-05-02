@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Task2.Task2_DTController">
+   <children>
+      <AnchorPane>
+         <children>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+               <children>
+                  <TableView fx:id="Table" layoutX="62.0" layoutY="52.0" prefHeight="291.0" prefWidth="480.0">
+                     <columns>
+                        <TableColumn fx:id="name" prefWidth="120.0" resizable="false" sortable="false" text="Name" />
+                        <TableColumn fx:id="frequency" prefWidth="120.0" resizable="false" sortable="false" text="Frequency" />
+                        <TableColumn fx:id="occurrences" prefWidth="120.0" resizable="false" sortable="false" text="Occurrences" />
+                        <TableColumn fx:id="percentage" editable="false" prefWidth="119.0" resizable="false" sortable="false" text="Percentage" />
+                     </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
