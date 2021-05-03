@@ -12,6 +12,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -22,6 +25,8 @@ import javafx.scene.Node;
 import comp3111.popnames.Task1.*;
 import comp3111.popnames.Task4.*;
 import comp3111.popnames.util.*;
+import comp3111.popnames.Task2.*;
+import comp3111.popnames.Task5.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -128,7 +133,56 @@ public class Controller{
     @FXML
     private TextField t4_dadName;
 
-    @FXML
+	@FXML
+	private TextField input_starting_year;
+
+	@FXML
+	private TextField input_ending_year;
+
+	@FXML
+	private ChoiceBox inputGender;
+
+	@FXML
+	private TextField input_ranking;
+
+	@FXML
+	private Button show_summary;
+
+	@FXML
+	private Button task2_data_table;
+
+	@FXML
+	private Button task2_bar_chart;
+
+	@FXML
+	private Button task2_pie_chart;
+
+	@FXML
+	private TextArea output_area;
+
+	@FXML
+	private TextField Year_of_born;
+
+	@FXML
+	private TextField input_Name;
+
+	@FXML
+	private Button T5_algo1;
+
+	@FXML
+	private Button T5_algo2;
+
+
+	@FXML
+	private ChoiceBox inputGenderOfInterest;
+
+	@FXML
+	private ChoiceBox yourGender;
+
+	@FXML
+	private ChoiceBox agePreference;
+
+	@FXML
     private Tab t4_a2;
     /**
      *  Task Zero
@@ -349,5 +403,166 @@ public class Controller{
         stage.setResizable(false);
         stage.show();
     }
+
+	@FXML
+	void initialize(){
+		ObservableList<String> genderList = FXCollections.observableArrayList("Male", "Female");
+		ObservableList<String> ageList = FXCollections.observableArrayList("Younger", "Older");
+		inputGender.setItems(genderList);
+		inputGenderOfInterest.setItems(genderList);
+		yourGender.setItems(genderList);
+		agePreference.setItems(ageList);
+	}
+	@FXML
+	boolean generate_summary() throws IOException {
+
+		//check if any input is empty.
+		if(input_starting_year.getText().equals("") || input_ending_year.getText().equals("")
+				|| inputGender.getSelectionModel().getSelectedItem() == null ||input_ranking.getText().equals("")){
+			textAreaConsole.setText("There is missing value!");
+			return false;
+		}
+
+		//check the validity of the inputs.
+		try {
+			int startingYear = Integer.parseInt(input_starting_year.getText());
+			int endingYear = Integer.parseInt(input_ending_year.getText());
+			int ranking = Integer.parseInt(input_ranking.getText());
+		} catch (NumberFormatException e) {
+			textAreaConsole.setText("There is invalid input!");
+		}
+
+		int startingYear = Integer.parseInt(input_starting_year.getText());
+		int endingYear = Integer.parseInt(input_ending_year.getText());
+		char gender = inputGender.getValue().toString().charAt(0);
+		int ranking = Integer.parseInt(input_ranking.getText());
+
+		if(startingYear < 1880 || startingYear > 2019){
+			textAreaConsole.setText("Please enter valid starting year. The valid range is from 1880 to 2019.");
+			return false;
+		}
+		if(endingYear < 1880 || endingYear > 2019){
+			textAreaConsole.setText("Please enter valid ending year. The valid range is from 1880 to 2019.");
+			return false;
+		}
+		if(startingYear > endingYear){
+			textAreaConsole.setText("Please make sure starting year is earlier than or equal to ending year.");
+			return false;
+		}
+		if(ranking < 1 || ranking > 1000){
+			textAreaConsole.setText("Please enter valid popularity ranking.The valid range is from 1 to 1000.");
+			return false;
+		}
+
+		String oReport = Task2_NameAnalyzer.getSummary(startingYear, endingYear, ranking, gender);
+
+		textAreaConsole.setText(oReport);
+		return true;
+	}
+
+	@FXML
+	void show_bar_chart() throws IOException{
+		if(generate_summary() == true) {
+			Task2_BCController newController = new Task2_BCController();
+			newController.start();
+		}
+	}
+
+	@FXML
+	void show_data_table() throws IOException  {
+		if(generate_summary() == true) {
+			Task2_DTController newController = new Task2_DTController();
+			newController.start();
+		}
+	}
+
+	@FXML
+	void show_pie_chart() throws  IOException{
+		if(generate_summary() == true) {
+			Task2_PCController newController = new Task2_PCController();
+			newController.start();
+		}
+	}
+
+	@FXML
+	void show_algo1() {
+		if(inputGenderOfInterest.getSelectionModel().getSelectedItem() == null  || Year_of_born.getText().equals("") ){
+			textAreaConsole.setText("There is missing value!");
+			return;
+		}
+
+		try {
+			int Year = Integer.parseInt(Year_of_born.getText());
+		} catch (NumberFormatException e) {
+			textAreaConsole.setText("Input of Year of born is invalid!");
+		}
+
+		int yearOfBorn = Integer.parseInt(Year_of_born.getText());
+		char gender = inputGenderOfInterest.getValue().toString().charAt(0);
+
+		if(yearOfBorn < 1880 || yearOfBorn > 2019){
+			textAreaConsole.setText("Please enter valid year of born. The range is 1880 - 2019.");
+			return;
+		}
+
+		String oReport = Task5_X1_NameAnalyzer.getSummary(yearOfBorn, gender);
+		textAreaConsole.setText(oReport);
+
+	}
+
+	@FXML
+	void show_algo2() throws IOException{
+		if(inputGenderOfInterest.getSelectionModel().getSelectedItem() == null  || Year_of_born.getText().equals("")  ||
+				yourGender.getSelectionModel().getSelectedItem() == null  || input_Name.getText().equals("") || agePreference.getSelectionModel().getSelectedItem() == null){
+			textAreaConsole.setText("There is missing value!");
+			return;
+		}
+
+		try {
+			int Year = Integer.parseInt(Year_of_born.getText());
+		} catch (NumberFormatException e) {
+			textAreaConsole.setText("Input of Year of born is invalid!");
+		}
+		int yearOfBorn = Integer.parseInt(Year_of_born.getText());
+		char interestedGender = inputGenderOfInterest.getValue().toString().charAt(0);
+		char ownGender = yourGender.getValue().toString().charAt(0);
+		char preferenceAge = agePreference.getValue().toString().charAt(0);
+		String name = input_Name.getText();
+
+		if(yearOfBorn < 1880 || yearOfBorn > 2019){
+			textAreaConsole.setText("Please enter valid year of born. The range is 1880 - 2019.");
+			return;
+		}
+
+		String alter_name = "";
+		if( 'A' <= name.charAt(0) && name.charAt(0) <= 'Z'){
+			alter_name += name.charAt(0);
+		}else if('a' <= name.charAt(0) && name.charAt(0) <= 'z'){
+			alter_name += (char)(name.charAt(0) - 'a' + 'A');
+		}else{
+			textAreaConsole.setText("Please enter a valid name.");
+			return;
+		}
+		for(int i = 1; i < name.length(); i++){
+			if( 'a' <= name.charAt(i) && name.charAt(i) <= 'z'){
+				alter_name += name.charAt(i);
+			}else if('A' <= name.charAt(i) && name.charAt(i) <= 'Z'){
+				alter_name += (char)(name.charAt(i) - 'A' + 'a');
+			}else{
+				textAreaConsole.setText("Please enter a valid name.");
+				return;
+			}
+		}
+		if(Task5_X2_NameAnalyzer.checkName(yearOfBorn, alter_name, ownGender)){
+			textAreaConsole.setText("Congratulations, you have found your soulmate!");
+			Task5_X2_NameAnalyzer.getName(yearOfBorn, alter_name, ownGender, interestedGender, preferenceAge);
+			Task5_X2Controller newController = new Task5_X2Controller();
+			newController.start();
+		}
+		else{
+			textAreaConsole.setText("Name not found, please check your name again.");
+		}
+	}
+
 }
 
