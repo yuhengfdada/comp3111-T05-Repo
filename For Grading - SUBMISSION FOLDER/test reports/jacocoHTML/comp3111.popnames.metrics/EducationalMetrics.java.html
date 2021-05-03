@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EducationalMetrics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.metrics</a> &gt; <span class="el_source">EducationalMetrics.java</span></div><h1>EducationalMetrics.java</h1><pre class="source lang-java linenums">package comp3111.popnames.metrics;
+
+/**
+ * This class compares the educational levels
+ */
+<span class="fc" id="L6">public class EducationalMetrics extends Metrics {</span>
+
+    /**
+     * Indicators of educational levels
+     */
+<span class="fc" id="L11">    private enum EducationalLevel {</span>
+<span class="fc" id="L12">        ELEMENTARY_SCHOOL, MIDDLE_SCHOOL, HIGH_SCHOOL,</span>
+<span class="fc" id="L13">        BACHELOR, MASTER, PHD, NA</span>
+    }
+
+    private EducationalLevel self, mate;
+    private double selfSig, mateSig;
+    private double weight;
+
+    /**
+     * Get the detailed score
+     * @return the score between 0 and 1 if info is complete, otherwise -1
+     */
+    @Override
+    public double getScore() {
+<span class="fc bfc" id="L26" title="All 4 branches covered.">        if (self == EducationalLevel.NA || mate == EducationalLevel.NA) {</span>
+<span class="fc" id="L27">            return -1.0;</span>
+        }
+
+<span class="fc" id="L30">        int difference = (self.ordinal() - mate.ordinal());</span>
+<span class="fc" id="L31">        double selfScore = -difference * selfSig;</span>
+<span class="fc" id="L32">        double mateScore = difference * mateSig;</span>
+
+<span class="fc" id="L34">        return (Math.min(selfScore, mateScore) + 5.0) * 0.2 * weight;</span>
+    }
+
+    /**
+     * Get the metric name
+     * @return String
+     */
+    @Override
+    public String getMetricDescription() {
+<span class="fc" id="L43">        return &quot;Compatibility of educational level&quot;;</span>
+    }
+
+    /**
+     * Get the name of the metric
+     *
+     * @return the name
+     */
+    @Override
+    public String getMetricName() {
+<span class="fc" id="L53">        return &quot;Education&quot;;</span>
+    }
+
+    /**
+     * Get the explanation of the score
+     * @return String
+     */
+    @Override
+    public String getExplanation() {
+<span class="fc bfc" id="L62" title="All 4 branches covered.">        if (self == EducationalLevel.NA || mate == EducationalLevel.NA) {</span>
+<span class="fc" id="L63">            return &quot;This metric is not available since the information is incomplete.&quot;;</span>
+        }
+
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (Math.max(selfSig, mateSig) &lt; 2.5) {</span>
+<span class="fc" id="L67">            return &quot;Educational levels are relatively irrelevant for your relationships.&quot;;</span>
+        }
+<span class="nc" id="L69">        double score = getScore();</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (score &lt;= 0.33) {</span>
+<span class="nc" id="L71">            return &quot;The educational levels of you and your mate do not match the corresponding expectations &quot; +</span>
+                    &quot;of each other&quot;;
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        } else if (score &lt;= 0.67) {</span>
+<span class="nc" id="L74">            return &quot;There are discrepancies between your expectations and educational levels&quot;;</span>
+        } else {
+<span class="nc" id="L76">            return &quot;Your educational levels have minimal impact on the compatibility&quot;;</span>
+        }
+    }
+
+    /**
+     * Set the significance level of the metrics
+     * @param self self's significance level
+     * @param mate mate's significance level
+     */
+    public void setSignificance(double self, double mate) {
+<span class="fc" id="L86">        selfSig = self;</span>
+<span class="fc" id="L87">        mateSig = mate;</span>
+<span class="fc" id="L88">        weight = (self + mate) * 0.5;</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Set the educational level
+     * @param level the level
+     */
+    public void setSelfEdu(EducationalLevel level) {
+<span class="nc" id="L96">        self = level;</span>
+<span class="nc" id="L97">    }</span>
+
+    /**
+     * Set the educational level
+     * @param index the index of the level in enum
+     */
+    public void setSelfEdu(int index) {
+<span class="pc bpc" id="L104" title="2 of 4 branches missed.">        if (index &lt; 0 || index &gt;= EducationalLevel.values().length) {</span>
+<span class="nc" id="L105">            self = EducationalLevel.NA;</span>
+        } else {
+<span class="fc" id="L107">            self = EducationalLevel.values()[index];</span>
+        }
+<span class="fc" id="L109">    }</span>
+
+    /**
+     * Set the educational level of the mate
+     * @param level the level
+     */
+    public void setMateEdu(EducationalLevel level) {
+<span class="nc" id="L116">        mate = level;</span>
+<span class="nc" id="L117">    }</span>
+
+    /**
+     * Set the educational level of the mate
+     * @param index the level index
+     */
+    public void setMateEdu(int index) {
+<span class="pc bpc" id="L124" title="2 of 4 branches missed.">        if (index &lt; 0 || index &gt;= EducationalLevel.values().length) {</span>
+<span class="nc" id="L125">            mate = EducationalLevel.NA;</span>
+        } else {
+<span class="fc" id="L127">            mate = EducationalLevel.values()[index];</span>
+        }
+<span class="fc" id="L129">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Task2_NameEntry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.Task2</a> &gt; <span class="el_source">Task2_NameEntry.java</span></div><h1>Task2_NameEntry.java</h1><pre class="source lang-java linenums">package comp3111.popnames.Task2;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+public class Task2_NameEntry {
+
+    private SimpleStringProperty Name;
+    private SimpleIntegerProperty Frequency;
+    private SimpleIntegerProperty  Occurrences;
+    private SimpleStringProperty Percentage;
+
+<span class="fc" id="L13">    public Task2_NameEntry(String fName, int fFrequency, int fOccurrences, String fPercentage){</span>
+<span class="fc" id="L14">        this.Name =  new SimpleStringProperty(fName);</span>
+<span class="fc" id="L15">        this.Frequency = new SimpleIntegerProperty(fFrequency);</span>
+<span class="fc" id="L16">        this.Occurrences = new SimpleIntegerProperty(fOccurrences);</span>
+<span class="fc" id="L17">        this.Percentage = new SimpleStringProperty(fPercentage);</span>
+<span class="fc" id="L18">    }</span>
+    public String getName() {
+<span class="fc" id="L20">        return Name.get();</span>
+    }
+
+    public void setName(String fName) {
+<span class="fc" id="L24">        Name.set(fName);</span>
+<span class="fc" id="L25">    }</span>
+
+    public Integer getFrequency() {
+<span class="fc" id="L28">        return Frequency.get();</span>
+    }
+
+    public void setFrequency(int fFrequency) {
+<span class="fc" id="L32">        Frequency.set(fFrequency);</span>
+<span class="fc" id="L33">    }</span>
+
+    public Integer getOccurrences() {
+<span class="fc" id="L36">        return Occurrences.get();</span>
+    }
+
+    public void setOccurrences(Integer fOccurrences) {
+<span class="fc" id="L40">        Occurrences.set(fOccurrences);</span>
+<span class="fc" id="L41">    }</span>
+
+    public String getPercentage(){
+<span class="fc" id="L44">        return Percentage.get();</span>
+    }
+
+    public void setPercentage(String fPercentage){
+<span class="fc" id="L48">        Percentage.set(fPercentage);</span>
+<span class="fc" id="L49">    }</span>
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

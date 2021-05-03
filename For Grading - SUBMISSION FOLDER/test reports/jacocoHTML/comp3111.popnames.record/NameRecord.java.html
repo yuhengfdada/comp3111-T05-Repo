@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NameRecord.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.record</a> &gt; <span class="el_source">NameRecord.java</span></div><h1>NameRecord.java</h1><pre class="source lang-java linenums">package comp3111.popnames.record;
+
+import java.util.Comparator;
+
+/**
+ * The class for storing the name records.
+ */
+public class NameRecord implements Comparable {
+    /**
+     * Construct a NameRecord.
+     * @param name The name.
+     * @param gender The gender.
+     * @param year The year.
+     * @param occurrence The occurrence.
+     */
+<span class="fc" id="L16">    public NameRecord(String name, char gender, int year, int occurrence) {</span>
+<span class="fc" id="L17">        this.name = name;</span>
+<span class="fc" id="L18">        this.gender = gender;</span>
+<span class="fc" id="L19">        this.year = year;</span>
+<span class="fc" id="L20">        this.occurrence = occurrence;</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * compareTo for the Comparable.
+     * @param o The other NameRecord.
+     * @return The difference of the occurrence.
+     */
+    public int compareTo(Object o) {
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (o.getClass() != NameRecord.class) {</span>
+<span class="fc" id="L30">            return 0;</span>
+        }
+<span class="fc" id="L32">        NameRecord other = (NameRecord) o;</span>
+<span class="fc" id="L33">        return this.occurrence - other.occurrence;</span>
+    }
+
+    /**
+     * Get the rank.
+     * @param rank The rank.
+     */
+    public void rank(int rank) {
+<span class="fc" id="L41">        this.rank = rank;</span>
+<span class="fc" id="L42">    }</span>
+
+    /**
+     * Get the year.
+     * @return The year.
+     */
+    public int year() {
+<span class="nc" id="L49">        return this.year;</span>
+    }
+
+    /**
+     * Get the occurrence.
+     * @return The occurrence.
+     */
+    public int occurrence() {
+<span class="fc" id="L57">        return this.occurrence;</span>
+    }
+
+    /**
+     * Get the rank.
+     * @return The rank.
+     */
+    public int rank() {
+<span class="fc" id="L65">        return this.rank;</span>
+    }
+
+    /**
+     * Get the gender.
+     * @return The gender.
+     */
+    public char gender() {
+<span class="nc" id="L73">        return this.gender;</span>
+    }
+
+    /**
+     * Get the name.
+     * @return The name.
+     */
+    public String name() {
+<span class="fc" id="L81">        return this.name;</span>
+    }
+
+    /**
+     * The comparator which sorts the recording according to the descending order of occurrences.
+     */
+<span class="fc" id="L87">    public static final Comparator&lt;NameRecord&gt; occurrenceComparator = new Comparator&lt;NameRecord&gt;() {</span>
+        @Override
+        public int compare(NameRecord o1, NameRecord o2) {
+<span class="fc" id="L90">            return o2.occurrence - o1.occurrence;</span>
+        }
+    };
+
+    /**
+     * The comparator which sorts the recording according to the descending order of ranks.
+     */
+<span class="fc" id="L97">    public static final Comparator&lt;NameRecord&gt; rankComparator = new Comparator&lt;NameRecord&gt;() {</span>
+        @Override
+        public int compare(NameRecord o1, NameRecord o2) {
+<span class="nc" id="L100">            return o2.rank - o1.rank;</span>
+        }
+    };
+
+    private String name;
+    private char gender;
+    private int year;
+    private int occurrence;
+    private int rank;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

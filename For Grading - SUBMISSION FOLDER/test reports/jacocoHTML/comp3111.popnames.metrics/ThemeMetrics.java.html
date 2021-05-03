@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ThemeMetrics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.metrics</a> &gt; <span class="el_source">ThemeMetrics.java</span></div><h1>ThemeMetrics.java</h1><pre class="source lang-java linenums">package comp3111.popnames.metrics;
+
+/**
+ * The metrics of the compatibility of the underlying themes of the names.
+ */
+<span class="fc" id="L6">public class ThemeMetrics extends Metrics {</span>
+
+    private double themeSuitability;
+
+    /**
+     * Get the detailed score
+     *
+     * @return the score between 0 and 1 if info is complete, otherwise -1
+     */
+    @Override
+    public double getScore() {
+<span class="fc" id="L17">        return themeSuitability;</span>
+    }
+
+    /**
+     * Get the metric name
+     *
+     * @return String
+     */
+    @Override
+    public String getMetricDescription() {
+<span class="fc" id="L27">        return &quot;Compatibility of the themes behind names&quot;;</span>
+    }
+
+    /**
+     * Get the name of the metric
+     *
+     * @return the name
+     */
+    @Override
+    public String getMetricName() {
+<span class="fc" id="L37">        return &quot;Theme&quot;;</span>
+    }
+
+    /**
+     * Get the explanation of the score
+     *
+     * @return String
+     */
+    @Override
+    public String getExplanation() {
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (themeSuitability &lt;= 0.33) {</span>
+<span class="fc" id="L48">            return &quot;The themes behind you and your mate's name are not compatible&quot;;</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        } else if (themeSuitability &lt;= 0.67) {</span>
+<span class="fc" id="L50">            return &quot;The themes behind you and your mate's name are somewhat compatible&quot;;</span>
+        } else {
+<span class="fc" id="L52">            return &quot;The themes behind you and your mate's name are very compatible&quot;;</span>
+        }
+    }
+
+    /**
+     * Set the suitability of the theme.
+     * @param value The value.
+     */
+    public void themeSuitability(double value) {
+<span class="fc" id="L61">        themeSuitability = value;</span>
+<span class="fc" id="L62">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

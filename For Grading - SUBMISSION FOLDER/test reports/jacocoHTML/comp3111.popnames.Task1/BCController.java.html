@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BCController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.Task1</a> &gt; <span class="el_source">BCController.java</span></div><h1>BCController.java</h1><pre class="source lang-java linenums">package comp3111.popnames.Task1;
+
+import java.io.IOException;
+
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.util.Pair;
+
+<span class="fc" id="L19">public class BCController {</span>
+    @FXML
+    private AnchorPane aPane;
+    @FXML
+    private Button back;
+    @FXML
+    private BarChart&lt;String, Number&gt; barChart;
+    @FXML
+    private BarChart&lt;String, Number&gt; barChart1;
+    
+	private Task1 task1;
+	
+	public void appearBC(Stage stage) {
+<span class="fc" id="L32">    	stage.setTitle(&quot;Bar Chart Summary&quot;);</span>
+<span class="fc" id="L33">    	task1 = (Task1)stage.getUserData();</span>
+ 
+<span class="fc" id="L35">        XYChart.Series&lt;String, Number&gt; series1 = new XYChart.Series&lt;&gt;();</span>
+<span class="fc" id="L36">        series1.setName(String.valueOf(task1.year));</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        for (Pair&lt;String, Integer&gt; pair : task1.popNamesListM) {</span>
+<span class="fc" id="L38">        	series1.getData().add(new XYChart.Data&lt;&gt;(pair.getKey(), pair.getValue()));</span>
+<span class="fc" id="L39">        }</span>
+<span class="fc" id="L40">        barChart.getData().add(series1);</span>
+        
+<span class="fc" id="L42">        XYChart.Series&lt;String, Number&gt; series2 = new XYChart.Series&lt;&gt;();</span>
+<span class="fc" id="L43">        series2.setName(String.valueOf(task1.year));</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (Pair&lt;String, Integer&gt; pair : task1.popNamesListF) {</span>
+<span class="fc" id="L45">        	series2.getData().add(new XYChart.Data&lt;&gt;(pair.getKey(), pair.getValue()));</span>
+<span class="fc" id="L46">        }</span>
+<span class="fc" id="L47">        barChart1.getData().add(series2);</span>
+<span class="fc" id="L48">	}</span>
+	
+	
+	
+	
+    @FXML
+    void goBack(ActionEvent event) throws IOException {
+<span class="fc" id="L55">    	FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;/task1_1.fxml&quot;));</span>
+<span class="fc" id="L56">    	Parent task1Parent = (Parent)loader.load();</span>
+<span class="fc" id="L57">    	Scene task1Scene = new Scene(task1Parent);</span>
+<span class="fc" id="L58">    	Task1Controller controller = (Task1Controller)loader.getController();</span>
+    	
+<span class="fc" id="L60">    	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();</span>
+<span class="fc" id="L61">    	window.setUserData(task1);</span>
+<span class="fc" id="L62">    	controller.showStoredSummary(window);</span>
+<span class="fc" id="L63">    	window.setScene(task1Scene);</span>
+<span class="fc" id="L64">    	window.show();</span>
+<span class="fc" id="L65">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

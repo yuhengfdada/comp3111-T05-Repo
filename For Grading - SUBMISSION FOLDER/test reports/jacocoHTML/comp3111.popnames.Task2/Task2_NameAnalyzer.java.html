@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Task2_NameAnalyzer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.Task2</a> &gt; <span class="el_source">Task2_NameAnalyzer.java</span></div><h1>Task2_NameAnalyzer.java</h1><pre class="source lang-java linenums">package comp3111.popnames.Task2;
+
+import edu.duke.FileResource;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Collections;
+import java.util.Iterator;
+
+<span class="nc" id="L13">public class Task2_NameAnalyzer {</span>
+
+    public static HashMap&lt;String, Integer&gt; nameRecords;
+    public static HashMap&lt;String, Integer&gt; matchedNames;
+    public static ArrayList&lt;HashMap.Entry&lt;String, Integer&gt;&gt; name_list;
+<span class="fc" id="L18">    public static int totalOccurrence = 0;</span>
+
+    public static CSVParser getFileParser(int year) {
+<span class="fc" id="L21">        FileResource fr = new FileResource(String.format(&quot;dataset/yob%s.csv&quot;, year));</span>
+<span class="fc" id="L22">        return fr.getCSVParser(false);</span>
+    }
+
+    public static String getSummary(int startYear,int endYear, int popularityRanking, char gender) {
+<span class="fc" id="L26">        nameRecords = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L27">        matchedNames = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L28">        totalOccurrence = 0;</span>
+
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        for (int year = startYear; year &lt;= endYear; year++) {</span>
+<span class="fc" id="L31">            int currentRanking = 0;</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            for (CSVRecord rec : getFileParser(year)) {</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">                if(rec.get(1).charAt(0) == gender){</span>
+<span class="fc" id="L34">                    currentRanking++;</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">                    if(currentRanking == popularityRanking){</span>
+<span class="fc" id="L36">                        totalOccurrence += Integer.parseInt(rec.get(2));</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">                        if(nameRecords.containsKey(rec.get(0))){</span>
+<span class="fc" id="L38">                            int tempNum = nameRecords.get(rec.get(0));</span>
+<span class="fc" id="L39">                            nameRecords.replace(rec.get(0), tempNum + Integer.parseInt(rec.get(2)));</span>
+<span class="fc" id="L40">                        }</span>
+                        else {
+<span class="fc" id="L42">                            nameRecords.put(rec.get(0), Integer.parseInt(rec.get(2)));</span>
+                        }
+<span class="fc bfc" id="L44" title="All 2 branches covered.">                        if(matchedNames.containsKey(rec.get(0))){</span>
+<span class="fc" id="L45">                            int tempNum = matchedNames.get(rec.get(0));</span>
+<span class="fc" id="L46">                            matchedNames.replace(rec.get(0), tempNum + 1);</span>
+<span class="fc" id="L47">                        }</span>
+<span class="fc" id="L48">                        else matchedNames.put(rec.get(0), 1);</span>
+                    }
+                }
+<span class="fc" id="L51">            }</span>
+        }
+
+<span class="fc" id="L54">        name_list = new ArrayList(matchedNames.entrySet());</span>
+<span class="fc" id="L55">        Collections.sort(name_list, new Comparator&lt;HashMap.Entry&lt;String, Integer&gt;&gt;()</span>
+<span class="fc" id="L56">        {</span>
+            public int compare(HashMap.Entry&lt;String, Integer&gt; o1, HashMap.Entry&lt;String, Integer&gt; o2){
+<span class="fc bfc" id="L58" title="All 2 branches covered.">               if(o2.getValue() &gt; o1.getValue())</span>
+<span class="fc" id="L59">                   return 1;</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">               if(o2.getValue() &lt; o1.getValue())</span>
+<span class="fc" id="L61">                   return -1;</span>
+               else{
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">                   if(o2.getKey().compareTo(o1.getKey()) &lt; 0)</span>
+<span class="nc" id="L64">                       return 1;</span>
+                   else
+<span class="fc" id="L66">                       return -1;</span>
+               }
+            }
+        });
+<span class="fc" id="L70">    String s_Gender = &quot;&quot;;</span>
+<span class="fc" id="L71">    String s_Gender_2 = &quot;&quot;;</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">    if(gender == 'F'){</span>
+<span class="fc" id="L73">        s_Gender = &quot;girls&quot;;</span>
+<span class="fc" id="L74">        s_Gender_2 = &quot;female&quot;;</span>
+    }else {
+<span class="fc" id="L76">        s_Gender = &quot;boys&quot;;</span>
+<span class="fc" id="L77">        s_Gender_2 = &quot;male&quot;;</span>
+    }
+<span class="fc" id="L79">    String forRanking = &quot;&quot;;</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">    if(popularityRanking == 1){</span>
+<span class="fc" id="L81">        forRanking = &quot;1st&quot;;</span>
+    }
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">    else if (popularityRanking == 2){</span>
+<span class="nc" id="L84">        forRanking = &quot;2nd&quot;;</span>
+    }
+<span class="fc bfc" id="L86" title="All 2 branches covered.">    else if (popularityRanking == 3){</span>
+<span class="fc" id="L87">        forRanking = &quot;3rd&quot;;</span>
+    }
+    else{
+<span class="fc" id="L90">        forRanking = String.format(&quot;%d-th&quot;, popularityRanking);</span>
+    }
+<span class="fc" id="L92">    double percentage = (double)nameRecords.get(name_list.get(0).getKey()) / (double)totalOccurrence  * 100;</span>
+
+<span class="fc" id="L94">    String oReport = name_list.get(0).getKey()+&quot; has hold the &quot; + forRanking+String.format(&quot; rank most often for a total of %d times,\n&quot;,name_list.get(0).getValue());</span>
+
+<span class="fc" id="L96">    oReport += String.format(&quot;among names registered for baby %s born in the period from %d to %d.\n&quot;, s_Gender, startYear, endYear);</span>
+
+<span class="fc" id="L98">    oReport += String.format(&quot;The total number of occurrences of %s is %d, \n&quot;,name_list.get(0).getKey(), nameRecords.get(name_list.get(0).getKey()));</span>
+
+<span class="fc" id="L100">    oReport += String.format(&quot;which represents %.2f%% of total %s births at the &quot;,percentage,s_Gender_2) + forRanking;</span>
+
+<span class="fc" id="L102">    oReport += String.format(&quot; rank in the period from %d to %d.&quot;,startYear, endYear);</span>
+
+
+<span class="fc" id="L105">    return oReport;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

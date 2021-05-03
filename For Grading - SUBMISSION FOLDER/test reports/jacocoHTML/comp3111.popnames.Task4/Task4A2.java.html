@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Task4A2.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.Task4</a> &gt; <span class="el_source">Task4A2.java</span></div><h1>Task4A2.java</h1><pre class="source lang-java linenums">package comp3111.popnames.Task4;
+
+
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import comp3111.popnames.AnalyzeNames;
+import edu.duke.FileResource;
+import javafx.util.Pair;
+/**
+ * This class contains all information needed for task4, algorithm 2.
+ * @author syh
+ *
+ */
+<span class="fc" id="L15">public class Task4A2 {</span>
+<span class="fc" id="L16">	private int momYear = 0;</span>
+<span class="fc" id="L17">	private int dadYear = 0;</span>
+
+	private String dadName;
+	private String momName;
+	int dadSum;
+	int momSum;
+	
+	String selectedPopBoyString;
+	int selectedPopBoyOcc;
+	int selectedPopBoySum;
+	int selectedPopBoyDiff;
+	String selectedPopGirlString;
+	int selectedPopGirlOcc;
+	int selectedPopGirlSum;
+	int selectedPopGirlDiff;
+	
+<span class="fc" id="L33">	int totalBoys = 0;</span>
+<span class="fc" id="L34">	int totalGirls = 0;</span>
+<span class="fc" id="L35">	int uniqueBoys = 0;</span>
+<span class="fc" id="L36">	int uniqueGirls = 0;</span>
+	
+	String summaryB;
+	String summaryG;
+	
+	public static CSVParser getFileParser(int year) {
+<span class="fc" id="L42">	     FileResource fr = new FileResource(String.format(&quot;dataset/yob%s.csv&quot;, year));</span>
+<span class="fc" id="L43">	     return fr.getCSVParser(false);</span>
+	}
+	
+	public void getMostPopNameAndStore() {
+<span class="fc" id="L47">		dadSum = sumString(getDadName());</span>
+<span class="fc" id="L48">		momSum = sumString(getMomName());</span>
+<span class="fc" id="L49">		int minM = Integer.MAX_VALUE;</span>
+<span class="fc" id="L50">		int minF = Integer.MAX_VALUE;</span>
+		
+<span class="fc bfc" id="L52" title="All 2 branches covered.">		for (CSVRecord rec : getFileParser(dadYear)) {</span>
+<span class="fc" id="L53">			int numBorn = Integer.parseInt(rec.get(2));</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">			if (rec.get(1).equals(&quot;M&quot;)) {</span>
+<span class="fc" id="L55">				totalBoys += numBorn;</span>
+<span class="fc" id="L56">				uniqueBoys++;</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">				if (rec.get(0).equals(dadName))	continue;</span>
+<span class="fc" id="L58">				int strSum = sumString(rec.get(0));</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">				if (Math.abs(dadSum-strSum) &lt; minM) {</span>
+<span class="fc" id="L60">					selectedPopBoyString = rec.get(0);</span>
+<span class="fc" id="L61">					selectedPopBoyOcc = numBorn;</span>
+<span class="fc" id="L62">					selectedPopBoySum = strSum;</span>
+<span class="fc" id="L63">					selectedPopBoyDiff = Math.abs(dadSum-strSum);</span>
+<span class="fc" id="L64">					minM = selectedPopBoyDiff;</span>
+				}
+			}
+<span class="fc" id="L67">		}</span>
+		
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		for (CSVRecord rec : getFileParser(momYear)) {</span>
+<span class="fc" id="L70">			int numBorn = Integer.parseInt(rec.get(2));</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">			if (rec.get(1).equals(&quot;F&quot;)) {</span>
+<span class="fc" id="L72">				totalGirls += numBorn;</span>
+<span class="fc" id="L73">				uniqueGirls++;</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">				if (rec.get(0).equals(momName))	continue;</span>
+<span class="fc" id="L75">				int strSum = sumString(rec.get(0));</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">				if (Math.abs(momSum-strSum) &lt; minF) {</span>
+<span class="fc" id="L77">					selectedPopGirlString = rec.get(0);</span>
+<span class="fc" id="L78">					selectedPopGirlOcc = numBorn;</span>
+<span class="fc" id="L79">					selectedPopGirlSum = strSum;</span>
+<span class="fc" id="L80">					selectedPopGirlDiff = Math.abs(momSum-strSum);</span>
+<span class="fc" id="L81">					minF = selectedPopGirlDiff;</span>
+				}
+			}
+<span class="fc" id="L84">		}</span>
+<span class="fc" id="L85">		summaryB = String.format(&quot;%s is the most appropriate name found by the algorithm with the number of occurrences of %d, &quot;</span>
+				+ &quot;which represents %.3f%% of total male births in dad's year of birth, %d.\n&quot;
+				+ &quot;The sum of all characters in the dad's name %s is %d.\n&quot;
+				+ &quot;The sum of all characters in name %s is %d, which is the closest to that of the dad's name with difference %d.&quot;, 
+<span class="fc" id="L89">				selectedPopBoyString,  selectedPopBoyOcc, selectedPopBoyOcc / (double)totalBoys, dadYear,</span>
+<span class="fc" id="L90">				getDadName(), dadSum, selectedPopBoyString, selectedPopBoySum, selectedPopBoyDiff);</span>
+<span class="fc" id="L91">		summaryG = String.format(&quot;%s is the most appropriate name found by the algorithm with the number of occurrences of %d, &quot;</span>
+				+ &quot;which represents %.3f%% of total female births in mom's year of birth, %d.\n&quot;
+				+ &quot;The sum of all characters in the mom's name %s is %d.\n&quot;
+				+ &quot;The sum of all characters in name %s is %d, which is the closest to that of the mom's name with difference %d.&quot;, 
+<span class="fc" id="L95">				selectedPopGirlString,  selectedPopGirlOcc, selectedPopGirlOcc / (double)totalGirls, momYear,</span>
+<span class="fc" id="L96">				getMomName(), momSum, selectedPopGirlString, selectedPopGirlSum, selectedPopGirlDiff);</span>
+<span class="fc" id="L97">	}</span>
+
+	public int getMomYear() {
+<span class="nc" id="L100">		return momYear;</span>
+	}
+
+	public void setMomYear(int momYear) {
+<span class="fc" id="L104">		this.momYear = momYear;</span>
+<span class="fc" id="L105">	}</span>
+
+	public int getDadYear() {
+<span class="nc" id="L108">		return dadYear;</span>
+	}
+
+	public void setDadYear(int dadYear) {
+<span class="fc" id="L112">		this.dadYear = dadYear;</span>
+<span class="fc" id="L113">	}</span>
+	
+	
+	
+	private int sumString(String str) {
+<span class="fc" id="L118">		int sum = 0;</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">		for (int i = 0; i &lt; str.length(); i++) {</span>
+<span class="fc" id="L120">			sum += str.charAt(i);</span>
+		}
+<span class="fc" id="L122">		return sum;</span>
+	}
+
+	public String getMomName() {
+<span class="fc" id="L126">		return momName;</span>
+	}
+
+	public void setMomName(String momName) {
+<span class="fc" id="L130">		this.momName = momName;</span>
+<span class="fc" id="L131">	}</span>
+
+	public String getDadName() {
+<span class="fc" id="L134">		return dadName;</span>
+	}
+
+	public void setDadName(String dadName) {
+<span class="fc" id="L138">		this.dadName = dadName;</span>
+<span class="fc" id="L139">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

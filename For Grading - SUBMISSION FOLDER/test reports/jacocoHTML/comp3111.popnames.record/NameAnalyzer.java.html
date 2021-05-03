@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NameAnalyzer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.record</a> &gt; <span class="el_source">NameAnalyzer.java</span></div><h1>NameAnalyzer.java</h1><pre class="source lang-java linenums">package comp3111.popnames.record;
+
+import comp3111.popnames.utils.Trie;
+import edu.duke.FileResource;
+import edu.duke.ResourceException;
+import javafx.beans.property.SimpleStringProperty;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import java.util.*;
+
+/**
+ * The analyzer for the name database
+ */
+public class NameAnalyzer {
+
+    /**
+     * This contains the name records within each year
+     */
+    public static class YearRecord {
+        /**
+         * The constructor of the class.
+         */
+<span class="fc" id="L24">        public YearRecord() {</span>
+<span class="fc" id="L25">            maleTotalOccur = 0;</span>
+<span class="fc" id="L26">            femaleTotalOccur = 0;</span>
+<span class="fc" id="L27">        }</span>
+
+<span class="fc" id="L29">        private final HashMap&lt;String, NameRecord&gt; maleNameMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L30">        private final HashMap&lt;String, NameRecord&gt; femaleNameMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L31">        private final ArrayList&lt;NameRecord&gt; maleNames = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L32">        private final ArrayList&lt;NameRecord&gt; femaleNames = new ArrayList&lt;&gt;();</span>
+        private int maleTotalOccur;
+        private int femaleTotalOccur;
+    }
+
+    /**
+     * This is used to convey queried information
+     */
+<span class="fc" id="L40">    public static class NameQuery {</span>
+        /**
+         * The occurence of the name.
+         */
+        public int occurrence;
+
+        /**
+         * The rank of the name.
+         */
+        public int rank;
+
+        /**
+         * The year of the name.
+         */
+        public int year;
+
+        /**
+         * The percentage of total birth of the given gender in the given year.
+         */
+        public double percentage;
+<span class="fc" id="L60">        private final SimpleStringProperty percentageProperty = new SimpleStringProperty();</span>
+
+        /**
+         * Get the occurrence of the name in one year
+         * @return the occurrence
+         */
+        public int getOccurrence() {
+<span class="fc" id="L67">            return occurrence;</span>
+        }
+
+        /**
+         * Get the rank of the name in one year
+         * @return the rank
+         */
+        public int getRank() {
+<span class="fc" id="L75">            return rank;</span>
+        }
+
+        /**
+         * Get the year for the query
+         * @return the year
+         */
+        public int getYear() {
+<span class="fc" id="L83">            return year;</span>
+        }
+
+        /**
+         * Get the formatted percentage info of the name
+         * @return the formatted SimpleStringProperty for TableView
+         */
+        public SimpleStringProperty percentageProperty() {
+<span class="fc" id="L91">            percentageProperty.set(String.format(&quot;%.2f%%&quot;, percentage * 100.0));</span>
+<span class="fc" id="L92">            return percentageProperty;</span>
+        }
+
+        /**
+         * Comparator according to the occurrence of the name in descending order
+         */
+<span class="fc" id="L98">        public static final Comparator&lt;NameQuery&gt; occurrenceComparator = (o1, o2) -&gt; o2.occurrence - o1.occurrence;</span>
+    }
+
+<span class="fc" id="L101">    private static final NameAnalyzer instance = new NameAnalyzer(1880, 2019);</span>
+
+    /**
+     * The trie used for autocompletion
+     */
+<span class="fc" id="L106">    public final Trie trie = new Trie();</span>
+
+    /**
+     * Get the unique instance of the class
+     * @return the instance
+     */
+    public static NameAnalyzer getInstance() {
+<span class="fc" id="L113">        return instance;</span>
+    }
+
+<span class="fc" id="L116">    private NameAnalyzer(int start, int end) {</span>
+<span class="fc" id="L117">        startYear = start;</span>
+<span class="fc" id="L118">        endYear = end;</span>
+<span class="fc" id="L119">        analyzeData();</span>
+<span class="fc" id="L120">    }</span>
+
+<span class="fc" id="L122">    private final HashMap&lt;Integer, YearRecord&gt; yearRecords = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L123">    private final HashSet&lt;String&gt; nameSet = new HashSet&lt;&gt;();</span>
+    private final int startYear;
+    private final int endYear;
+
+    /**
+     * Get the csv file parser for a specific year
+     * @param year year of interest
+     * @return the parser if file exists, null otherwise
+     */
+    public CSVParser getFileParser(int year) {
+<span class="pc bpc" id="L133" title="1 of 4 branches missed.">        if (year &lt; startYear || year &gt; endYear) {</span>
+<span class="fc" id="L134">            return null;</span>
+        }
+
+        try {
+<span class="fc" id="L138">            FileResource fr = new FileResource(String.format(&quot;dataset/yob%s.csv&quot;, year));</span>
+<span class="fc" id="L139">            return fr.getCSVParser(false);</span>
+<span class="nc" id="L140">        } catch (ResourceException e) {</span>
+<span class="nc" id="L141">            return null;</span>
+        }
+    }
+
+    private void analyzeYear(int year) {
+<span class="fc" id="L146">        CSVParser parser = getFileParser(year);</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        if (parser == null) {</span>
+<span class="nc" id="L148">            return;</span>
+        }
+<span class="fc" id="L150">        YearRecord yearRecord = new YearRecord();</span>
+
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        for (CSVRecord record : parser) {</span>
+<span class="fc" id="L153">            String name = record.get(0).toLowerCase(Locale.ROOT);</span>
+<span class="fc" id="L154">            nameSet.add(name);</span>
+<span class="fc" id="L155">            char gender = 'M';</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">            if (record.get(1).equals(&quot;F&quot;)) {</span>
+<span class="fc" id="L157">                gender = 'F';</span>
+            }
+<span class="fc" id="L159">            int occurrence = Integer.parseInt(record.get(2));</span>
+
+<span class="fc" id="L161">            NameRecord nameRecord = new NameRecord(name, gender, year, occurrence);</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">            if (gender == 'M') {</span>
+<span class="fc" id="L163">                yearRecord.maleNames.add(nameRecord);</span>
+<span class="fc" id="L164">                yearRecord.maleTotalOccur += occurrence;</span>
+            } else {
+<span class="fc" id="L166">                yearRecord.femaleNames.add(nameRecord);</span>
+<span class="fc" id="L167">                yearRecord.femaleTotalOccur += occurrence;</span>
+            }
+<span class="fc" id="L169">        }</span>
+
+<span class="fc" id="L171">        yearRecord.maleNames.sort(NameRecord.occurrenceComparator);</span>
+<span class="fc" id="L172">        yearRecord.femaleNames.sort(NameRecord.occurrenceComparator);</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        for (int i = 0; i &lt; yearRecord.maleNames.size(); i += 1) {</span>
+<span class="fc" id="L174">            yearRecord.maleNames.get(i).rank(i + 1);</span>
+        }
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        for (int i = 0; i &lt; yearRecord.femaleNames.size(); i += 1) {</span>
+<span class="fc" id="L177">            yearRecord.femaleNames.get(i).rank(i + 1);</span>
+        }
+
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        for (NameRecord name : yearRecord.maleNames) {</span>
+<span class="fc" id="L181">            yearRecord.maleNameMap.put(name.name(), name);</span>
+<span class="fc" id="L182">        }</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">        for (NameRecord name : yearRecord.femaleNames) {</span>
+<span class="fc" id="L184">            yearRecord.femaleNameMap.put(name.name(), name);</span>
+<span class="fc" id="L185">        }</span>
+
+<span class="fc" id="L187">        yearRecords.put(year, yearRecord);</span>
+<span class="fc" id="L188">    }</span>
+
+    private void analyzeData() {
+<span class="fc bfc" id="L191" title="All 2 branches covered.">        for (int i = startYear; i &lt;= endYear; i += 1) {</span>
+<span class="fc" id="L192">            analyzeYear(i);</span>
+        }
+
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        for (String name : nameSet) {</span>
+<span class="fc" id="L196">            trie.addName(name);</span>
+<span class="fc" id="L197">        }</span>
+<span class="fc" id="L198">    }</span>
+
+    /**
+     * Retrieve a name report about occurrence, rank and percentage
+     * @param name the name of interest
+     * @param gender the gender preferred
+     * @param startYear the starting year of query range
+     * @param endYear the ending year of query range
+     * @return an ArrayList of NameQuery, empty if name is not found
+     */
+    public ArrayList&lt;NameQuery&gt; getNameReport(String name, char gender, int startYear, int endYear) {
+<span class="fc" id="L209">        String processedName = name.toLowerCase(Locale.ROOT);</span>
+<span class="fc" id="L210">        ArrayList&lt;NameQuery&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        for (int i = startYear; i &lt;= endYear; i += 1) {</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">            if (!yearRecords.containsKey(i)) {</span>
+<span class="nc" id="L213">                continue;</span>
+            }
+
+<span class="fc" id="L216">            YearRecord yearRecord = yearRecords.get(i);</span>
+
+<span class="fc bfc" id="L218" title="All 4 branches covered.">            if (gender == 'M' &amp;&amp; yearRecord.maleNameMap.containsKey(processedName)) {</span>
+<span class="fc" id="L219">                NameQuery query = new NameQuery();</span>
+<span class="fc" id="L220">                NameRecord record = yearRecord.maleNameMap.get(processedName);</span>
+<span class="fc" id="L221">                query.occurrence = record.occurrence();</span>
+<span class="fc" id="L222">                query.rank = record.rank();</span>
+<span class="fc" id="L223">                query.year = i;</span>
+<span class="fc" id="L224">                query.percentage = (double) query.occurrence / (double) yearRecord.maleTotalOccur;</span>
+<span class="fc" id="L225">                list.add(query);</span>
+            }
+
+<span class="fc bfc" id="L228" title="All 4 branches covered.">            if (gender == 'F' &amp;&amp; yearRecord.femaleNameMap.containsKey(processedName)) {</span>
+<span class="fc" id="L229">                NameQuery query = new NameQuery();</span>
+<span class="fc" id="L230">                NameRecord record = yearRecord.femaleNameMap.get(processedName);</span>
+<span class="fc" id="L231">                query.occurrence = record.occurrence();</span>
+<span class="fc" id="L232">                query.rank = record.rank();</span>
+<span class="fc" id="L233">                query.year = i;</span>
+<span class="fc" id="L234">                query.percentage = (double) query.occurrence / (double) yearRecord.femaleTotalOccur;</span>
+<span class="fc" id="L235">                list.add(query);</span>
+            }
+        }
+<span class="fc" id="L238">        return list;</span>
+    }
+
+    /**
+     * Get the sorted NameRecord ArrayList with respect to occurrence
+     * @param name the name of interest
+     * @return the sorted ArrayList
+     */
+    public ArrayList&lt;NameRecord&gt; getSortedRecords(String name) {
+<span class="nc" id="L247">        String processedName = name.toLowerCase(Locale.ROOT);</span>
+<span class="nc" id="L248">        ArrayList&lt;NameRecord&gt; records = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">        for (YearRecord year : yearRecords.values()) {</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">            if (year.femaleNameMap.containsKey(processedName)) {</span>
+<span class="nc" id="L251">                records.add(year.femaleNameMap.get(processedName));</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">            } else if (year.maleNameMap.containsKey(processedName)) {</span>
+<span class="nc" id="L253">                records.add(year.maleNameMap.get(processedName));</span>
+            }
+<span class="nc" id="L255">        }</span>
+<span class="nc" id="L256">        records.sort(NameRecord.occurrenceComparator);</span>
+<span class="nc" id="L257">        return records;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

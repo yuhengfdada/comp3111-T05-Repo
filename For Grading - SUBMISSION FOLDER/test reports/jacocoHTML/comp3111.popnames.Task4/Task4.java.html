@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Task4.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.Task4</a> &gt; <span class="el_source">Task4.java</span></div><h1>Task4.java</h1><pre class="source lang-java linenums">package comp3111.popnames.Task4;
+
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import comp3111.popnames.AnalyzeNames;
+import edu.duke.FileResource;
+import javafx.util.Pair;
+/**
+ * This class contains all information needed for task4, algorithm 1.
+ * @author syh
+ *
+ */
+<span class="fc" id="L14">public class Task4 {</span>
+<span class="fc" id="L15">	private int momYear = 0;</span>
+<span class="fc" id="L16">	private int dadYear = 0;</span>
+
+	String mostPopBoyString;
+	int mostPopBoyOcc;
+	String mostPopGirlString;
+	int mostPopGirlOcc;
+	
+<span class="fc" id="L23">	int totalBoys = 0;</span>
+<span class="fc" id="L24">	int totalGirls = 0;</span>
+<span class="fc" id="L25">	int uniqueBoys = 0;</span>
+<span class="fc" id="L26">	int uniqueGirls = 0;</span>
+	
+	String summaryB;
+	String summaryG;
+	
+	public static CSVParser getFileParser(int year) {
+<span class="fc" id="L32">	     FileResource fr = new FileResource(String.format(&quot;dataset/yob%s.csv&quot;, year));</span>
+<span class="fc" id="L33">	     return fr.getCSVParser(false);</span>
+	}
+	
+	public void getMostPopNameAndStore() {	
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">		for (CSVRecord rec : getFileParser(dadYear)) {</span>
+<span class="fc" id="L38">			int numBorn = Integer.parseInt(rec.get(2));</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">			if (rec.get(1).equals(&quot;M&quot;)) {</span>
+<span class="fc" id="L40">				totalBoys += numBorn;</span>
+<span class="fc" id="L41">				uniqueBoys++;</span>
+<span class="fc" id="L42">				mostPopBoyString = rec.get(0);</span>
+<span class="fc" id="L43">				mostPopBoyOcc = numBorn;</span>
+<span class="fc" id="L44">				break;</span>
+			}
+<span class="fc" id="L46">		}</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">		for (CSVRecord rec : getFileParser(momYear)) {</span>
+<span class="fc" id="L48">			int numBorn = Integer.parseInt(rec.get(2));</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">			if (rec.get(1).equals(&quot;F&quot;)) {</span>
+<span class="fc" id="L50">				totalGirls += numBorn;</span>
+<span class="fc" id="L51">				uniqueGirls++;</span>
+<span class="fc" id="L52">				mostPopGirlString = rec.get(0);</span>
+<span class="fc" id="L53">				mostPopGirlOcc = numBorn;</span>
+<span class="fc" id="L54">				break;</span>
+			}
+<span class="nc" id="L56">		}</span>
+<span class="fc" id="L57">		summaryB = String.format(&quot;%s is the most popular name with the number of occurrences of %d, which represents %.3f%% of total male births in dad's year of birth, %d.&quot;, mostPopBoyString,  mostPopBoyOcc, mostPopBoyOcc / (double)totalBoys, dadYear);</span>
+<span class="fc" id="L58">		summaryG = String.format(&quot;%s is the most popular name with the number of occurrences of %d, which represents %.3f%% of total female births in mom's year of birth, %d.&quot;, mostPopGirlString,  mostPopGirlOcc, mostPopGirlOcc / (double)totalGirls, momYear);</span>
+<span class="fc" id="L59">	}</span>
+
+	public int getMomYear() {
+<span class="nc" id="L62">		return momYear;</span>
+	}
+
+	public void setMomYear(int momYear) {
+<span class="fc" id="L66">		this.momYear = momYear;</span>
+<span class="fc" id="L67">	}</span>
+
+	public int getDadYear() {
+<span class="nc" id="L70">		return dadYear;</span>
+	}
+
+	public void setDadYear(int dadYear) {
+<span class="fc" id="L74">		this.dadYear = dadYear;</span>
+<span class="fc" id="L75">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

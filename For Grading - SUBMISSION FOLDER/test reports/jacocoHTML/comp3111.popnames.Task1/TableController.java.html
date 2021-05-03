@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TableController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.Task1</a> &gt; <span class="el_source">TableController.java</span></div><h1>TableController.java</h1><pre class="source lang-java linenums">package comp3111.popnames.Task1;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.util.Pair;
+
+<span class="fc" id="L23">public class TableController {</span>
+
+    @FXML
+    private TableView&lt;TableEntry&gt; tableM;
+    @FXML
+    private TableView&lt;TableEntry&gt; tableF;
+    
+    @FXML
+    private Label titleM;
+    @FXML
+    private Label titleF;
+    
+    @FXML
+    private TableColumn&lt;TableEntry, String&gt; nameColumn;
+    @FXML
+    private TableColumn&lt;TableEntry, Integer&gt; occColumn;
+    @FXML
+    private TableColumn&lt;TableEntry, String&gt; percentageColumn;
+    
+    @FXML
+    private TableColumn&lt;TableEntry, String&gt; nameColumn1;
+    @FXML
+    private TableColumn&lt;TableEntry, Integer&gt; occColumn1;
+    @FXML
+    private TableColumn&lt;TableEntry, String&gt; percentageColumn1;
+    
+    @FXML
+    private Button back;
+
+    private Task1 task1;
+    
+    
+    @FXML
+    void goBack(ActionEvent event) throws IOException {
+<span class="fc" id="L57">    	FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;/task1_1.fxml&quot;));</span>
+<span class="fc" id="L58">    	Parent task1Parent = (Parent)loader.load();</span>
+<span class="fc" id="L59">    	Scene task1Scene = new Scene(task1Parent);</span>
+<span class="fc" id="L60">    	Task1Controller controller = (Task1Controller)loader.getController();</span>
+    	
+<span class="fc" id="L62">    	Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();</span>
+<span class="fc" id="L63">    	window.setUserData(task1);</span>
+<span class="fc" id="L64">    	controller.showStoredSummary(window);</span>
+<span class="fc" id="L65">    	window.setScene(task1Scene);</span>
+<span class="fc" id="L66">    	window.show();</span>
+<span class="fc" id="L67">    }</span>
+    
+    public void appearTable(Stage stage) {
+<span class="fc" id="L70">    	stage.setTitle(&quot;Table Summary&quot;);</span>
+<span class="fc" id="L71">    	task1 = (Task1)stage.getUserData();</span>
+    	// set titles
+<span class="fc" id="L73">    	titleM.setText(String.format(&quot;Top %d Names (male) in %d&quot;, task1.topN, task1.year));</span>
+<span class="fc" id="L74">    	titleF.setText(String.format(&quot;Top %d Names (female) in %d&quot;, task1.topN, task1.year));</span>
+    	// turn into table entries
+<span class="fc" id="L76">    	List&lt;TableEntry&gt; entriesM = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L77">    	List&lt;TableEntry&gt; entriesF = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">    	for (Pair&lt;String, Integer&gt; pair : task1.popNamesListM) {</span>
+<span class="fc" id="L79">    		String percString = String.format(&quot;%.3f%%&quot;, (pair.getValue() / (double)task1.totalBoys));</span>
+<span class="fc" id="L80">    		TableEntry temp = new TableEntry(pair.getKey(), pair.getValue(), percString);</span>
+<span class="fc" id="L81">    		entriesM.add(temp);</span>
+<span class="fc" id="L82">    	}</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">    	for (Pair&lt;String, Integer&gt; pair : task1.popNamesListF) {</span>
+<span class="fc" id="L84">    		String percString = String.format(&quot;%.3f%%&quot;, (pair.getValue() / (double)task1.totalGirls));</span>
+<span class="fc" id="L85">    		TableEntry temp = new TableEntry(pair.getKey(), pair.getValue(), percString);</span>
+<span class="fc" id="L86">    		entriesF.add(temp);</span>
+<span class="fc" id="L87">    	}</span>
+<span class="fc" id="L88">    	ObservableList&lt;TableEntry&gt; ls1=FXCollections.observableArrayList();</span>
+<span class="fc" id="L89">    	ObservableList&lt;TableEntry&gt; ls2=FXCollections.observableArrayList();</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">    	for (TableEntry tEntry : entriesM) {</span>
+<span class="fc" id="L91">    		ls1.add(tEntry);</span>
+<span class="fc" id="L92">    	}</span>
+<span class="fc" id="L93">    	tableM.setItems(ls1);</span>
+<span class="fc" id="L94">    	nameColumn.setCellValueFactory(new PropertyValueFactory&lt;TableEntry, String&gt;(&quot;name&quot;));</span>
+<span class="fc" id="L95">    	occColumn.setCellValueFactory(new PropertyValueFactory&lt;TableEntry, Integer&gt;(&quot;occ&quot;));</span>
+<span class="fc" id="L96">    	percentageColumn.setCellValueFactory(new PropertyValueFactory&lt;TableEntry, String&gt;(&quot;percentage&quot;));</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">    	for (TableEntry tEntry : entriesF) {</span>
+<span class="fc" id="L98">    		ls2.add(tEntry);</span>
+<span class="fc" id="L99">    	}</span>
+<span class="fc" id="L100">    	tableF.setItems(ls2);</span>
+<span class="fc" id="L101">    	nameColumn1.setCellValueFactory(new PropertyValueFactory&lt;TableEntry, String&gt;(&quot;name&quot;));</span>
+<span class="fc" id="L102">    	occColumn1.setCellValueFactory(new PropertyValueFactory&lt;TableEntry, Integer&gt;(&quot;occ&quot;));</span>
+<span class="fc" id="L103">    	percentageColumn1.setCellValueFactory(new PropertyValueFactory&lt;TableEntry, String&gt;(&quot;percentage&quot;));</span>
+    	
+<span class="fc" id="L105">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

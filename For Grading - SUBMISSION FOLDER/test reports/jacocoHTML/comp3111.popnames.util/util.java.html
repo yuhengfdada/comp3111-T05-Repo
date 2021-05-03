@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>util.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.util</a> &gt; <span class="el_source">util.java</span></div><h1>util.java</h1><pre class="source lang-java linenums">package comp3111.popnames.util;
+/**
+ * Util class for task 1 and 4, mostly checking input validity.
+ * @author syh
+ *
+ */
+<span class="nc" id="L7">public class util {</span>
+	public static boolean isNumeric(String strNum) {
+<span class="fc bfc" id="L9" title="All 2 branches covered.">	    if (strNum.isEmpty()) {</span>
+<span class="fc" id="L10">	        return false;</span>
+	    }
+	    try {
+<span class="fc" id="L13">	        int i = Integer.parseInt(strNum);</span>
+<span class="nc" id="L14">	    } catch (NumberFormatException nfe) {</span>
+<span class="nc" id="L15">	        return false;</span>
+<span class="fc" id="L16">	    }</span>
+<span class="fc" id="L17">	    return true;</span>
+	}
+	
+	public static boolean isValidYear(int year) {
+<span class="pc bpc" id="L21" title="1 of 4 branches missed.">		return year &gt;= 1880 &amp;&amp; year &lt;= 2019;</span>
+	}
+	
+	public static boolean isValidN(int n) {
+<span class="pc bpc" id="L25" title="1 of 4 branches missed.">		return n &gt;= 1 &amp;&amp; n &lt;= 10;</span>
+	}
+	
+	public static boolean isAlpha(String name) {
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">	    if (name.isEmpty()) {</span>
+<span class="nc" id="L30">	        return false;</span>
+	    }
+<span class="fc" id="L32">	    char[] chars = name.toCharArray();</span>
+
+<span class="fc bfc" id="L34" title="All 2 branches covered.">	    for (char c : chars) {</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">	        if(!Character.isLetter(c)) {</span>
+<span class="fc" id="L36">	            return false;</span>
+	        }
+	    }
+<span class="fc" id="L39">	    return true;</span>
+	}
+	
+	public static String cap(String str) {
+<span class="fc" id="L43">		return str.substring(0,1).toUpperCase() + str.substring(1);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

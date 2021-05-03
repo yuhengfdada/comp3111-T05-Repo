@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ThemeAnalyzer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.record</a> &gt; <span class="el_source">ThemeAnalyzer.java</span></div><h1>ThemeAnalyzer.java</h1><pre class="source lang-java linenums">package comp3111.popnames.record;
+
+import edu.duke.FileResource;
+import edu.duke.ResourceException;
+import javafx.util.Pair;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * The class is used to parse the themes and meanings of the names from the external dataset.
+ * It also gathers and generates reports on query.
+ */
+public class ThemeAnalyzer {
+
+    private static class NameTheme {
+<span class="fc" id="L21">        public NameTheme(String theme, String meaning, String usage, char gender) {</span>
+<span class="fc" id="L22">            this.theme = theme;</span>
+<span class="fc" id="L23">            this.meaning = meaning;</span>
+<span class="fc" id="L24">            this.usage = usage;</span>
+<span class="fc" id="L25">            this.gender = gender;</span>
+<span class="fc" id="L26">        }</span>
+        public String theme, meaning, usage, rootMeaning;
+        public char gender;
+    }
+
+    private static final String themeDataPath;
+    private static final String meaningDataPath;
+    private static final int maxDepth = 5;
+    private final HashMap&lt;String, NameTheme&gt; themes;
+
+    static {
+<span class="fc" id="L37">        themeDataPath = &quot;dataset/themes/name_themes.csv&quot;;</span>
+<span class="fc" id="L38">        meaningDataPath = &quot;dataset/themes/name_with_meanings.csv&quot;;</span>
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * Constructor for the class.
+     */
+<span class="fc" id="L44">    public ThemeAnalyzer() {</span>
+<span class="fc" id="L45">        themes = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L46">        initData();</span>
+<span class="fc" id="L47">    }</span>
+
+    private static CSVParser getFileParser(String path) {
+        try {
+<span class="fc" id="L51">            FileResource fr = new FileResource(path);</span>
+<span class="fc" id="L52">            return fr.getCSVParser(false);</span>
+<span class="nc" id="L53">        } catch (ResourceException e) {</span>
+<span class="nc" id="L54">            return null;</span>
+        }
+    }
+
+    /**
+     * Initialize the meanings and themes data for names
+     */
+    private void initData() {
+<span class="fc" id="L62">        CSVParser parser = getFileParser(themeDataPath);</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (parser != null) {</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">            for (CSVRecord record : parser) {</span>
+<span class="fc" id="L65">                String name = record.get(1).trim().toLowerCase(Locale.ROOT);</span>
+<span class="fc" id="L66">                String theme = record.get(0);</span>
+<span class="fc" id="L67">                char gender = 'M';</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">                if (record.get(2).length() &gt; 1) {</span>
+<span class="fc" id="L69">                    gender = 'N';</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">                } else if (record.get(2).equals(&quot;f&quot;)) {</span>
+<span class="fc" id="L71">                    gender = 'F';</span>
+                }
+<span class="fc" id="L73">                String usage = record.get(3);</span>
+<span class="fc" id="L74">                String meaning = record.get(4);</span>
+
+<span class="fc bfc" id="L76" title="All 2 branches covered.">                if (!themes.containsKey(name)) {</span>
+<span class="fc" id="L77">                    themes.put(name, new NameTheme(theme, meaning, usage, gender));</span>
+                }
+<span class="fc" id="L79">            }</span>
+        }
+
+<span class="fc" id="L82">        parser = getFileParser(meaningDataPath);</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if (parser != null) {</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">            for (CSVRecord record : parser) {</span>
+<span class="fc" id="L85">                String name = record.get(0).trim().toLowerCase(Locale.ROOT);</span>
+<span class="fc" id="L86">                char gender = 'M';</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">                if (record.get(1).length() &gt; 1) {</span>
+<span class="fc" id="L88">                    gender = 'N';</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">                } else if (record.get(1).equals(&quot;f&quot;)) {</span>
+<span class="fc" id="L90">                    gender = 'F';</span>
+                }
+<span class="fc" id="L92">                String usage = record.get(2);</span>
+<span class="fc" id="L93">                String meaning = record.get(3);</span>
+
+<span class="fc bfc" id="L95" title="All 2 branches covered.">                if (!themes.containsKey(name)) {</span>
+<span class="fc" id="L96">                    themes.put(name, new NameTheme(null, meaning, usage, gender));</span>
+                }
+<span class="fc" id="L98">            }</span>
+        }
+
+<span class="fc" id="L101">        setRootMeaning();</span>
+<span class="fc" id="L102">    }</span>
+
+    private void setRootMeaning() {
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        for (NameTheme name : themes.values()) {</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            if (name.rootMeaning != null) {</span>
+<span class="fc" id="L107">                continue;</span>
+            }
+<span class="fc" id="L109">            findRoot(name, 0);</span>
+<span class="fc" id="L110">        }</span>
+<span class="fc" id="L111">    }</span>
+
+    private NameTheme findRoot(NameTheme cur, int depth) {
+<span class="fc" id="L114">        Pattern pattern = Pattern.compile(&quot;[A-Z]{2,}&quot;);</span>
+<span class="fc" id="L115">        Matcher matcher = pattern.matcher(cur.meaning);</span>
+<span class="fc bfc" id="L116" title="All 4 branches covered.">        if (matcher.find() &amp;&amp; depth &lt; maxDepth) {</span>
+<span class="fc" id="L117">            String name = matcher.group(0).toLowerCase(Locale.ROOT);</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            if (themes.containsKey(name)) {</span>
+<span class="fc" id="L119">                NameTheme root = findRoot(themes.get(name), depth + 1);</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">                if (root == cur) {</span>
+<span class="fc" id="L121">                    return cur;</span>
+                }
+<span class="fc" id="L123">                cur.rootMeaning = root.meaning; // path compression</span>
+<span class="fc" id="L124">                return root;</span>
+            }
+        }
+<span class="fc" id="L127">        return cur;</span>
+    }
+
+    /**
+     * Get the theme of the name
+     * @param name the name of interest
+     * @return the theme if the name exists in database, null otherwise
+     */
+    public String getNameTheme(String name) {
+<span class="fc" id="L136">        String processed = name.trim().toLowerCase(Locale.ROOT);</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        if (themes.containsKey(name)) {</span>
+<span class="fc" id="L138">            return themes.get(name).theme;</span>
+        }
+<span class="nc" id="L140">        return null;</span>
+    }
+
+    /**
+     * Get the meaning of the name
+     * @param name the name of interest
+     * @return the meaning if the name exists in database, null otherwise
+     */
+    public String getNameMeaning(String name) {
+<span class="fc" id="L149">        String processed = name.trim().toLowerCase(Locale.ROOT);</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (themes.containsKey(name)) {</span>
+<span class="fc" id="L151">            return themes.get(name).meaning;</span>
+        }
+<span class="nc" id="L153">        return null;</span>
+    }
+
+    /**
+     * Get the root meaning of the name
+     * @param name the name of interest
+     * @return the root meaning if name exists in database, null otherwise
+     */
+    public String getNameRootMeaning(String name) {
+<span class="fc" id="L162">        String processed = name.trim().toLowerCase(Locale.ROOT);</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        if (themes.containsKey(name)) {</span>
+<span class="fc" id="L164">            return themes.get(name).rootMeaning;</span>
+        }
+<span class="nc" id="L166">        return null;</span>
+    }
+
+    /**
+     * Get the full meaning of the name, including the direct and root meaning
+     * @param name the name of interest
+     * @return the full meaning if name exists in database, null otherwise
+     */
+    public String getNameFullMeaning(String name) {
+<span class="fc" id="L175">        String meaning = getNameMeaning(name);</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">        if (meaning == null) {</span>
+<span class="nc" id="L177">            return null;</span>
+        }
+<span class="fc" id="L179">        String rootMeaning = getNameRootMeaning(name);</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        if (rootMeaning == null) {</span>
+<span class="fc" id="L181">            return meaning;</span>
+        } else {
+<span class="fc" id="L183">            return meaning + &quot;\n&quot; + rootMeaning;</span>
+        }
+    }
+
+    /**
+     * Get the commonly associated gender of the name
+     * @param name the name of interest
+     * @return the gender if name exists in database, '\0' otherwise
+     */
+    public char getGender(String name) {
+<span class="nc" id="L193">        String processed = name.trim().toLowerCase(Locale.ROOT);</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (themes.containsKey(name)) {</span>
+<span class="nc" id="L195">            return themes.get(name).gender;</span>
+        }
+<span class="nc" id="L197">        return '\0';</span>
+    }
+
+    /**
+     * Get the range of languages where the name is used
+     * @param name the name of interest
+     * @return the result if name exists in database, null otherwise
+     */
+    public String getUsage(String name) {
+<span class="nc" id="L206">        String processed = name.trim().toLowerCase(Locale.ROOT);</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        if (themes.containsKey(name)) {</span>
+<span class="nc" id="L208">            return themes.get(name).usage;</span>
+        }
+<span class="nc" id="L210">        return null;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

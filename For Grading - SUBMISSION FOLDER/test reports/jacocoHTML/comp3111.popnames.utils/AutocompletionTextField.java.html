@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AutocompletionTextField.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.utils</a> &gt; <span class="el_source">AutocompletionTextField.java</span></div><h1>AutocompletionTextField.java</h1><pre class="source lang-java linenums">package comp3111.popnames.utils;
+
+import comp3111.popnames.record.NameAnalyzer;
+import javafx.geometry.Side;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.CustomMenuItem;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+
+/**
+ * This extends TextField and offers autocompletion for names based on trie.
+ * Reference: https://gist.github.com/floralvikings/10290131
+ */
+public class AutocompletionTextField extends TextField {
+    /**
+     * The popup used to select an entry.
+     */
+    private final ContextMenu entriesPopup;
+
+    /**
+     * Create an AutocompletionTextField
+     */
+    public AutocompletionTextField() {
+<span class="fc" id="L28">        super();</span>
+<span class="fc" id="L29">        entriesPopup = new ContextMenu();</span>
+<span class="fc" id="L30">        textProperty().addListener((observable, oldValue, newValue) -&gt; {</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">            if (getText().length() == 0) {</span>
+<span class="nc" id="L32">                entriesPopup.hide();</span>
+            } else {
+<span class="fc" id="L34">                NameAnalyzer analyzer = NameAnalyzer.getInstance();</span>
+<span class="fc" id="L35">                List&lt;String&gt; searchResult = analyzer.trie.findNamesWithPrefix(getText().toLowerCase(Locale.ROOT));</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">                if (searchResult.size() &gt; 0) {</span>
+<span class="fc" id="L37">                    populatePopup(searchResult);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">                    if (!entriesPopup.isShowing()) {</span>
+<span class="fc" id="L39">                        entriesPopup.show(AutocompletionTextField.this, Side.BOTTOM, 0, 0);</span>
+                    }
+                } else {
+<span class="nc" id="L42">                    entriesPopup.hide();</span>
+                }
+            }
+<span class="fc" id="L45">        });</span>
+
+<span class="fc" id="L47">        focusedProperty().addListener((observable, oldValue, newValue) -&gt; entriesPopup.hide());</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * Populate the entry set with the given search results. Display is limited to 10 entries, for performance.
+     *
+     * @param searchResult The set of matching strings.
+     */
+    private void populatePopup(List&lt;String&gt; searchResult) {
+<span class="fc" id="L56">        List&lt;CustomMenuItem&gt; menuItems = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L57">        int maxEntries = 10;</span>
+<span class="fc" id="L58">        int count = Math.min(searchResult.size(), maxEntries);</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (int i = 0; i &lt; count; i++) {</span>
+<span class="fc" id="L60">            final String result = searchResult.get(i).substring(0, 1).toUpperCase()</span>
+<span class="fc" id="L61">                    + searchResult.get(i).substring(1);</span>
+<span class="fc" id="L62">            Label entryLabel = new Label(result);</span>
+<span class="fc" id="L63">            CustomMenuItem item = new CustomMenuItem(entryLabel, true);</span>
+<span class="fc" id="L64">            item.setOnAction(actionEvent -&gt; {</span>
+<span class="nc" id="L65">                setText(result);</span>
+<span class="nc" id="L66">                entriesPopup.hide();</span>
+<span class="nc" id="L67">            });</span>
+<span class="fc" id="L68">            menuItems.add(item);</span>
+        }
+<span class="fc" id="L70">        entriesPopup.getItems().clear();</span>
+<span class="fc" id="L71">        entriesPopup.getItems().addAll(menuItems);</span>
+<span class="fc" id="L72">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

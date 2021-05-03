@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Task2_DTController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.Task2</a> &gt; <span class="el_source">Task2_DTController.java</span></div><h1>Task2_DTController.java</h1><pre class="source lang-java linenums">package comp3111.popnames.Task2;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+<span class="fc" id="L16">public class Task2_DTController {</span>
+
+<span class="fc" id="L18">    @FXML</span>
+    private TableView&lt;Task2_NameEntry&gt; Table = new TableView&lt;Task2_NameEntry&gt;();
+
+<span class="fc" id="L21">    private final ObservableList&lt;Task2_NameEntry&gt; data = FXCollections.observableArrayList();</span>
+
+    @FXML
+    private TableColumn&lt;Task2_NameEntry, String&gt; name ;
+
+    @FXML
+    private TableColumn&lt;Task2_NameEntry, Integer&gt; frequency;
+
+    @FXML
+    private TableColumn&lt;Task2_NameEntry, Integer&gt; occurrences;
+
+    @FXML
+    private TableColumn&lt;Task2_NameEntry, String&gt; percentage;
+
+    @FXML
+    public void initialize() {
+<span class="fc" id="L37">        name.setCellValueFactory(new PropertyValueFactory&lt;Task2_NameEntry, String&gt;(&quot;Name&quot;));</span>
+<span class="fc" id="L38">        frequency.setCellValueFactory(new PropertyValueFactory&lt;Task2_NameEntry, Integer&gt;(&quot;Frequency&quot;));</span>
+<span class="fc" id="L39">        occurrences.setCellValueFactory(new PropertyValueFactory&lt;Task2_NameEntry, Integer&gt;(&quot;Occurrences&quot;));</span>
+<span class="fc" id="L40">        percentage.setCellValueFactory(new PropertyValueFactory&lt;Task2_NameEntry, String&gt;(&quot;Percentage&quot;));</span>
+<span class="fc" id="L41">        int total_frequency = 0;</span>
+<span class="fc" id="L42">        int total_occurrence = 0;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for(int i = 0; i &lt; Task2_NameAnalyzer.name_list.size(); i++){</span>
+<span class="fc" id="L44">            total_frequency += Task2_NameAnalyzer.name_list.get(i).getValue();</span>
+<span class="fc" id="L45">            total_occurrence += Task2_NameAnalyzer.nameRecords.get(Task2_NameAnalyzer.name_list.get(i).getKey());</span>
+<span class="fc" id="L46">            data.add(new Task2_NameEntry(Task2_NameAnalyzer.name_list.get(i).getKey(), Task2_NameAnalyzer.name_list.get(i).getValue(),</span>
+<span class="fc" id="L47">                    Task2_NameAnalyzer.nameRecords.get(Task2_NameAnalyzer.name_list.get(i).getKey()),</span>
+<span class="fc" id="L48">                    String.format(&quot;%.2f%%&quot;,(double) Task2_NameAnalyzer.nameRecords.get(Task2_NameAnalyzer.name_list.get(i).getKey()) / (double) Task2_NameAnalyzer.totalOccurrence * 100)));</span>
+        }
+
+<span class="fc" id="L51">        data.add(new Task2_NameEntry(&quot;Total&quot;, total_frequency, total_occurrence, &quot;100.00%&quot;));</span>
+<span class="fc" id="L52">        Table.setEditable(true);</span>
+        //stage.show();
+<span class="fc" id="L54">        Table.setItems(data);</span>
+        //stage.show();
+
+<span class="fc" id="L57">        Table.setEditable(true);</span>
+<span class="fc" id="L58">        Table.setItems(data);</span>
+<span class="fc" id="L59">    }</span>
+
+    public void start() throws IOException {
+<span class="fc" id="L62">        FXMLLoader loader = new FXMLLoader();</span>
+<span class="fc" id="L63">        loader.setLocation(getClass().getResource(&quot;/Task2_data_table.fxml&quot;));</span>
+<span class="fc" id="L64">        Stage stage = new Stage();</span>
+<span class="fc" id="L65">        VBox root = loader.load();</span>
+<span class="fc" id="L66">        stage.setTitle(&quot;Data Table of K-th popular names&quot;);</span>
+<span class="fc" id="L67">        stage.setScene(new Scene(root));</span>
+<span class="fc" id="L68">        stage.setResizable(false);</span>
+
+<span class="fc" id="L70">        stage.show();</span>
+
+<span class="fc" id="L72">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

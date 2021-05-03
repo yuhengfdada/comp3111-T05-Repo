@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdditionalInfoController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers</a> &gt; <span class="el_source">AdditionalInfoController.java</span></div><h1>AdditionalInfoController.java</h1><pre class="source lang-java linenums">package comp3111.popnames.controllers;
+
+import comp3111.popnames.applications.CompatibilityPredictor;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+/**
+ * The controller for inputting additional info in task 6.
+ */
+<span class="fc" id="L20">public class AdditionalInfoController {</span>
+
+    private static final ObservableList&lt;String&gt; eduLevelList;
+    private static final ObservableList&lt;String&gt; incomeLevelList;
+    private static final ObservableList&lt;String&gt; kidsPreferenceList;
+    private Stage previousStage;
+    private BasicInfoController previousController;
+
+    static {
+<span class="fc" id="L29">        eduLevelList = FXCollections.observableArrayList(&quot;Elementary school or below&quot;, &quot;Middle school&quot;,</span>
+                &quot;High school&quot;, &quot;Bachelor's degree&quot;, &quot;Master's degree&quot;, &quot;PhD or above&quot;, &quot;Unknown/Not Applicable&quot;);
+<span class="fc" id="L31">        incomeLevelList = FXCollections.observableArrayList(&quot;Lowest 25%&quot;, &quot;Middle 50%&quot;, &quot;Top 25%&quot;,</span>
+                &quot;Unknown/Not Applicable&quot;);
+<span class="fc" id="L33">        kidsPreferenceList = FXCollections.observableArrayList(&quot;Two or more kids&quot;, &quot;One kid&quot;, &quot;No kid&quot;,</span>
+                &quot;Unknown/Not Applicable&quot;);
+<span class="fc" id="L35">    }</span>
+
+    @FXML
+    private Slider selfEduSig;
+
+    @FXML
+    private ChoiceBox&lt;String&gt; selfEduLevel;
+
+    @FXML
+    private ChoiceBox&lt;String&gt; mateEduLevel;
+
+    @FXML
+    private Slider mateEduSig;
+
+    @FXML
+    private ChoiceBox&lt;String&gt; selfIncomeLevel;
+
+    @FXML
+    private ChoiceBox&lt;String&gt; mateIncomeLevel;
+
+    @FXML
+    private Slider selfIncomeSig;
+
+    @FXML
+    private Slider mateIncomeSig;
+
+    @FXML
+    private ChoiceBox&lt;String&gt; selfKids;
+
+    @FXML
+    private ChoiceBox&lt;String&gt; mateKids;
+
+    @FXML
+    private Button nextBtn;
+
+    @FXML
+    private Button backBtn;
+
+    @FXML
+    private Button cancelBtn;
+
+    @FXML
+    private TextField mateYob;
+
+    /**
+     * Initialize the controller.
+     */
+    @FXML
+    public void initialize() {
+<span class="fc" id="L84">        selfEduLevel.setItems(eduLevelList);</span>
+<span class="fc" id="L85">        mateEduLevel.setItems(eduLevelList);</span>
+<span class="fc" id="L86">        selfIncomeLevel.setItems(incomeLevelList);</span>
+<span class="fc" id="L87">        mateIncomeLevel.setItems(incomeLevelList);</span>
+<span class="fc" id="L88">        selfKids.setItems(kidsPreferenceList);</span>
+<span class="fc" id="L89">        mateKids.setItems(kidsPreferenceList);</span>
+
+<span class="fc" id="L91">        selfEduLevel.getSelectionModel().select(&quot;Unknown/Not Applicable&quot;);</span>
+<span class="fc" id="L92">        mateEduLevel.getSelectionModel().select(&quot;Unknown/Not Applicable&quot;);</span>
+<span class="fc" id="L93">        selfIncomeLevel.getSelectionModel().select(&quot;Unknown/Not Applicable&quot;);</span>
+<span class="fc" id="L94">        mateIncomeLevel.getSelectionModel().select(&quot;Unknown/Not Applicable&quot;);</span>
+<span class="fc" id="L95">        selfKids.getSelectionModel().select(&quot;Unknown/Not Applicable&quot;);</span>
+<span class="fc" id="L96">        mateKids.getSelectionModel().select(&quot;Unknown/Not Applicable&quot;);</span>
+<span class="fc" id="L97">    }</span>
+
+    @FXML
+    void onBackBtnPressed(ActionEvent event) {
+<span class="nc" id="L101">        previousStage.show();</span>
+<span class="nc" id="L102">        Stage stage = (Stage) backBtn.getScene().getWindow();</span>
+<span class="nc" id="L103">        stage.close();</span>
+<span class="nc" id="L104">    }</span>
+
+    @FXML
+    void onCancelBtnPressed(ActionEvent event) {
+<span class="nc" id="L108">        close();</span>
+<span class="nc" id="L109">    }</span>
+
+    @FXML
+    void onNextBtnPressed(ActionEvent event) throws IOException {
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (validateInput()) {</span>
+<span class="fc" id="L114">            setValues();</span>
+        } else {
+<span class="nc" id="L116">            return;</span>
+        }
+
+<span class="fc" id="L119">        FXMLLoader loader = new FXMLLoader();</span>
+<span class="fc" id="L120">        loader.setLocation(getClass().getResource(&quot;/score_predictor_ui/preferences_ui.fxml&quot;));</span>
+<span class="fc" id="L121">        Parent root = (Parent) loader.load();</span>
+<span class="fc" id="L122">        Stage stage = new Stage();</span>
+<span class="fc" id="L123">        stage.initModality(Modality.APPLICATION_MODAL);</span>
+<span class="fc" id="L124">        stage.setTitle(&quot;Compatibility Score Predictor&quot;);</span>
+<span class="fc" id="L125">        stage.setScene(new Scene(root));</span>
+<span class="fc" id="L126">        stage.setResizable(false);</span>
+
+<span class="fc" id="L128">        Stage curStage = (Stage) nextBtn.getScene().getWindow();</span>
+<span class="fc" id="L129">        PreferencesController controller = loader.getController();</span>
+<span class="fc" id="L130">        controller.setParent(curStage, this);</span>
+<span class="fc" id="L131">        curStage.hide();</span>
+<span class="fc" id="L132">        stage.show();</span>
+<span class="fc" id="L133">    }</span>
+
+    private void setValues() {
+<span class="fc" id="L136">        CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();</span>
+<span class="fc" id="L137">        predictor.eduMetrics.setSelfEdu(selfEduLevel.getSelectionModel().getSelectedIndex());</span>
+<span class="fc" id="L138">        predictor.eduMetrics.setMateEdu(mateEduLevel.getSelectionModel().getSelectedIndex());</span>
+<span class="fc" id="L139">        predictor.eduMetrics.setSignificance(selfEduSig.getValue() * 0.2, mateEduSig.getValue() * 0.2);</span>
+
+<span class="fc" id="L141">        predictor.incomeMetrics.setSelf(selfIncomeLevel.getSelectionModel().getSelectedIndex());</span>
+<span class="fc" id="L142">        predictor.incomeMetrics.setMate(mateIncomeLevel.getSelectionModel().getSelectedIndex());</span>
+<span class="fc" id="L143">        predictor.incomeMetrics.setSignificance(selfIncomeSig.getValue() * 0.2, mateIncomeSig.getValue() * 0.2);</span>
+
+<span class="fc" id="L145">        predictor.kidsMetrics.setSelfKids(selfKids.getSelectionModel().getSelectedIndex());</span>
+<span class="fc" id="L146">        predictor.kidsMetrics.setMateKids(mateKids.getSelectionModel().getSelectedIndex());</span>
+
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        if (!mateYob.getText().trim().isEmpty()) {</span>
+<span class="fc" id="L149">            predictor.mateYob = Integer.parseInt(mateYob.getText().trim());</span>
+        } else {
+<span class="nc" id="L151">            predictor.mateYob = -1;</span>
+        }
+<span class="fc" id="L153">    }</span>
+
+    private boolean validateInput() {
+<span class="fc" id="L156">        String mYob = mateYob.getText().trim();</span>
+<span class="fc" id="L157">        StringBuilder errorMsg = new StringBuilder();</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">        if (!mYob.isEmpty()) {</span>
+            try {
+<span class="fc" id="L160">                int year = Integer.parseInt(mYob);</span>
+<span class="pc bpc" id="L161" title="2 of 4 branches missed.">                if (year &lt; 1880 || year &gt; 2019) {</span>
+<span class="nc" id="L162">                    errorMsg.append(&quot;- Please enter a valid year between 1880 and 2019.\n&quot;);</span>
+                }
+<span class="nc" id="L164">            } catch (NumberFormatException e) {</span>
+<span class="nc" id="L165">                errorMsg.append(&quot;- Please enter a valid year between 1880 and 2019.\n&quot;);</span>
+<span class="fc" id="L166">            }</span>
+        }
+
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">        if (errorMsg.length() &gt; 0) {</span>
+<span class="nc" id="L170">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L171">            alert.setTitle(&quot;Warning&quot;);</span>
+<span class="nc" id="L172">            alert.setHeaderText(&quot;Input Values Invalid&quot;);</span>
+<span class="nc" id="L173">            alert.setContentText(errorMsg.toString());</span>
+
+<span class="nc" id="L175">            alert.showAndWait();</span>
+<span class="nc" id="L176">            return false;</span>
+        }
+
+<span class="fc" id="L179">        return true;</span>
+    }
+
+    /**
+     * Set the previous stage and controller
+     * @param stage previous stage
+     * @param controller previous controller
+     */
+    public void setParent(Stage stage, BasicInfoController controller) {
+<span class="fc" id="L188">        previousStage = stage;</span>
+<span class="fc" id="L189">        previousController = controller;</span>
+<span class="fc" id="L190">    }</span>
+
+    /**
+     * Close the controller and the previous controller
+     */
+    public void close() {
+<span class="fc" id="L196">        Stage stage = (Stage) nextBtn.getScene().getWindow();</span>
+<span class="fc" id="L197">        stage.close();</span>
+<span class="fc" id="L198">        previousController.close();</span>
+<span class="fc" id="L199">    }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

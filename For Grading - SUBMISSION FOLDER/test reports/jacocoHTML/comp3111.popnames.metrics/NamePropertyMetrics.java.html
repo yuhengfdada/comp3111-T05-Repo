@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NamePropertyMetrics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.metrics</a> &gt; <span class="el_source">NamePropertyMetrics.java</span></div><h1>NamePropertyMetrics.java</h1><pre class="source lang-java linenums">package comp3111.popnames.metrics;
+
+import comp3111.popnames.applications.CompatibilityPredictor;
+import comp3111.popnames.record.NameAnalyzer;
+import comp3111.popnames.record.NameAnalyzer.NameQuery;
+
+import java.util.ArrayList;
+import java.util.IntSummaryStatistics;
+import java.util.Objects;
+
+/**
+ * This measures the compatibility of the underlying traits of the two names.
+ * For instance, the rarity and the most popular time periods.
+ */
+<span class="fc" id="L15">public class NamePropertyMetrics extends Metrics {</span>
+
+<span class="fc" id="L17">    enum Rarity {</span>
+<span class="fc" id="L18">        POPULAR, MEDIOCRE, RARE, NA</span>
+    }
+
+    private static final int QUERY_RANGE = 10;
+<span class="fc" id="L22">    private boolean isDirty = false;</span>
+
+    String selfName, mateName;
+    double score, yearScore, rankScore, prefScore;
+    String explanation;
+<span class="fc" id="L27">    Rarity rarityPref = Rarity.NA;</span>
+
+    double selfMeanYear, mateMeanYear;
+    double selfMeanRank, mateMeanRank;
+
+    /**
+     * Get the detailed score
+     *
+     * @return the score between 0 and 1 if info is complete, otherwise -1
+     */
+    @Override
+    public double getScore() {
+<span class="fc" id="L39">        CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();</span>
+<span class="pc bpc" id="L40" title="1 of 4 branches missed.">        if (selfName == null || mateName == null) {</span>
+<span class="fc" id="L41">            selfName = predictor.selfName;</span>
+<span class="fc" id="L42">            mateName = predictor.mateName;</span>
+<span class="fc" id="L43">            update();</span>
+<span class="fc" id="L44">            return score;</span>
+<span class="pc bpc" id="L45" title="2 of 6 branches missed.">        } else if (selfName.equals(predictor.selfName) &amp;&amp; mateName.equals(predictor.mateName) &amp;&amp; !isDirty) {</span>
+            // Use the cached score
+<span class="fc" id="L47">            return score;</span>
+        } else {
+<span class="fc" id="L49">            update();</span>
+<span class="fc" id="L50">            return score;</span>
+        }
+    }
+
+    /**
+     * Get the description of the metric
+     *
+     * @return the description
+     */
+    @Override
+    public String getMetricDescription() {
+<span class="fc" id="L61">        return &quot;The similarity of the underlying traits of the names&quot;;</span>
+    }
+
+    /**
+     * Get the name of the metric
+     *
+     * @return the name
+     */
+    @Override
+    public String getMetricName() {
+<span class="fc" id="L71">        return &quot;Similarity&quot;;</span>
+    }
+
+    /**
+     * Get the explanation of the score
+     *
+     * @return the explanation
+     */
+    @Override
+    public String getExplanation() {
+<span class="fc" id="L81">        CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();</span>
+<span class="pc bpc" id="L82" title="2 of 4 branches missed.">        if (selfName == null || mateName == null) {</span>
+<span class="nc" id="L83">            selfName = predictor.selfName;</span>
+<span class="nc" id="L84">            mateName = predictor.mateName;</span>
+<span class="nc" id="L85">            update();</span>
+<span class="nc" id="L86">            return Objects.requireNonNullElse(explanation,</span>
+                    &quot;This metric is not available since the names input are not in our database.&quot;);
+<span class="pc bpc" id="L88" title="3 of 6 branches missed.">        } else if (selfName.equals(predictor.selfName) &amp;&amp; mateName.equals(predictor.mateName) &amp;&amp; !isDirty) {</span>
+            // Use the cached score
+<span class="fc" id="L90">            return Objects.requireNonNullElse(explanation,</span>
+                    &quot;This metric is not available since the names input are not in our database.&quot;);
+        } else {
+<span class="nc" id="L93">            update();</span>
+<span class="nc" id="L94">            return Objects.requireNonNullElse(explanation,</span>
+                    &quot;This metric is not available since the names input are not in our database.&quot;);
+        }
+    }
+
+    /**
+     * Update the score and the explanation
+     */
+    private void update() {
+<span class="fc" id="L103">        NameAnalyzer analyzer = NameAnalyzer.getInstance();</span>
+<span class="fc" id="L104">        CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();</span>
+
+<span class="fc" id="L106">        ArrayList&lt;NameQuery&gt; selfQuery = analyzer.getNameReport(selfName, predictor.selfGender, 1880, 2019);</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (selfQuery.isEmpty()) {</span>
+<span class="fc" id="L108">            score = -1.0;</span>
+<span class="fc" id="L109">            explanation = null;</span>
+<span class="fc" id="L110">            return;</span>
+        }
+
+<span class="fc" id="L113">        ArrayList&lt;NameQuery&gt; mateQuery = analyzer.getNameReport(mateName, predictor.mateGender, 1880, 2019);</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (mateQuery.isEmpty()) {</span>
+<span class="fc" id="L115">            score = -1.0;</span>
+<span class="fc" id="L116">            explanation = null;</span>
+<span class="fc" id="L117">            return;</span>
+        }
+
+<span class="fc" id="L120">        updateScore(selfQuery, mateQuery);</span>
+<span class="fc" id="L121">        updateExplanation();</span>
+<span class="fc" id="L122">        isDirty = false;</span>
+<span class="fc" id="L123">    }</span>
+
+    private void updateScore(ArrayList&lt;NameQuery&gt; selfQuery, ArrayList&lt;NameQuery&gt; mateQuery) {
+<span class="fc" id="L126">        selfQuery.sort(NameQuery.occurrenceComparator);</span>
+<span class="fc" id="L127">        mateQuery.sort(NameQuery.occurrenceComparator);</span>
+
+<span class="fc" id="L129">        IntSummaryStatistics selfYearStats = new IntSummaryStatistics();</span>
+<span class="fc" id="L130">        IntSummaryStatistics mateYearStats = new IntSummaryStatistics();</span>
+
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        for (int i = 0; i &lt; Math.min(QUERY_RANGE, selfQuery.size()); i++) {</span>
+<span class="fc" id="L133">            selfYearStats.accept(selfQuery.get(i).getYear());</span>
+        }
+
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        for (int i = 0; i &lt; Math.min(QUERY_RANGE, mateQuery.size()); i++) {</span>
+<span class="fc" id="L137">            mateYearStats.accept(mateQuery.get(i).getYear());</span>
+        }
+
+<span class="fc" id="L140">        IntSummaryStatistics selfRankStats = new IntSummaryStatistics();</span>
+<span class="fc" id="L141">        IntSummaryStatistics mateRankStats = new IntSummaryStatistics();</span>
+
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        for (NameQuery query : selfQuery) {</span>
+<span class="fc" id="L144">            selfRankStats.accept(query.getRank());</span>
+<span class="fc" id="L145">        }</span>
+
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        for (NameQuery query : mateQuery) {</span>
+<span class="fc" id="L148">            mateRankStats.accept(query.getRank());</span>
+<span class="fc" id="L149">        }</span>
+
+<span class="fc" id="L151">        selfMeanYear = selfYearStats.getAverage();</span>
+<span class="fc" id="L152">        mateMeanYear = mateYearStats.getAverage();</span>
+<span class="fc" id="L153">        selfMeanRank = selfRankStats.getAverage();</span>
+<span class="fc" id="L154">        mateMeanRank = mateRankStats.getAverage();</span>
+
+<span class="fc" id="L156">        double yearDiff = Math.abs(selfMeanYear - mateMeanYear);</span>
+
+<span class="fc" id="L158">        yearScore = Math.max(0.0, 1.0 - yearDiff * 0.01);</span>
+<span class="fc" id="L159">        rankScore = 1.0 - Math.abs(getRankLevel(selfMeanRank) - getRankLevel(mateMeanRank)) * 0.25;</span>
+<span class="fc" id="L160">        prefScore = -1.0;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (rarityPref == Rarity.POPULAR) {</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">            if (mateMeanRank &lt;= 100) {</span>
+<span class="nc" id="L163">                prefScore = 1.0;</span>
+            } else {
+<span class="fc" id="L165">                prefScore = 0.5 * 100.0 / mateMeanRank;</span>
+            }
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        } else if (rarityPref == Rarity.MEDIOCRE) {</span>
+<span class="fc bfc" id="L168" title="All 4 branches covered.">            if (mateMeanRank &gt; 100 &amp;&amp; mateMeanRank &lt;= 2000) {</span>
+<span class="fc" id="L169">                prefScore = 1.0;</span>
+            } else {
+<span class="fc" id="L171">                prefScore = 0.5 * 900.0 / Math.abs(mateMeanRank - 1000);</span>
+            }
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        } else if (rarityPref == Rarity.RARE) {</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">            if (mateMeanRank &gt; 2000) {</span>
+<span class="fc" id="L175">                prefScore = 1.0;</span>
+            } else {
+<span class="fc" id="L177">                prefScore = (1.0 - 1.0 / mateMeanRank) * 0.5;</span>
+            }
+        }
+
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        if (prefScore &lt; 0.0) {</span>
+<span class="fc" id="L182">            score = (yearScore + rankScore) * 0.5;</span>
+        } else {
+<span class="fc" id="L184">            score = (yearScore + rankScore) * 0.3 + prefScore * 0.4;</span>
+        }
+<span class="fc" id="L186">    }</span>
+
+    private void updateExplanation() {
+<span class="fc" id="L189">        StringBuilder text = new StringBuilder();</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        if (yearScore &lt;= 0.33) {</span>
+<span class="fc" id="L191">            text.append(&quot;The popular year ranges for your names are significantly different: &quot;);</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        } else if (yearScore &lt;= 0.67) {</span>
+<span class="fc" id="L193">            text.append(&quot;The popular year ranges for your names are different: &quot;);</span>
+        } else {
+<span class="fc" id="L195">            text.append(&quot;The popular year ranges for your names are close: &quot;);</span>
+        }
+
+<span class="fc" id="L198">        int startYear = (int) Math.min(selfMeanYear, mateMeanYear);</span>
+<span class="fc" id="L199">        int endYear = (int) Math.max(selfMeanYear, mateMeanYear);</span>
+<span class="fc" id="L200">        text.append(String.format(&quot;%d - %d.\n&quot;, startYear, endYear));</span>
+
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        if (rankScore &lt;= 0.33) {</span>
+<span class="fc" id="L203">            text.append(&quot;The popularity for your names are significantly different: &quot;);</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        } else if (rankScore &lt; 0.8) {</span>
+<span class="fc" id="L205">            text.append(&quot;The popularity for your names are different: &quot;);</span>
+        } else {
+<span class="fc" id="L207">            text.append(&quot;The popularity for your names are close: &quot;);</span>
+        }
+
+<span class="fc" id="L210">        text.append(String.format(&quot;your name is %s and your mate's name is %s.\n&quot;, rankToStr(selfMeanRank),</span>
+<span class="fc" id="L211">                rankToStr(mateMeanRank)));</span>
+
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (prefScore &lt; 0.0) {</span>
+<span class="fc" id="L214">            text.append(&quot;The rarity preference metric is not available due to incomplete input.&quot;);</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        } else if (prefScore &lt;= 0.33) {</span>
+<span class="fc" id="L216">            text.append(&quot;The rarity of your mate's name is significantly inconsistent with you preference.&quot;);</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        } else if (prefScore &lt;= 0.60) {</span>
+<span class="fc" id="L218">            text.append(&quot;The rarity of your mate's name is inconsistent with you preference.&quot;);</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        } else if (prefScore &lt;= 0.80) {</span>
+<span class="nc" id="L220">            text.append(&quot;The rarity of your mate's name is relatively consistent with you preference.&quot;);</span>
+        } else {
+<span class="fc" id="L222">            text.append(&quot;The rarity of your mate's name is very consistent with you preference.&quot;);</span>
+        }
+
+<span class="fc" id="L225">        explanation = text.toString();</span>
+<span class="fc" id="L226">    }</span>
+
+    /**
+     * Set the rarity preference by index
+     * @param index the index of the enum element
+     */
+    public void setRarityPref(int index) {
+<span class="pc bpc" id="L233" title="2 of 4 branches missed.">        if (index &lt; 0 || index &gt;= Rarity.values().length) {</span>
+<span class="nc" id="L234">            rarityPref = Rarity.NA;</span>
+        } else {
+<span class="fc" id="L236">            rarityPref = Rarity.values()[index];</span>
+        }
+<span class="fc" id="L238">    }</span>
+
+    private String rankToStr(double rank) {
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        if (rank &lt;= 100) {</span>
+<span class="fc" id="L242">            return &quot;popular&quot;;</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        } else if (rank &lt;= 2000) {</span>
+<span class="fc" id="L244">            return &quot;mediocre&quot;;</span>
+        } else {
+<span class="fc" id="L246">            return &quot;rare&quot;;</span>
+        }
+    }
+
+    private int getRankLevel(double rank) {
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        if (rank &lt;= 100) {</span>
+<span class="fc" id="L252">            return 0;</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">        } else if (rank &lt;= 500) {</span>
+<span class="fc" id="L254">            return 1;</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        } else if (rank &lt;= 2000) {</span>
+<span class="fc" id="L256">            return 2;</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">        } else if (rank &lt;= 10000) {</span>
+<span class="fc" id="L258">            return 3;</span>
+        } else {
+<span class="fc" id="L260">            return 4;</span>
+        }
+    }
+
+    /**
+     * Notify the class that properties have been changed.
+     */
+    public void setDirty() {
+<span class="fc" id="L268">        isDirty = true;</span>
+<span class="fc" id="L269">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

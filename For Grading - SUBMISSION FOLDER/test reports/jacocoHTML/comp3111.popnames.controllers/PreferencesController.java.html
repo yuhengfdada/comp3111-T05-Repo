@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferencesController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers</a> &gt; <span class="el_source">PreferencesController.java</span></div><h1>PreferencesController.java</h1><pre class="source lang-java linenums">package comp3111.popnames.controllers;
+
+import comp3111.popnames.metrics.AgeMetrics;
+import comp3111.popnames.applications.CompatibilityPredictor;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.Objects;
+
+/**
+ * The controller for inputting the preferences in task 6.
+ */
+<span class="fc" id="L22">public class PreferencesController {</span>
+
+    private static final ObservableList&lt;String&gt; agePrefList, rarityPrefList;
+    private Stage previousStage;
+    private AdditionalInfoController previousController;
+
+    static {
+<span class="fc" id="L29">        agePrefList = FXCollections.observableArrayList(&quot;Younger&quot;, &quot;Older&quot;);</span>
+<span class="fc" id="L30">        rarityPrefList = FXCollections.observableArrayList(&quot;Popular&quot;, &quot;Mediocre&quot;, &quot;Rare&quot;, &quot;No Preference&quot;);</span>
+<span class="fc" id="L31">    }</span>
+
+    @FXML
+    private ChoiceBox&lt;String&gt; agePref;
+
+    @FXML
+    private ChoiceBox&lt;String&gt; rarityPref;
+
+    @FXML
+    private TextArea nameTheme;
+
+    @FXML
+    private TextArea nameMeaning;
+
+    @FXML
+    private Button nextBtn;
+
+    @FXML
+    private Button backBtn;
+
+    @FXML
+    private Button cancelBtn;
+
+    @FXML
+    private Slider themeSuitability;
+
+    @FXML
+    private Slider meanSuitability;
+
+    /**
+     * Initialize the controller.
+     */
+    @FXML
+    public void initialize() {
+<span class="fc" id="L65">        agePref.setItems(agePrefList);</span>
+<span class="fc" id="L66">        rarityPref.setItems(rarityPrefList);</span>
+<span class="fc" id="L67">        rarityPref.getSelectionModel().select(3);</span>
+<span class="fc" id="L68">        CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();</span>
+
+<span class="fc" id="L70">        String promptText = &quot; You can base your choice on subjective feelings about the name.&quot;;</span>
+
+<span class="fc" id="L72">        StringBuilder theme = new StringBuilder();</span>
+<span class="fc" id="L73">        theme.append(&quot;The meanings or associations behind your name: &quot;);</span>
+<span class="fc" id="L74">        String selfTheme = predictor.themeAnalyzer.getNameTheme(predictor.selfName);</span>
+<span class="fc" id="L75">        theme.append(Objects.requireNonNullElse(selfTheme,</span>
+                &quot;\nSorry, the theme of your name does not exist in our database.&quot; + promptText));
+
+<span class="fc" id="L78">        theme.append(&quot;\n\nThe meanings or associations behind your mate's name: &quot;);</span>
+<span class="fc" id="L79">        String mateTheme = predictor.themeAnalyzer.getNameTheme(predictor.mateName);</span>
+<span class="fc" id="L80">        theme.append(Objects.requireNonNullElse(mateTheme,</span>
+                &quot;\nSorry, the theme of your mate's name does not exist in our database.&quot; + promptText));
+
+<span class="fc" id="L83">        nameTheme.setText(theme.toString());</span>
+
+<span class="fc" id="L85">        StringBuilder meaning = new StringBuilder();</span>
+<span class="fc" id="L86">        meaning.append(&quot;The detailed meanings behind your name:\n&quot;);</span>
+<span class="fc" id="L87">        String selfMeaning = predictor.themeAnalyzer.getNameFullMeaning(predictor.selfName);</span>
+<span class="fc" id="L88">        meaning.append(Objects.requireNonNullElse(selfMeaning,</span>
+                &quot;Sorry, the meaning of your name does not exist in our database.&quot; + promptText));
+
+<span class="fc" id="L91">        meaning.append(&quot;\n\nThe detailed meanings behind your mate's name:\n&quot;);</span>
+<span class="fc" id="L92">        String mateMeaning = predictor.themeAnalyzer.getNameFullMeaning(predictor.mateName);</span>
+<span class="fc" id="L93">        meaning.append(Objects.requireNonNullElse(mateMeaning,</span>
+                &quot;Sorry, the meaning of your mate's name does not exist in our database.&quot; + promptText));
+
+<span class="fc" id="L96">        nameMeaning.setText(meaning.toString());</span>
+<span class="fc" id="L97">    }</span>
+
+    @FXML
+    void onBackBtnPressed(ActionEvent event) {
+<span class="nc" id="L101">        previousStage.show();</span>
+<span class="nc" id="L102">        Stage curStage = (Stage) backBtn.getScene().getWindow();</span>
+<span class="nc" id="L103">        curStage.close();</span>
+<span class="nc" id="L104">    }</span>
+
+    @FXML
+    void onCancelBtnPressed(ActionEvent event) {
+<span class="nc" id="L108">        close();</span>
+<span class="nc" id="L109">    }</span>
+
+    @FXML
+    void onNextBtnPressed(ActionEvent event) throws IOException {
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (!validateInput()) {</span>
+<span class="nc" id="L114">            return;</span>
+        }
+<span class="fc" id="L116">        setValues();</span>
+
+<span class="fc" id="L118">        FXMLLoader loader = new FXMLLoader();</span>
+<span class="fc" id="L119">        loader.setLocation(getClass().getResource(&quot;/score_predictor_ui/result_ui.fxml&quot;));</span>
+<span class="fc" id="L120">        Parent root = loader.load();</span>
+<span class="fc" id="L121">        Stage stage = new Stage();</span>
+<span class="fc" id="L122">        stage.initModality(Modality.APPLICATION_MODAL);</span>
+<span class="fc" id="L123">        stage.setTitle(&quot;Compatibility Score Predictor&quot;);</span>
+<span class="fc" id="L124">        stage.setScene(new Scene(root));</span>
+<span class="fc" id="L125">        stage.setResizable(false);</span>
+
+<span class="fc" id="L127">        Stage curStage = (Stage) nextBtn.getScene().getWindow();</span>
+<span class="fc" id="L128">        ResultController controller = loader.getController();</span>
+<span class="fc" id="L129">        controller.setParent(curStage, this);</span>
+<span class="fc" id="L130">        curStage.hide();</span>
+<span class="fc" id="L131">        stage.show();</span>
+<span class="fc" id="L132">    }</span>
+
+    private boolean validateInput() {
+<span class="fc" id="L135">        StringBuilder errorMsg = new StringBuilder();</span>
+<span class="fc" id="L136">        String agePreference = agePref.getSelectionModel().getSelectedItem();</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        if (agePreference == null) {</span>
+<span class="nc" id="L138">            errorMsg.append(&quot;- Please specify your age preference.\n&quot;);</span>
+        }
+
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        if (errorMsg.length() &gt; 0) {</span>
+<span class="nc" id="L142">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L143">            alert.setTitle(&quot;Warning&quot;);</span>
+<span class="nc" id="L144">            alert.setHeaderText(&quot;Required Fields Empty/Invalid&quot;);</span>
+<span class="nc" id="L145">            alert.setContentText(errorMsg.toString());</span>
+
+<span class="nc" id="L147">            alert.showAndWait();</span>
+<span class="nc" id="L148">            return false;</span>
+        }
+<span class="fc" id="L150">        return true;</span>
+    }
+
+    private void setValues() {
+<span class="fc" id="L154">        CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();</span>
+<span class="fc" id="L155">        predictor.themeMetrics.themeSuitability(themeSuitability.getValue() * 0.2);</span>
+<span class="fc" id="L156">        predictor.meanMetrics.meanSuitability(meanSuitability.getValue() * 0.2);</span>
+<span class="fc" id="L157">        predictor.ageMetrics.agePref =</span>
+<span class="fc" id="L158">                AgeMetrics.AgePreference.values()[agePref.getSelectionModel().getSelectedIndex()];</span>
+<span class="fc" id="L159">        predictor.propertyMetrics.setRarityPref(rarityPref.getSelectionModel().getSelectedIndex());</span>
+<span class="fc" id="L160">        predictor.propertyMetrics.setDirty();</span>
+<span class="fc" id="L161">    }</span>
+
+    /**
+     * Set the previous stage and controller
+     * @param stage the previous stage
+     * @param controller the previous controller
+     */
+    public void setParent(Stage stage, AdditionalInfoController controller) {
+<span class="fc" id="L169">        previousStage = stage;</span>
+<span class="fc" id="L170">        previousController = controller;</span>
+<span class="fc" id="L171">    }</span>
+
+    /**
+     * Close the current and previous stage
+     */
+    public void close() {
+<span class="fc" id="L177">        Stage stage = (Stage) nextBtn.getScene().getWindow();</span>
+<span class="fc" id="L178">        stage.close();</span>
+<span class="fc" id="L179">        previousController.close();</span>
+<span class="fc" id="L180">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

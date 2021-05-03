@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PopReportController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.controllers</a> &gt; <span class="el_source">PopReportController.java</span></div><h1>PopReportController.java</h1><pre class="source lang-java linenums">package comp3111.popnames.controllers;
+
+import comp3111.popnames.applications.PopularityReport;
+import comp3111.popnames.record.NameAnalyzer.NameQuery;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.chart.*;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Locale;
+
+/**
+ * The controller for rendering the popularity report.
+ */
+<span class="fc" id="L25">public class PopReportController {</span>
+
+<span class="fc" id="L27">    private enum QueryType {</span>
+<span class="fc" id="L28">        OCCURRENCES, RANK</span>
+    }
+
+    private static final ObservableList&lt;String&gt; typeList;
+
+    static {
+<span class="fc" id="L34">        typeList = FXCollections.observableArrayList(&quot;Occurrences&quot;, &quot;Ranks&quot;);</span>
+<span class="fc" id="L35">    }</span>
+
+    private ReportInputController prevController;
+    private Stage prevStage;
+    private String name, nameCmp;
+    private ArrayList&lt;NameQuery&gt; query, queryCmp;
+
+    @FXML
+    private Tab summaryTab;
+
+    @FXML
+    private TextFlow summaryTextFlow;
+
+    @FXML
+    private Tab tableViewTab;
+
+    @FXML
+    private TableView&lt;NameQuery&gt; tableView;
+
+    @FXML
+    private Tab barChartTab;
+
+    @FXML
+    private BarChart&lt;String, Number&gt; barChart;
+
+    @FXML
+    private ChoiceBox&lt;String&gt; barChartType;
+
+    @FXML
+    private TextField barChartExtraName;
+
+    @FXML
+    private Button barChartAddName;
+
+    @FXML
+    private Button barChartReset;
+
+    @FXML
+    private Tab lineChartTab;
+
+    @FXML
+    private LineChart&lt;String, Number&gt; lineChart;
+
+    @FXML
+    private ChoiceBox&lt;String&gt; lineChartType;
+
+    @FXML
+    private TextField lineChartExtraName;
+
+    @FXML
+    private Button lineChartAddName;
+
+    @FXML
+    private Button lineChartReset;
+
+    @FXML
+    void onBarChartAddName(ActionEvent event) {
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (!validateInput(barChartExtraName.getText())) {</span>
+<span class="nc" id="L93">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L94">            alert.setTitle(&quot;Warning&quot;);</span>
+<span class="nc" id="L95">            alert.setHeaderText(&quot;Name Input Invalid/Not Found in Database&quot;);</span>
+<span class="nc" id="L96">            Label text = new Label(&quot;Note that the name added for comparison shares the\n&quot; +</span>
+                                   &quot;same year range and gender with previous query.\n\n&quot; +
+                                   &quot;Please retry with different input.&quot;);
+<span class="nc" id="L99">            text.setWrapText(true);</span>
+<span class="nc" id="L100">            alert.getDialogPane().setContent(text);</span>
+<span class="nc" id="L101">            alert.showAndWait();</span>
+<span class="nc" id="L102">        } else {</span>
+<span class="fc" id="L103">            nameCmp = barChartExtraName.getText().trim();</span>
+<span class="fc" id="L104">            lineChartExtraName.setText(nameCmp);</span>
+<span class="fc" id="L105">            updateBarChart();</span>
+<span class="fc" id="L106">            updateLineChart();</span>
+        }
+<span class="fc" id="L108">    }</span>
+
+    @FXML
+    void onBarChartReset(ActionEvent event) {
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (nameCmp != null) {</span>
+<span class="fc" id="L113">            nameCmp = null;</span>
+<span class="fc" id="L114">            queryCmp.clear();</span>
+<span class="fc" id="L115">            updateBarChart();</span>
+<span class="fc" id="L116">            updateLineChart();</span>
+        }
+<span class="fc" id="L118">    }</span>
+
+    @FXML
+    void onLineChartAddName(ActionEvent event) {
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (!validateInput(lineChartExtraName.getText())) {</span>
+<span class="nc" id="L123">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L124">            alert.setTitle(&quot;Warning&quot;);</span>
+<span class="nc" id="L125">            alert.setHeaderText(&quot;Name Input Invalid/Not Found in Database&quot;);</span>
+<span class="nc" id="L126">            Label text = new Label(&quot;Note that the name added for comparison shares the\n&quot; +</span>
+                                   &quot;same year range and gender with previous query.\n\n&quot; +
+                                   &quot;Please retry with different input.&quot;);
+<span class="nc" id="L129">            text.setWrapText(true);</span>
+<span class="nc" id="L130">            alert.getDialogPane().setContent(text);</span>
+<span class="nc" id="L131">            alert.showAndWait();</span>
+<span class="nc" id="L132">        } else {</span>
+<span class="nc" id="L133">            nameCmp = lineChartExtraName.getText().trim();</span>
+<span class="nc" id="L134">            barChartExtraName.setText(nameCmp);</span>
+<span class="nc" id="L135">            updateBarChart();</span>
+<span class="nc" id="L136">            updateLineChart();</span>
+        }
+<span class="nc" id="L138">    }</span>
+
+    @FXML
+    void onLineChartReset(ActionEvent event) {
+<span class="fc" id="L142">        onBarChartReset(event);</span>
+<span class="fc" id="L143">    }</span>
+
+    /**
+     * Initialize the controller.
+     */
+    @FXML
+    public void initialize() {
+<span class="fc" id="L150">        PopularityReport report = PopularityReport.getInstance();</span>
+<span class="fc" id="L151">        name = report.name();</span>
+<span class="fc" id="L152">        query = report.query();</span>
+
+<span class="fc" id="L154">        barChartType.setItems(typeList);</span>
+<span class="fc" id="L155">        lineChartType.setItems(typeList);</span>
+
+<span class="fc" id="L157">        initSummary();</span>
+<span class="fc" id="L158">        initTableView();</span>
+<span class="fc" id="L159">        initBarChart();</span>
+<span class="fc" id="L160">        initLineChart();</span>
+
+<span class="fc" id="L162">        lineChartType.getSelectionModel().select(0);</span>
+<span class="fc" id="L163">        lineChartType.getSelectionModel().selectedIndexProperty().addListener((new ChangeListener&lt;Number&gt;() {</span>
+            @Override
+            public void changed(ObservableValue&lt;? extends Number&gt; observable, Number oldValue, Number newValue) {
+<span class="fc" id="L166">                updateLineChart();</span>
+<span class="fc" id="L167">            }</span>
+        }));
+
+<span class="fc" id="L170">        barChartType.getSelectionModel().select(0);</span>
+<span class="fc" id="L171">        barChartType.getSelectionModel().selectedIndexProperty().addListener((new ChangeListener&lt;Number&gt;() {</span>
+            @Override
+            public void changed(ObservableValue&lt;? extends Number&gt; observable, Number oldValue, Number newValue) {
+<span class="fc" id="L174">                updateBarChart();</span>
+<span class="fc" id="L175">            }</span>
+        }));
+<span class="fc" id="L177">    }</span>
+
+    private void initSummary() {
+<span class="fc" id="L180">        PopularityReport report = PopularityReport.getInstance();</span>
+<span class="fc" id="L181">        Text summary = new Text(report.getSummary());</span>
+<span class="fc" id="L182">        summary.setFont(new Font(14));</span>
+<span class="fc" id="L183">        summaryTextFlow.getChildren().add(summary);</span>
+<span class="fc" id="L184">    }</span>
+
+    private void initTableView() {
+<span class="fc" id="L187">        TableColumn&lt;NameQuery, Integer&gt; columnYear = new TableColumn&lt;&gt;(&quot;Year&quot;);</span>
+<span class="fc" id="L188">        columnYear.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;year&quot;));</span>
+
+<span class="fc" id="L190">        TableColumn&lt;NameQuery, Integer&gt; columnRank = new TableColumn&lt;&gt;(&quot;Rank&quot;);</span>
+<span class="fc" id="L191">        columnRank.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;rank&quot;));</span>
+
+<span class="fc" id="L193">        TableColumn&lt;NameQuery, Integer&gt; columnOccur = new TableColumn&lt;&gt;(&quot;Occurrences&quot;);</span>
+<span class="fc" id="L194">        columnOccur.setCellValueFactory(new PropertyValueFactory&lt;&gt;(&quot;occurrence&quot;));</span>
+
+<span class="fc" id="L196">        TableColumn&lt;NameQuery, String&gt; columnPercentage = new TableColumn&lt;&gt;(&quot;Percentage&quot;);</span>
+<span class="fc" id="L197">        columnPercentage.setCellValueFactory(cellData -&gt; cellData.getValue().percentageProperty());</span>
+
+<span class="fc" id="L199">        tableView.getColumns().add(columnYear);</span>
+<span class="fc" id="L200">        tableView.getColumns().add(columnRank);</span>
+<span class="fc" id="L201">        tableView.getColumns().add(columnOccur);</span>
+<span class="fc" id="L202">        tableView.getColumns().add(columnPercentage);</span>
+
+<span class="fc" id="L204">        PopularityReport report = PopularityReport.getInstance();</span>
+<span class="fc" id="L205">        ArrayList&lt;NameQuery&gt; query = report.query();</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        for (NameQuery item : query) {</span>
+<span class="fc" id="L207">            tableView.getItems().add(item);</span>
+<span class="fc" id="L208">        }</span>
+
+<span class="fc" id="L210">        tableView.setPlaceholder(new Label(&quot;No records to display&quot;));</span>
+<span class="fc" id="L211">    }</span>
+
+    private void initBarChart() {
+<span class="fc" id="L214">        XYChart.Series&lt;String, Number&gt; dataSeries = getDataSeries(query, QueryType.OCCURRENCES, name);</span>
+<span class="fc" id="L215">        barChart.getData().add(dataSeries);</span>
+<span class="fc" id="L216">        barChart.setTitle(&quot;Occurrences/Rank by Year&quot;);</span>
+<span class="fc" id="L217">        barChart.getXAxis().setLabel(&quot;Year&quot;);</span>
+<span class="fc" id="L218">        barChart.getYAxis().setLabel(&quot;Occurrences&quot;);</span>
+<span class="fc" id="L219">    }</span>
+
+    private void initLineChart() {
+<span class="fc" id="L222">        XYChart.Series&lt;String, Number&gt; dataSeries = getDataSeries(query, QueryType.OCCURRENCES, name);</span>
+<span class="fc" id="L223">        lineChart.getData().add(dataSeries);</span>
+<span class="fc" id="L224">        lineChart.setTitle(&quot;Occurrences/Rank by Year&quot;);</span>
+<span class="fc" id="L225">        lineChart.getXAxis().setLabel(&quot;Year&quot;);</span>
+<span class="fc" id="L226">        lineChart.getYAxis().setLabel(&quot;Occurrences&quot;);</span>
+<span class="fc" id="L227">    }</span>
+
+    private void updateBarChart() {
+<span class="fc" id="L230">        QueryType type = QueryType.values()[barChartType.getSelectionModel().getSelectedIndex()];</span>
+<span class="fc" id="L231">        barChart.getData().clear();</span>
+
+<span class="fc" id="L233">        XYChart.Series&lt;String, Number&gt; dataSeries = getDataSeries(query, type, name);</span>
+<span class="fc" id="L234">        barChart.getData().add(dataSeries);</span>
+
+<span class="pc bpc" id="L236" title="2 of 6 branches missed.">        if (nameCmp != null &amp;&amp; queryCmp != null &amp;&amp; !queryCmp.isEmpty()) {</span>
+<span class="fc" id="L237">            XYChart.Series&lt;String, Number&gt; cmp = getDataSeries(queryCmp, type, nameCmp);</span>
+<span class="fc" id="L238">            barChart.getData().add(cmp);</span>
+        }
+
+<span class="fc" id="L241">        String typeStr = &quot;Occurrences&quot;;</span>
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">        if (type == QueryType.RANK) {</span>
+<span class="fc" id="L243">            typeStr = &quot;Rank&quot;;</span>
+        }
+<span class="fc" id="L245">        barChart.getYAxis().setLabel(typeStr);</span>
+<span class="fc" id="L246">    }</span>
+
+    private void updateLineChart() {
+<span class="fc" id="L249">        QueryType type = QueryType.values()[lineChartType.getSelectionModel().getSelectedIndex()];</span>
+<span class="fc" id="L250">        lineChart.getData().clear();</span>
+
+<span class="fc" id="L252">        XYChart.Series&lt;String, Number&gt; dataSeries = getDataSeries(query, type, name);</span>
+<span class="fc" id="L253">        lineChart.getData().add(dataSeries);</span>
+
+<span class="pc bpc" id="L255" title="2 of 6 branches missed.">        if (nameCmp != null &amp;&amp; queryCmp != null &amp;&amp; !queryCmp.isEmpty()) {</span>
+<span class="fc" id="L256">            XYChart.Series&lt;String, Number&gt; cmp = getDataSeries(queryCmp, type, nameCmp);</span>
+<span class="fc" id="L257">            lineChart.getData().add(cmp);</span>
+        }
+
+<span class="fc" id="L260">        String typeStr = &quot;Occurrences&quot;;</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        if (type == QueryType.RANK) {</span>
+<span class="fc" id="L262">            typeStr = &quot;Rank&quot;;</span>
+        }
+<span class="fc" id="L264">        lineChart.getYAxis().setLabel(typeStr);</span>
+<span class="fc" id="L265">    }</span>
+
+    private XYChart.Series&lt;String, Number&gt; getDataSeries(ArrayList&lt;NameQuery&gt; query, QueryType type, String name) {
+<span class="fc" id="L268">        XYChart.Series&lt;String, Number&gt; dataSeries = new XYChart.Series&lt;&gt;();</span>
+<span class="fc" id="L269">        dataSeries.setName(name);</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        for (NameQuery item : query) {</span>
+<span class="fc" id="L271">            dataSeries.getData().add(new XYChart.Data&lt;&gt;(Integer.toString(item.getYear()), getData(type, item)));</span>
+<span class="fc" id="L272">        }</span>
+<span class="fc" id="L273">        return dataSeries;</span>
+    }
+
+    /**
+     * Set the previous stage and controller
+     * @param stage the previous stage
+     * @param controller the previous controller
+     */
+    public void setParent(Stage stage, ReportInputController controller) {
+<span class="fc" id="L282">        prevStage = stage;</span>
+<span class="fc" id="L283">        prevController = controller;</span>
+<span class="fc" id="L284">    }</span>
+
+    private Number getData(QueryType type, NameQuery query) {
+<span class="fc bfc" id="L287" title="All 2 branches covered.">        if (type == QueryType.OCCURRENCES) {</span>
+<span class="fc" id="L288">            return query.getOccurrence();</span>
+        } else {
+<span class="fc" id="L290">            return query.getRank();</span>
+        }
+    }
+
+    private boolean validateInput(String nameInput) {
+<span class="pc bpc" id="L295" title="2 of 4 branches missed.">        if (nameInput.isEmpty() || !checkInput(nameInput)) {</span>
+<span class="nc" id="L296">            return false;</span>
+        }
+
+<span class="fc" id="L299">        queryCmp = PopularityReport.getInstance().getQueryResult(nameInput);</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">        return !queryCmp.isEmpty();</span>
+    }
+
+    private boolean checkInput(String input) {
+<span class="fc" id="L304">        String regex = &quot;.*[^a-zA-Z].*&quot;;</span>
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">        return !input.matches(regex);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

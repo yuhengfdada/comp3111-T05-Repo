@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Metrics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.metrics</a> &gt; <span class="el_source">Metrics.java</span></div><h1>Metrics.java</h1><pre class="source lang-java linenums">package comp3111.popnames.metrics;
+
+import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
+
+import java.awt.*;
+
+/**
+ * This interface provides detailed scores and related descriptions
+ */
+<span class="fc" id="L11">public abstract class Metrics {</span>
+    /**
+     * Get the detailed score
+     * @return the score between 0 and 1 if info is complete, otherwise -1
+     */
+    public abstract double getScore();
+
+    /**
+     * Get the description of the metric
+     * @return the description
+     */
+    public abstract String getMetricDescription();
+
+    /**
+     * Get the name of the metric
+     * @return the name
+     */
+    public abstract String getMetricName();
+
+    /**
+     * Get the explanation of the score
+     * @return the explanation
+     */
+    public abstract String getExplanation();
+
+    /**
+     * Set the weight of the metric
+     * @param weight the weight
+     */
+    public void setWeight(double weight) {
+<span class="fc" id="L41">        this.weight = weight;</span>
+<span class="fc" id="L42">    }</span>
+
+    /**
+     * Get the weight of the metric
+     * @return the weight
+     */
+    public double weight() {
+<span class="fc" id="L49">        return weight;</span>
+    }
+
+    /**
+     * Get a formatted text of the score
+     * @return the formatted text
+     */
+    public Text getFormattedScore() {
+<span class="fc" id="L57">        String totalWeight = String.format(&quot;%.2f&quot;, weight * 100);</span>
+<span class="fc" id="L58">        double rawScore = getScore();</span>
+<span class="fc" id="L59">        String score = String.format(&quot;%.2f&quot;, rawScore * weight * 100);</span>
+
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        if (rawScore &lt; 0.0) {</span>
+<span class="fc" id="L62">            Text text = new Text(&quot;N/A&quot;);</span>
+<span class="fc" id="L63">            text.setFill(Color.RED);</span>
+<span class="fc" id="L64">            return text;</span>
+        }
+
+<span class="fc" id="L67">        Text text = new Text(score + &quot;/&quot; + totalWeight);</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (rawScore &lt; 0.33) {</span>
+<span class="fc" id="L69">            text.setFill(Color.RED);</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        } else if (rawScore &lt; 0.67) {</span>
+<span class="fc" id="L71">            text.setFill(Color.ORANGE);</span>
+        } else {
+<span class="fc" id="L73">            text.setFill(Color.GREEN);</span>
+        }
+<span class="fc" id="L75">        return text;</span>
+    }
+
+    /**
+     * Get the ordinal of a enum variable.
+     * @param element the enum variable
+     * @param &lt;E&gt; the enum class
+     * @return the ordinal
+     */
+    protected static &lt;E extends Enum&gt; int getScale(E element) {
+<span class="nc" id="L85">        return element.ordinal();</span>
+    }
+
+    /**
+     * Get the difference of the ordinals of two enum variables.
+     * @param e1 The first variable.
+     * @param e2 The second variable.
+     * @param &lt;E&gt; The enum class.
+     * @return The difference.
+     */
+    protected static &lt;E extends Enum&gt; int getDiff(E e1, E e2) {
+<span class="fc" id="L96">        return Math.abs(e1.ordinal() - e2.ordinal());</span>
+    }
+
+    /**
+     * The weight of the metrics.
+     */
+    protected double weight;
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

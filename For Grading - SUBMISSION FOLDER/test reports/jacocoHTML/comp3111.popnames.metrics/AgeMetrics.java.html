@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AgeMetrics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.metrics</a> &gt; <span class="el_source">AgeMetrics.java</span></div><h1>AgeMetrics.java</h1><pre class="source lang-java linenums">package comp3111.popnames.metrics;
+
+import comp3111.popnames.applications.CompatibilityPredictor;
+import comp3111.popnames.record.NameAnalyzer;
+import comp3111.popnames.record.NameRecord;
+
+import java.util.ArrayList;
+
+/**
+ * The metrics of compatibility on ages.
+ */
+<span class="fc" id="L12">public class AgeMetrics extends Metrics {</span>
+
+    /**
+     * The enum class for age preferences.
+     */
+<span class="fc" id="L17">    public enum AgePreference {</span>
+        /**
+         * Younger.
+         */
+<span class="fc" id="L21">        YOUNGER,</span>
+        /**
+         * Older.
+         */
+<span class="fc" id="L25">        OLDER</span>
+    }
+
+    /**
+     * The age preference.
+     */
+    public AgePreference agePref;
+
+    /**
+     * Get the detailed score
+     *
+     * @return the score between 0 and 1 if info is complete, otherwise -1
+     */
+    @Override
+    public double getScore() {
+<span class="fc" id="L40">        NameAnalyzer analyzer = NameAnalyzer.getInstance();</span>
+<span class="fc" id="L41">        CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();</span>
+
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        if (predictor.mateYob != -1) {</span>
+<span class="fc bfc" id="L44" title="All 4 branches covered.">            if (predictor.mateYob &lt;= predictor.selfYob &amp;&amp; agePref == AgePreference.OLDER) {</span>
+<span class="fc" id="L45">                return 1.0;</span>
+<span class="fc bfc" id="L46" title="All 4 branches covered.">            } else if (predictor.mateYob &gt;= predictor.selfYob &amp;&amp; agePref == AgePreference.YOUNGER) {</span>
+<span class="fc" id="L47">                return 1.0;</span>
+            }
+<span class="fc" id="L49">            return 0.0;</span>
+        }
+
+<span class="nc" id="L52">        ArrayList&lt;NameRecord&gt; mateRecords = analyzer.getSortedRecords(predictor.mateName);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (mateRecords.isEmpty()) {</span>
+<span class="nc" id="L54">            return 1.0;</span>
+        }
+<span class="nc" id="L56">        int year = mateRecords.get(0).year();</span>
+<span class="nc bnc" id="L57" title="All 4 branches missed.">        if (year &lt;= predictor.selfYob &amp;&amp; agePref == AgePreference.OLDER) {</span>
+<span class="nc" id="L58">            return 1.0;</span>
+<span class="nc bnc" id="L59" title="All 4 branches missed.">        } else if (year &gt;= predictor.selfYob &amp;&amp; agePref == AgePreference.YOUNGER) {</span>
+<span class="nc" id="L60">            return 1.0;</span>
+        }
+<span class="nc" id="L62">        return 0.0;</span>
+    }
+
+    /**
+     * Get the metric name
+     *
+     * @return String
+     */
+    @Override
+    public String getMetricDescription() {
+<span class="fc" id="L72">        return &quot;Compatibility of the ages of the pair&quot;;</span>
+    }
+
+    /**
+     * Get the name of the metric
+     *
+     * @return the name
+     */
+    @Override
+    public String getMetricName() {
+<span class="fc" id="L82">        return &quot;Age&quot;;</span>
+    }
+
+    /**
+     * Get the explanation of the score
+     *
+     * @return String
+     */
+    @Override
+    public String getExplanation() {
+<span class="fc" id="L92">        NameAnalyzer analyzer = NameAnalyzer.getInstance();</span>
+<span class="fc" id="L93">        CompatibilityPredictor predictor = CompatibilityPredictor.getInstance();</span>
+
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (predictor.mateYob != -1) {</span>
+<span class="fc bfc" id="L96" title="All 4 branches covered.">            if (predictor.mateYob &lt; predictor.selfYob &amp;&amp; agePref == AgePreference.OLDER) {</span>
+<span class="fc" id="L97">                return &quot;The age of your mate is consistent with your age preference.&quot;;</span>
+<span class="fc bfc" id="L98" title="All 4 branches covered.">            } else if (predictor.mateYob &gt; predictor.selfYob &amp;&amp; agePref == AgePreference.YOUNGER) {</span>
+<span class="fc" id="L99">                return &quot;The age of your mate is consistent with your age preference.&quot;;</span>
+            }
+<span class="fc" id="L101">            return &quot;The age of your mate is inconsistent with your age preference.&quot;;</span>
+        }
+
+<span class="nc" id="L104">        ArrayList&lt;NameRecord&gt; mateRecords = analyzer.getSortedRecords(predictor.mateName);</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (mateRecords.isEmpty()) {</span>
+<span class="nc" id="L106">            return &quot;This metric is not available since the relevant information is incomplete.&quot;;</span>
+        }
+<span class="nc" id="L108">        int year = mateRecords.get(0).year();</span>
+<span class="nc" id="L109">        String text = &quot;According to data, the name of your mate is most likely belong to &quot;</span>
+<span class="nc" id="L110">                + Integer.toString(year / 10 * 10) + &quot;s.\n&quot;;</span>
+
+<span class="nc bnc" id="L112" title="All 4 branches missed.">        if (year &lt; predictor.selfYob &amp;&amp; agePref == AgePreference.OLDER) {</span>
+<span class="nc" id="L113">            return text + &quot;It is consistent with your age preference.&quot;;</span>
+<span class="nc bnc" id="L114" title="All 4 branches missed.">        } else if (year &gt; predictor.selfYob &amp;&amp; agePref == AgePreference.YOUNGER) {</span>
+<span class="nc" id="L115">            return text + &quot;It is consistent with your age preference.&quot;;</span>
+        }
+<span class="nc" id="L117">        return text + &quot;It is inconsistent with your age preference.&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

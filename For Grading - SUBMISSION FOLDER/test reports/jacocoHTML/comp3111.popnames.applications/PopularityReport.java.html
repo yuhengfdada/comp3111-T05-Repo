@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PopularityReport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.applications</a> &gt; <span class="el_source">PopularityReport.java</span></div><h1>PopularityReport.java</h1><pre class="source lang-java linenums">package comp3111.popnames.applications;
+
+import comp3111.popnames.record.NameAnalyzer;
+import comp3111.popnames.record.NameAnalyzer.NameQuery;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.IntSummaryStatistics;
+
+/**
+ * The class for generating the popularity report for task 3.
+ */
+public class PopularityReport {
+
+    private int startYear;
+    private int endYear;
+    private char gender;
+    private String name;
+    private ArrayList&lt;NameQuery&gt; query;
+    private ArrayList&lt;NameQuery&gt; sortedQuery;
+
+<span class="fc" id="L22">    private static final PopularityReport instance = new PopularityReport();</span>
+
+    private PopularityReport() {
+
+    }
+
+    /**
+     * Retrieve the unique instance of the class
+     * @return the instance
+     */
+    public static PopularityReport getInstance() {
+<span class="fc" id="L33">        return instance;</span>
+    }
+
+    /**
+     * This comparator sort the queries from high rank to low rank
+     */
+<span class="fc" id="L39">    private static final Comparator&lt;NameQuery&gt; queryComparator = new Comparator&lt;NameQuery&gt;() {</span>
+        @Override
+        public int compare(NameQuery o1, NameQuery o2) {
+<span class="fc" id="L42">            return o1.rank - o2.rank;</span>
+        }
+    };
+
+    /**
+     * Input parameters and generate report
+     * @param start the starting year
+     * @param end the ending year
+     * @param gender the gender preferred for the name
+     * @param name the name of interest
+     * @return flag for success
+     */
+    public boolean generateReport(int start, int end, char gender, String name) {
+<span class="fc" id="L55">        startYear = start;</span>
+<span class="fc" id="L56">        endYear = end;</span>
+<span class="fc" id="L57">        this.gender = gender;</span>
+<span class="fc" id="L58">        this.name = name;</span>
+
+<span class="fc" id="L60">        NameAnalyzer analyzer = NameAnalyzer.getInstance();</span>
+<span class="fc" id="L61">        query = analyzer.getNameReport(name, gender, startYear, endYear);</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if (query.isEmpty()) {</span>
+<span class="nc" id="L63">            return false;</span>
+        }
+
+<span class="fc" id="L66">        sortedQuery = new ArrayList&lt;&gt;(query);</span>
+<span class="fc" id="L67">        sortedQuery.sort(queryComparator);</span>
+<span class="fc" id="L68">        return true;</span>
+    }
+
+    /**
+     * Generate query result with previous year range and gender but (optionally) different name for comparison
+     * @param name the optionally new name for comparison
+     * @return the query result
+     */
+    public ArrayList&lt;NameQuery&gt; getQueryResult(String name) {
+<span class="fc" id="L77">        NameAnalyzer analyzer = NameAnalyzer.getInstance();</span>
+<span class="fc" id="L78">        return analyzer.getNameReport(name, gender, startYear, endYear);</span>
+    }
+
+    /**
+     * Get the main part of the summary.
+     * @return the summary
+     */
+    public String getSummary() {
+<span class="fc" id="L86">        StringBuilder text = new StringBuilder();</span>
+<span class="fc" id="L87">        text.append(String.format(&quot;The year when the name %s was most popular is %d at rank %d. &quot;,</span>
+<span class="fc" id="L88">                name, sortedQuery.get(0).year, sortedQuery.get(0).rank));</span>
+<span class="fc" id="L89">        text.append(String.format(&quot;\nIn that year, the number of occurrence is %d, &quot;, sortedQuery.get(0).occurrence));</span>
+<span class="fc" id="L90">        text.append(String.format(&quot;which represents %s of total %s births in %d.&quot;,</span>
+<span class="fc" id="L91">                percentageToStr(sortedQuery.get(0).percentage), genderToStr(), sortedQuery.get(0).year));</span>
+
+<span class="fc" id="L93">        NameQuery lastElement = sortedQuery.get(sortedQuery.size() - 1);</span>
+<span class="fc" id="L94">        text.append(String.format(&quot;\n\nThe year when the name %s was least popular is %d at rank %d. &quot;,</span>
+<span class="fc" id="L95">                name, lastElement.year, lastElement.rank));</span>
+<span class="fc" id="L96">        text.append(String.format(&quot;\nIn that year, the number of occurrence is %d, &quot;, lastElement.occurrence));</span>
+<span class="fc" id="L97">        text.append(String.format(&quot;which represents %s of total %s births in %d.&quot;,</span>
+<span class="fc" id="L98">                percentageToStr(lastElement.percentage), genderToStr(), lastElement.year));</span>
+
+<span class="fc" id="L100">        IntSummaryStatistics occurStats = new IntSummaryStatistics();</span>
+<span class="fc" id="L101">        IntSummaryStatistics rankStats = new IntSummaryStatistics();</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        for (NameQuery query : sortedQuery) {</span>
+<span class="fc" id="L103">            occurStats.accept(query.occurrence);</span>
+<span class="fc" id="L104">            rankStats.accept(query.rank);</span>
+<span class="fc" id="L105">        }</span>
+
+<span class="fc" id="L107">        text.append(String.format(&quot;\n\nStatistics for the occurrences of name %s between year %d and %d:&quot;,</span>
+<span class="fc" id="L108">                name, startYear, endYear));</span>
+<span class="fc" id="L109">        text.append(String.format(&quot;\nmaximum: %-9d minimum: %-9d mean: %-9.2f sum: %d&quot;, occurStats.getMax(),</span>
+<span class="fc" id="L110">                occurStats.getMin(), occurStats.getAverage(), occurStats.getSum()));</span>
+
+<span class="fc" id="L112">        text.append(String.format(&quot;\n\nStatistics for the ranks of name %s between year %d and %d:&quot;,</span>
+<span class="fc" id="L113">                name, startYear, endYear));</span>
+<span class="fc" id="L114">        text.append(String.format(&quot;\nmaximum: %-9d minimum: %-9d mean: %-12.2f&quot;, rankStats.getMax(),</span>
+<span class="fc" id="L115">                rankStats.getMin(), rankStats.getAverage()));</span>
+
+<span class="fc" id="L117">        String missing = getMissingYears();</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        if (missing != null) {</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">            long yearCount = missing.chars().filter(ch -&gt; ch == ',').count();</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (yearCount &gt; 6) {</span>
+<span class="nc" id="L121">                text.append(String.format(&quot;\n\n\nNOTE: Data are missing for %d years.&quot;, yearCount));</span>
+            } else {
+<span class="nc" id="L123">                text.append(&quot;\n\n\nNOTE: Data are missing for year &quot;).append(getMissingYears()).append(&quot;.&quot;);</span>
+            }
+        }
+
+<span class="fc" id="L127">        return text.toString();</span>
+    }
+
+    /**
+     * Get the query result
+     * @return an ArrayList of NameQuery, empty if name not found
+     */
+    public ArrayList&lt;NameQuery&gt; query() {
+<span class="fc" id="L135">        return query;</span>
+    }
+
+    /**
+     * Get the queried name
+     * @return the name input
+     */
+    public String name() {
+<span class="fc" id="L143">        return name;</span>
+    }
+
+    private String genderToStr() {
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        if (gender == 'M') {</span>
+<span class="nc" id="L148">            return &quot;male&quot;;</span>
+        } else {
+<span class="fc" id="L150">            return &quot;female&quot;;</span>
+        }
+    }
+
+    private static String percentageToStr(double value) {
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (value &lt; 0.01) {</span>
+<span class="fc" id="L156">            return String.format(&quot;%.2f\u2030&quot;, value * 1000);</span>
+        } else {
+<span class="fc" id="L158">            return String.format(&quot;%.2f%%&quot;, value * 100);</span>
+        }
+    }
+
+    private String getMissingYears() {
+<span class="fc" id="L163">        StringBuilder text = new StringBuilder();</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        for (int i = startYear; i &lt; query.get(0).year; i++) {</span>
+<span class="nc" id="L165">            text.append(String.format(&quot;%d, &quot;, i));</span>
+        }
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        for (int i = 0; i &lt; query.size() - 1; i++) {</span>
+<span class="fc" id="L168">            int cur = query.get(i).year;</span>
+<span class="fc" id="L169">            int next = query.get(i + 1).year;</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">            if (cur + 1 &lt; next) {</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">                for (int j = cur + 1; j &lt; next; j++) {</span>
+<span class="nc" id="L172">                    text.append(String.format(&quot;%d, &quot;, j));</span>
+                }
+            }
+        }
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">        for (int i = query.get(query.size() - 1).year + 1; i &lt;= endYear; i++) {</span>
+<span class="nc" id="L177">            text.append(String.format(&quot;%d, &quot;, i));</span>
+        }
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (text.length() &gt; 0) {</span>
+<span class="nc" id="L180">            return text.substring(0, text.length() - 1);</span>
+        } else {
+<span class="fc" id="L182">            return null;</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>

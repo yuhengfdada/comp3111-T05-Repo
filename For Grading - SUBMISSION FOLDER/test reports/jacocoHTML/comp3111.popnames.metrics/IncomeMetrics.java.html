@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IncomeMetrics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PopNames3111</a> &gt; <a href="index.source.html" class="el_package">comp3111.popnames.metrics</a> &gt; <span class="el_source">IncomeMetrics.java</span></div><h1>IncomeMetrics.java</h1><pre class="source lang-java linenums">package comp3111.popnames.metrics;
+
+/**
+ * The metrics for income factors.
+ */
+<span class="fc" id="L6">public class IncomeMetrics extends Metrics {</span>
+
+    /**
+     * The enum class for income levels.
+     */
+<span class="fc" id="L11">    private enum IncomeLevel {</span>
+<span class="fc" id="L12">        LOWEST_25, MIDDLE_50, TOP_25, NA</span>
+    }
+
+    private IncomeLevel self, mate;
+    private double selfSig, mateSig;
+
+    /**
+     * Get the detailed score
+     *
+     * @return the score between 0 and 1 if info is complete, otherwise -1
+     */
+    @Override
+    public double getScore() {
+<span class="fc bfc" id="L25" title="All 4 branches covered.">        if (self == IncomeLevel.NA || mate == IncomeLevel.NA) {</span>
+<span class="fc" id="L26">            return -1.0;</span>
+        }
+
+<span class="fc" id="L29">        double score = (IncomeLevel.TOP_25.ordinal() - self.ordinal()) * mateSig</span>
+<span class="fc" id="L30">            + (IncomeLevel.TOP_25.ordinal() - mate.ordinal()) * selfSig;</span>
+<span class="fc" id="L31">        return 1.0 - score * 0.25;</span>
+    }
+
+    /**
+     * Get the metric name
+     *
+     * @return String
+     */
+    @Override
+    public String getMetricDescription() {
+<span class="fc" id="L41">        return &quot;Compatibility of income level&quot;;</span>
+    }
+
+    /**
+     * Get the name of the metric
+     *
+     * @return the name
+     */
+    @Override
+    public String getMetricName() {
+<span class="fc" id="L51">        return &quot;Income&quot;;</span>
+    }
+
+    /**
+     * Get the explanation of the score
+     *
+     * @return String
+     */
+    @Override
+    public String getExplanation() {
+<span class="fc bfc" id="L61" title="All 4 branches covered.">        if (self == IncomeLevel.NA || mate == IncomeLevel.NA) {</span>
+<span class="fc" id="L62">            return &quot;This metric is not available since the information is incomplete.&quot;;</span>
+        }
+
+<span class="fc" id="L65">        double score = getScore();</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (score &gt; 0.8) {</span>
+<span class="fc" id="L67">            return &quot;Income level has minimal impact on your relationships.&quot;;</span>
+        }
+
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (selfSig + mateSig &gt; 1.0) {</span>
+<span class="fc" id="L71">            String head = &quot;Income level is significant for your relationships.&quot;;</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            if (score &lt; 0.5) {</span>
+<span class="fc" id="L73">                return head + &quot; And the income situation from your perspective is not ideal.&quot;;</span>
+            }
+<span class="fc" id="L75">            return head + &quot; But the income situation is relatively satisfactory for you two.&quot;;</span>
+        }
+
+<span class="fc" id="L78">        return &quot;Income level has limited impact on your relationships.&quot;;</span>
+    }
+
+    /**
+     * Set the significance level of the metrics
+     * @param self self's significance level
+     * @param mate mate's significance level
+     */
+    public void setSignificance(double self, double mate) {
+<span class="fc" id="L87">        selfSig = self;</span>
+<span class="fc" id="L88">        mateSig = mate;</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Set the self income level.
+     * @param index the ordinal of the enum element.
+     */
+    public void setSelf(int index) {
+<span class="pc bpc" id="L96" title="2 of 4 branches missed.">        if (index &lt; 0 || index &gt;= IncomeLevel.values().length) {</span>
+<span class="nc" id="L97">            self = IncomeLevel.NA;</span>
+        } else {
+<span class="fc" id="L99">            self = IncomeLevel.values()[index];</span>
+        }
+<span class="fc" id="L101">    }</span>
+
+    /**
+     * Set the income level of the mate.
+     * @param index The ordinal of the enum variable.
+     */
+    public void setMate(int index) {
+<span class="pc bpc" id="L108" title="2 of 4 branches missed.">        if (index &lt; 0 || index &gt;= IncomeLevel.values().length) {</span>
+<span class="nc" id="L109">            mate = IncomeLevel.NA;</span>
+        } else {
+<span class="fc" id="L111">            mate = IncomeLevel.values()[index];</span>
+        }
+<span class="fc" id="L113">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105010817</span></div></body></html>
