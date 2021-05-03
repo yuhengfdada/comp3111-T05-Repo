@@ -1,6 +1,6 @@
 package comp3111.popnames.Task2;
 
-import Task2.Task2_NameAnalyzer;
+import comp3111.popnames.Task2.Task2_NameAnalyzer;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

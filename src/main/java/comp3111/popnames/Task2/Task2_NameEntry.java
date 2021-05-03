@@ -1,4 +1,4 @@
-package Task2;
+package comp3111.popnames.Task2;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

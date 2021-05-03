@@ -1,4 +1,4 @@
-package Task2;
+package comp3111.popnames.Task2;
 
 import edu.duke.FileResource;
 import org.apache.commons.csv.CSVParser;

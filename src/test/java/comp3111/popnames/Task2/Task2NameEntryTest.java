@@ -1,7 +1,7 @@
 package comp3111.popnames.Task2;
 
 import org.junit.Test;
-import Task2.Task2_NameEntry;
+import comp3111.popnames.Task2.Task2_NameEntry;
 import static org.junit.Assert.*;
 
 public class Task2NameEntryTest {

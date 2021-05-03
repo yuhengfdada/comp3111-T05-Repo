@@ -25,13 +25,8 @@ import javafx.scene.Node;
 import comp3111.popnames.Task1.*;
 import comp3111.popnames.Task4.*;
 import comp3111.popnames.util.*;
-import Task2.Task2_BCController;
-import Task2.Task2_DTController;
-import Task2.Task2_NameAnalyzer;
-import Task2.Task2_PCController;
-import Task5.Task5_X1_NameAnalyzer;
-import Task5.Task5_X2Controller;
-import Task5.Task5_X2_NameAnalyzer;
+import comp3111.popnames.Task2.*;
+import comp3111.popnames.Task5.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -543,7 +538,7 @@ public class Controller{
 		if( 'A' <= name.charAt(0) && name.charAt(0) <= 'Z'){
 			alter_name += name.charAt(0);
 		}else if('a' <= name.charAt(0) && name.charAt(0) <= 'z'){
-			alter_name += name.charAt(0) - 'a' + 'A';
+			alter_name += (char)(name.charAt(0) - 'a' + 'A');
 		}else{
 			textAreaConsole.setText("Please enter a valid name.");
 			return;

@@ -1,4 +1,4 @@
-package Task5;
+package comp3111.popnames.Task5;
 
 import edu.duke.FileResource;
 import org.apache.commons.csv.CSVParser;
@@ -109,13 +109,13 @@ public class Task5_X2_NameAnalyzer {
                 matchedNameOccurrence = name_list.get(ownNameRanking - 2).getValue();
                 matchedNameRanking = ownNameRanking-1;
             }
-            forReport = matchedName + " has the closest popularity ranking to your name except for your own name.\n";
+            forReport = matchedName + "has a popularity ranking of " + matchedNameRanking + ".\n" + "It has the closest popularity ranking to your name except for your own name.\n";
         }
         else {
             matchedName = name_list.get(ownNameRanking - 1).getKey();
             matchedNameOccurrence = name_list.get(ownNameRanking - 1).getValue();
             matchedNameRanking = ownNameRanking;
-            forReport = matchedName + " has the same popularity ranking as your name.\n";
+            forReport = matchedName + "has a popularity ranking of " + matchedNameRanking + ".\n" + "It has the same popularity ranking as your name.\n";
         }
 
         oReport = "The name recommended is " + matchedName +" .\n";

@@ -1,4 +1,4 @@
-package Task5;
+package comp3111.popnames.Task5;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
