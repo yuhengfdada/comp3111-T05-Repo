@@ -413,17 +413,21 @@ public class Controller{
 		yourGender.setItems(genderList);
 		agePreference.setItems(ageList);
 	}
+
+	/**
+	 *  Task 2
+	 *  To be triggered by the "Summary" button on the Reporting 2 Tab
+	 *
+	 */
 	@FXML
 	boolean generate_summary() throws IOException {
 
-		//check if any input is empty.
 		if(input_starting_year.getText().equals("") || input_ending_year.getText().equals("")
 				|| inputGender.getSelectionModel().getSelectedItem() == null ||input_ranking.getText().equals("")){
 			textAreaConsole.setText("There is missing value!");
 			return false;
 		}
 
-		//check the validity of the inputs.
 		try {
 			int startingYear = Integer.parseInt(input_starting_year.getText());
 			int endingYear = Integer.parseInt(input_ending_year.getText());
@@ -460,6 +464,11 @@ public class Controller{
 		return true;
 	}
 
+	/**
+	 *  Task 2
+	 *  To be triggered by the "Bar Chart" button on the Reporting 2 Tab
+	 *
+	 */
 	@FXML
 	void show_bar_chart() throws IOException{
 		if(generate_summary() == true) {
@@ -468,6 +477,11 @@ public class Controller{
 		}
 	}
 
+	/**
+	 *  Task 2
+	 *  To be triggered by the "Data Table" button on the Reporting 2 Tab
+	 *
+	 */
 	@FXML
 	void show_data_table() throws IOException  {
 		if(generate_summary() == true) {
@@ -476,6 +490,11 @@ public class Controller{
 		}
 	}
 
+	/**
+	 *  Task 2
+	 *  To be triggered by the "Pie Chart" button on the Reporting 2 Tab
+	 *
+	 */
 	@FXML
 	void show_pie_chart() throws  IOException{
 		if(generate_summary() == true) {
@@ -484,6 +503,11 @@ public class Controller{
 		}
 	}
 
+	/**
+	 *  Task 5
+	 *  To be triggered by the first "Search" button on the Application 2 Tab
+	 *
+	 */
 	@FXML
 	void show_algo1() {
 		if(inputGenderOfInterest.getSelectionModel().getSelectedItem() == null  || Year_of_born.getText().equals("") ){
@@ -510,6 +534,11 @@ public class Controller{
 
 	}
 
+	/**
+	 *  Task 5
+	 *  To be triggered by the second "Search" button on the Application 2 Tab
+	 *
+	 */
 	@FXML
 	void show_algo2() throws IOException{
 		if(inputGenderOfInterest.getSelectionModel().getSelectedItem() == null  || Year_of_born.getText().equals("")  ||

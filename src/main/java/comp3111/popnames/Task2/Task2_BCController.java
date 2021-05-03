@@ -11,6 +11,10 @@ import javafx.stage.Stage;
 import javafx.scene.chart.XYChart;
 import java.io.IOException;
 
+/**
+ * The controller for showing bar chart in task 2.
+ * @author LUO, Yuqing
+ */
 public class Task2_BCController {
 
     @FXML
@@ -23,6 +27,9 @@ public class Task2_BCController {
     private NumberAxis Occurrences;
 
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize() {
         XYChart.Series<String, Number> series1 = new XYChart.Series();

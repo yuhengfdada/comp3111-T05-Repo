@@ -8,12 +8,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
+/**
+ * The controller for showing result of algorithm 2 in task 5.
+ * @author LUO, Yuqing
+ */
 public class Task5_X2Controller {
 
     @FXML
     private TextArea text_area;
 
+    /**
+     * Initialize the controller.
+     */
     public void initialize(){
         text_area.setText(Task5_X2_NameAnalyzer.oReport);
     }

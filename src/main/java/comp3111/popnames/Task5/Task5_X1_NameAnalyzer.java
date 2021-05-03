@@ -3,7 +3,11 @@ package comp3111.popnames.Task5;
 import edu.duke.FileResource;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-
+/**
+ * This class analyzes name information from source file for task 5 algorithm 1.
+ * @author LUO, Yuqing
+ *
+ */
 public class Task5_X1_NameAnalyzer {
 
     public static String mostPopularName;
@@ -13,6 +17,12 @@ public class Task5_X1_NameAnalyzer {
         return fr.getCSVParser(false);
     }
 
+    /**
+     * Get summary for the information provided.
+     *
+     * @param yearOfBorn user's year of born
+     * @param gender user's gender of interest
+     */
     public static String getSummary(int yearOfBorn,char gender) {
         mostPopularName = "";
         occurrences = 0;

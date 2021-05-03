@@ -6,6 +6,11 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.util.*;
 
+/**
+ * This class analyzes name information from source file for task 5 algorithm 2.
+ * @author LUO, Yuqing
+ *
+ */
 public class Task5_X2_NameAnalyzer {
 
     public static HashMap<String, Integer> nameRecords;
@@ -23,6 +28,13 @@ public class Task5_X2_NameAnalyzer {
         return fr.getCSVParser(false);
     }
 
+    /**
+     * Check if name provided exist in the dataset.
+     *
+     * @param yearOfBorn  user's year of born
+     * @param gender user's gender
+     * @param name user's name
+     */
     public static boolean checkName(int yearOfBorn ,String name, char gender) {
         boolean findName = false;
         for (CSVRecord rec : getFileParser(yearOfBorn)) {
@@ -36,6 +48,15 @@ public class Task5_X2_NameAnalyzer {
         return findName;
     }
 
+    /**
+     * Get soulmate's name from the information provided.
+     *
+     * @param yearOfBorn  user's year of born
+     * @param gender user's gender
+     * @param name user's name
+     * @param genderOfInterest user's gender of interest
+     * @param agePreference user's preference on age
+     */
     public static void getName(int yearOfBorn ,String name, char gender, char genderOfInterest, char agePreference){
         ownNameRanking = 0;
         ownName = name;

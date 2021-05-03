@@ -8,12 +8,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.collections.*;
 import java.io.IOException;
-
+/**
+ * The controller for showing pie chart in task 2.
+ * @author LUO, Yuqing
+ */
 public class Task2_PCController {
 
     @FXML
     private PieChart pie_chart;
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize(){
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();

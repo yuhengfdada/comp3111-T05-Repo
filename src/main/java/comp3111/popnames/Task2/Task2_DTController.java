@@ -13,6 +13,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The controller for showing data table in task 2.
+ * @author LUO, Yuqing
+ */
 public class Task2_DTController {
 
     @FXML
@@ -32,6 +36,9 @@ public class Task2_DTController {
     @FXML
     private TableColumn<Task2_NameEntry, String> percentage;
 
+    /**
+     * Initialize the controller.
+     */
     @FXML
     public void initialize() {
         name.setCellValueFactory(new PropertyValueFactory<Task2_NameEntry, String>("Name"));

@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Collections;
 import java.util.Iterator;
-
+/**
+ * This class analyzes name information from source file for task 2.
+ * @author LUO, Yuqing
+ *
+ */
 public class Task2_NameAnalyzer {
 
     public static HashMap<String, Integer> nameRecords;
@@ -22,6 +26,14 @@ public class Task2_NameAnalyzer {
         return fr.getCSVParser(false);
     }
 
+    /**
+     * Get summary for the information provided.
+     *
+     * @param startYear  start year of the searching period
+     * @param endYear  end year of the searching period
+     * @param popularityRanking  ranking to search
+     * @param gender gender to search
+     */
     public static String getSummary(int startYear,int endYear, int popularityRanking, char gender) {
         nameRecords = new HashMap<>();
         matchedNames = new HashMap<>();

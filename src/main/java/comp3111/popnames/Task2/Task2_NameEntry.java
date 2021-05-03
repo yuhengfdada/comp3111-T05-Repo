@@ -3,6 +3,11 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * This class provides data structure for data table in task 2.
+ * @author LUO, Yuqing
+ *
+ */
 public class Task2_NameEntry {
 
     private SimpleStringProperty Name;
