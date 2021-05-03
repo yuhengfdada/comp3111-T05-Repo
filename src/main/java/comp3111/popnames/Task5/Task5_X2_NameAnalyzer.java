@@ -40,6 +40,8 @@ public class Task5_X2_NameAnalyzer {
         ownNameRanking = 0;
         ownName = name;
         nameRecords = new HashMap<>();
+        int startyear = yearOfBorn;
+        int endyear = 0;
         for (CSVRecord rec : getFileParser(yearOfBorn)) {
             if (rec.get(1).charAt(0) == gender) {
                 ownNameRanking++;
@@ -52,8 +54,8 @@ public class Task5_X2_NameAnalyzer {
 
         if(agePreference == 'Y') {
             for (int i = 0; i < 3 && yearOfBorn + i <= 2019; i++) {
-                int endYear = i + yearOfBorn;
-                for (CSVRecord rec : getFileParser(endYear)) {
+                endyear = i + yearOfBorn;
+                for (CSVRecord rec : getFileParser(endyear)) {
                     if (rec.get(1).charAt(0) == genderOfInterest) {
                         if (nameRecords.containsKey(rec.get(0))) {
                             int tempNum = nameRecords.get(rec.get(0));
@@ -65,9 +67,10 @@ public class Task5_X2_NameAnalyzer {
                 }
             }
         }else{
+            endyear = yearOfBorn;
             for (int i = 0; i < 3 && yearOfBorn - i >= 1880; i++) {
-                int endYear = yearOfBorn - i;
-                for (CSVRecord rec : getFileParser(endYear)) {
+                startyear = yearOfBorn - i;
+                for (CSVRecord rec : getFileParser(endyear)) {
                     if (rec.get(1).charAt(0) == genderOfInterest) {
                         if (nameRecords.containsKey(rec.get(0))) {
                             int tempNum = nameRecords.get(rec.get(0));
@@ -109,19 +112,19 @@ public class Task5_X2_NameAnalyzer {
                 matchedNameOccurrence = name_list.get(ownNameRanking - 2).getValue();
                 matchedNameRanking = ownNameRanking-1;
             }
-            forReport = matchedName + "has a popularity ranking of " + matchedNameRanking + ".\n" + "It has the closest popularity ranking to your name except for your own name.\n";
+            forReport = matchedName + " has a popularity ranking of " + matchedNameRanking + ".\n" + "It has the closest popularity ranking to your name except for your own name.\n";
         }
         else {
             matchedName = name_list.get(ownNameRanking - 1).getKey();
             matchedNameOccurrence = name_list.get(ownNameRanking - 1).getValue();
             matchedNameRanking = ownNameRanking;
-            forReport = matchedName + "has a popularity ranking of " + matchedNameRanking + ".\n" + "It has the same popularity ranking as your name.\n";
+            forReport = matchedName + " has a popularity ranking of " + matchedNameRanking + ".\n" + "It has the same popularity ranking as your name.\n";
         }
 
-        oReport = "The name recommended is " + matchedName +" .\n";
-        oReport += "The popularity ranking of your name in the year you are born is " + ownNameRanking + " .\n";
+        oReport = "The name recommended is " + matchedName +".\n";
+        oReport += "The popularity ranking of your name in the year you are born is " + ownNameRanking + ".\n";
         oReport += "The name " + matchedName + " is selected according to your preference on gender and age.\n";
-        oReport += "Three years' data near your born-year is selected (if applicable) and sorted according to total occurrences.\n";
+        oReport += "Data from" + String.format(" %d - %d ", startyear, endyear) +"is selected and sorted according to total occurrences.\n";
         oReport += forReport;
     }
 

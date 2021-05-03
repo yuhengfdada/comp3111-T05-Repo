@@ -33,7 +33,8 @@ public class Task5_X1_NameAnalyzer {
             sGender = "male";
             sGender_2 = "boy";
         }
-        String oReport = "The most popular name of " + sGender + " in your year of born is " + mostPopularName + " with occurrence of " + occurrences + ".\n";
+        String oReport = "Name of your soulmate is " +mostPopularName + ".\n";
+        oReport += "The most popular name of " + sGender + " in your year of born is " + mostPopularName + " with occurrence of " + occurrences + ".\n";
 
         oReport += "The chance of meeting and becoming soulmate with a " + sGender_2 + " named " + mostPopularName + " is the highest.";
 

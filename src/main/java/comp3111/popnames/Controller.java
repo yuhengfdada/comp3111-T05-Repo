@@ -501,7 +501,7 @@ public class Controller{
 		char gender = inputGenderOfInterest.getValue().toString().charAt(0);
 
 		if(yearOfBorn < 1880 || yearOfBorn > 2019){
-			textAreaConsole.setText("Please enter valid year of born.");
+			textAreaConsole.setText("Please enter valid year of born. The range is 1880 - 2019.");
 			return;
 		}
 
@@ -530,7 +530,7 @@ public class Controller{
 		String name = input_Name.getText();
 
 		if(yearOfBorn < 1880 || yearOfBorn > 2019){
-			textAreaConsole.setText("Please enter valid year of born.");
+			textAreaConsole.setText("Please enter valid year of born. The range is 1880 - 2019.");
 			return;
 		}
 
@@ -547,7 +547,7 @@ public class Controller{
 			if( 'a' <= name.charAt(i) && name.charAt(i) <= 'z'){
 				alter_name += name.charAt(i);
 			}else if('A' <= name.charAt(i) && name.charAt(i) <= 'Z'){
-				alter_name += name.charAt(i) - 'A' + 'a';
+				alter_name += (char)(name.charAt(i) - 'A' + 'a');
 			}else{
 				textAreaConsole.setText("Please enter a valid name.");
 				return;
